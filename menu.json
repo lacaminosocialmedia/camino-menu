@@ -60,8 +60,7 @@
           ],
           "traceWarning": ""
         }
-      ],
-      "hidden": true
+      ]
     },
     {
       "id": "burgerler",
@@ -112,7 +111,8 @@
           ],
           "traceWarning": ""
         }
-      ]
+      ],
+      "hidden": true
     },
     {
       "id": "paylasim-tabagi",
@@ -209,7 +209,8 @@
           ],
           "traceWarning": ""
         }
-      ]
+      ],
+      "hidden": true
     },
     {
       "id": "soslar",
@@ -305,7 +306,8 @@
           ],
           "traceWarning": ""
         }
-      ]
+      ],
+      "hidden": true
     },
     {
       "id": "izgaralar",
@@ -362,7 +364,8 @@
           ],
           "traceWarning": ""
         }
-      ]
+      ],
+      "hidden": true
     },
     {
       "id": "aperatifler",
@@ -455,7 +458,8 @@
           ],
           "traceWarning": ""
         }
-      ]
+      ],
+      "hidden": true
     },
     {
       "id": "pizzalar",
@@ -515,7 +519,8 @@
           ],
           "traceWarning": ""
         }
-      ]
+      ],
+      "hidden": true
     },
     {
       "id": "pizza-ilaveleri",
@@ -590,7 +595,8 @@
           "allergens": [],
           "traceWarning": ""
         }
-      ]
+      ],
+      "hidden": true
     },
     {
       "id": "ilave-lezzetler",
@@ -657,7 +663,8 @@
           ],
           "traceWarning": ""
         }
-      ]
+      ],
+      "hidden": true
     },
     {
       "id": "tatlilar",
@@ -697,7 +704,8 @@
           ],
           "traceWarning": ""
         }
-      ]
+      ],
+      "hidden": true
     },
     {
       "id": "kahveler",
@@ -793,7 +801,8 @@
           ],
           "traceWarning": ""
         }
-      ]
+      ],
+      "hidden": true
     },
     {
       "id": "soguk-icecekler",
@@ -974,7 +983,8 @@
           ],
           "traceWarning": ""
         }
-      ]
+      ],
+      "hidePrices": true
     },
     {
       "id": "imza-kokteyller",
@@ -1076,7 +1086,8 @@
           "traceWarning": "",
           "calorieEstimated": false
         }
-      ]
+      ],
+      "hidePrices": true
     },
     {
       "id": "stir",
@@ -1163,7 +1174,8 @@
           ],
           "traceWarning": ""
         }
-      ]
+      ],
+      "hidePrices": true
     },
     {
       "id": "sampanya-kokteylleri",
@@ -1186,7 +1198,8 @@
           ],
           "traceWarning": ""
         }
-      ]
+      ],
+      "hidePrices": true
     },
     {
       "id": "saraplar",
@@ -1220,7 +1233,8 @@
           ],
           "traceWarning": ""
         }
-      ]
+      ],
+      "hidePrices": true
     },
     {
       "id": "mocktails",

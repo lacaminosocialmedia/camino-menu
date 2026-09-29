@@ -90,6 +90,18 @@ h1,h2,h3{font-family:'Playfair Display',serif;margin:0}
 .toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:#1c1a18;color:#fff;padding:11px 18px;border-radius:12px;box-shadow:var(--shadow);z-index:100;max-width:92vw;font-weight:600}
 .toast.err{background:var(--danger)}
 
+/* Giriş ekranı */
+body.locked .topbar,body.locked .tabs,body.locked .page{display:none!important}
+.lock{display:none;min-height:100vh;align-items:center;justify-content:center;padding:24px 16px}
+body.locked .lock{display:flex}
+.lock-card{background:#fff;border-radius:20px;box-shadow:var(--shadow);padding:26px;width:min(420px,100%)}
+.lock-card h2{font-size:26px;margin-bottom:6px}
+.lock-card .field{margin-top:12px}
+.lock-card .btn{width:100%;margin-top:16px;padding:11px}
+.msg{margin:12px 0 0;font-weight:700;font-size:13px;min-height:1em}
+.msg.err{color:var(--danger)}
+.msg.ok{color:var(--ok)}
+
 @media(max-width:640px){
   .topbar h1{font-size:17px;width:100%}
   .item-row .in.price{flex:1 1 100px}
@@ -97,7 +109,32 @@ h1,h2,h3{font-family:'Playfair Display',serif;margin:0}
 }
 </style>
 </head>
-<body>
+<body class="locked">
+
+<div class="lock">
+  <form class="lock-card hide" id="login-form" autocomplete="on">
+    <h2>Yönetici Girişi</h2>
+    <p class="hint">Menü yönetim paneline girmek için şifrenizi girin.</p>
+    <input type="text" name="username" value="menu-admin" autocomplete="username" hidden>
+    <div class="field"><label>Şifre</label><input type="password" id="login-pw" autocomplete="current-password" required></div>
+    <button class="btn primary" type="submit" id="login-btn">Giriş Yap</button>
+    <p class="msg" id="login-msg"></p>
+  </form>
+
+  <form class="lock-card hide" id="setup-form" autocomplete="off">
+    <h2>İlk Kurulum</h2>
+    <p class="hint">Yönetici şifresi henüz belirlenmemiş. GitHub token'ınızı ve kendi belirleyeceğiniz şifreyi girin. Token bu şifreyle şifrelenerek saklanır; bundan sonra panele yalnızca şifreyle girersiniz.</p>
+    <div class="field"><label>GitHub kullanıcı adı</label><input id="setup-owner" required></div>
+    <div class="field"><label>Repo adı</label><input id="setup-repo" required></div>
+    <div class="field"><label>GitHub token (github_pat_…)</label><input type="password" id="setup-token" autocomplete="off" required></div>
+    <div class="field"><label>Yeni yönetici şifresi (en az 10 karakter)</label><input type="password" id="setup-pw" autocomplete="new-password" minlength="10" required></div>
+    <div class="field"><label>Şifre tekrar</label><input type="password" id="setup-pw2" autocomplete="new-password" minlength="10" required></div>
+    <button class="btn primary" type="submit" id="setup-btn">Kurulumu Tamamla</button>
+    <p class="msg" id="setup-msg"></p>
+  </form>
+
+  <div class="lock-card" id="lock-loading"><p class="hint">Yükleniyor…</p></div>
+</div>
 
 <div class="topbar">
   <div class="topbar-inner">
@@ -105,6 +142,7 @@ h1,h2,h3{font-family:'Playfair Display',serif;margin:0}
     <span class="dirty hide" id="dirty">Kaydedilmemiş değişiklik var</span>
     <a class="btn ghost" href="index.html" target="_blank" rel="noopener">Menüyü Aç</a>
     <button class="btn primary" id="save-btn">Kaydet ve Yayınla</button>
+    <button class="btn ghost" id="logout-btn">Çıkış</button>
   </div>
 </div>
 
@@ -112,12 +150,11 @@ h1,h2,h3{font-family:'Playfair Display',serif;margin:0}
   <button class="tab active" data-tab="menu">Menü</button>
   <button class="tab" data-tab="site">İşletme Bilgileri</button>
   <button class="tab" data-tab="qr">QR Kod</button>
-  <button class="tab" data-tab="github">GitHub Bağlantısı</button>
+  <button class="tab" data-tab="security">Güvenlik</button>
 </div>
 
 <!-- MENÜ -->
 <div class="page" id="tab-menu">
-  <div class="banner hide" id="github-warning">GitHub bağlantısı ayarlanmamış. Değişiklikleri yayınlamak için önce <b>GitHub Bağlantısı</b> sekmesini doldurun.</div>
   <div class="banner hide" id="prices-off-banner">Tüm fiyatlar şu an menüde <b>gizli</b>.</div>
   <div class="panel">
     <div class="toolbar">
@@ -167,24 +204,37 @@ h1,h2,h3{font-family:'Playfair Display',serif;margin:0}
   <div class="qr-wrap"><div id="qr-box"></div></div>
 </div>
 
-<!-- GITHUB -->
-<div class="page hide" id="tab-github">
+<!-- GÜVENLİK -->
+<div class="page hide" id="tab-security">
+  <form class="panel" id="pw-form" autocomplete="off">
+    <h2>Şifre Değiştir</h2>
+    <div class="grid">
+      <div class="field"><label>Mevcut şifre</label><input type="password" id="pw-current" autocomplete="current-password" required></div>
+      <div class="field"><label>Yeni şifre (en az 10 karakter)</label><input type="password" id="pw-new" autocomplete="new-password" minlength="10" required></div>
+      <div class="field"><label>Yeni şifre tekrar</label><input type="password" id="pw-new2" autocomplete="new-password" minlength="10" required></div>
+    </div>
+    <div class="row-actions"><button class="btn primary" type="submit">Şifreyi Değiştir</button></div>
+    <p class="msg" id="pw-msg"></p>
+  </form>
+
+  <form class="panel" id="token-form" autocomplete="off">
+    <h2>GitHub Token'ını Yenile</h2>
+    <p class="hint">Token'ın süresi dolduğunda veya güvenlik için yenilediğinizde yeni token'ı buraya girin.</p>
+    <div class="grid" style="margin-top:10px">
+      <div class="field"><label>Yeni token (github_pat_…)</label><input type="password" id="tk-new" autocomplete="off" required></div>
+      <div class="field"><label>Mevcut şifre</label><input type="password" id="tk-pw" autocomplete="current-password" required></div>
+    </div>
+    <div class="row-actions"><button class="btn primary" type="submit">Token'ı Güncelle</button></div>
+    <p class="msg" id="tk-msg"></p>
+  </form>
+
   <div class="panel">
-    <h2>GitHub Bağlantısı</h2>
-    <p class="hint">Bu bilgiler yalnızca bu cihazın tarayıcısında saklanır. Token, menu.json dosyasını güncellemek için kullanılır; kimseyle paylaşmayın.</p>
-    <div class="grid" style="margin-top:12px">
-      <div class="field"><label>GitHub kullanıcı adı</label><input id="gh-owner" placeholder="ornek-kullanici"></div>
-      <div class="field"><label>Repo adı</label><input id="gh-repo" placeholder="camino-menu"></div>
-      <div class="field"><label>Branch</label><input id="gh-branch" placeholder="main"></div>
-      <div class="field"><label>Dosya yolu</label><input id="gh-path" placeholder="menu.json"></div>
-      <div class="field" style="grid-column:1/-1"><label>Kişisel erişim token'ı (Fine-grained, Contents: Read and write)</label><input id="gh-token" type="password" placeholder="github_pat_…" autocomplete="off"></div>
-    </div>
+    <h2>Oturum</h2>
+    <p class="hint">30 dakika işlem yapılmazsa oturum otomatik kapanır (kaydedilmemiş değişiklik yoksa).</p>
     <div class="row-actions">
-      <button class="btn primary" id="gh-save">Kaydet ve Test Et</button>
-      <button class="btn" id="gh-reload">Menüyü GitHub'dan yeniden yükle</button>
-      <button class="btn danger" id="gh-clear">Bu cihazdan bilgileri sil</button>
+      <button class="btn" id="reload-btn">Menüyü GitHub'dan yeniden yükle</button>
     </div>
-    <p class="hint" id="gh-status"></p>
+    <p class="hint" style="margin-top:14px"><b>Şifreyi unutursanız:</b> GitHub'da repodaki <code>auth.json</code> dosyasını silin; panel yeniden “İlk Kurulum” ekranını açar. Kurulumu yalnızca repoya yazma yetkisi olan geçerli bir token ile tamamlanabilir.</p>
   </div>
 </div>
 
@@ -236,24 +286,71 @@ h1,h2,h3{font-family:'Playfair Display',serif;margin:0}
   }
   window.addEventListener('beforeunload', e => { if(dirty){ e.preventDefault(); e.returnValue = ''; } });
 
-  /* ---------- GitHub ---------- */
-  function getCfg(){
-    let c = {};
-    try{ c = JSON.parse(localStorage.getItem(CFG_KEY) || '{}'); }catch(e){}
-    // github.io üzerinde açılıyorsa kullanıcı adı ve repo adresi otomatik tahmin edilir
+  /* ---------- Oturum ve şifreleme ---------- */
+  // GitHub token'ı yönetici şifresiyle şifrelenip repoda auth.json olarak saklanır.
+  // Şifre bilinmeden token çözülemez; çözülen token yalnızca bu sekmenin belleğinde tutulur.
+  const AUTH_PATH = 'auth.json';
+  const KDF_ITER = 600000;
+  const MIN_PW = 10;
+  let session = null;      // {owner, repo, branch, path, token}
+  try{ localStorage.removeItem(CFG_KEY); }catch(e){}  // eski sürümün açık token kaydını temizle
+
+  function guessRepo(){
+    // github.io üzerinde açılıyorsa kullanıcı adı ve repo adı adresten çıkarılır
     const host = location.hostname;
-    if(host.endsWith('.github.io')){
-      if(!c.owner) c.owner = host.split('.')[0];
-      if(!c.repo){
-        const seg = location.pathname.split('/').filter(Boolean)[0];
-        c.repo = (seg && !/\.html$/.test(seg)) ? seg : host;
-      }
-    }
-    c.branch = c.branch || 'main';
-    c.path = c.path || 'menu.json';
-    return c;
+    if(!host.endsWith('.github.io')) return null;
+    const seg = location.pathname.split('/').filter(Boolean)[0];
+    return {owner: host.split('.')[0], repo: (seg && !/\.html$/.test(seg)) ? seg : host};
   }
-  function hasCfg(c){ return c.owner && c.repo && c.token; }
+  function bytesToB64(u8){
+    let bin = '';
+    for(let i = 0; i < u8.length; i += 0x8000) bin += String.fromCharCode.apply(null, u8.subarray(i, i + 0x8000));
+    return btoa(bin);
+  }
+  function b64ToBytes(b64){ return Uint8Array.from(atob(b64), ch => ch.charCodeAt(0)); }
+  async function deriveKey(pw, salt, iter){
+    const base = await crypto.subtle.importKey('raw', new TextEncoder().encode(pw), 'PBKDF2', false, ['deriveKey']);
+    return crypto.subtle.deriveKey({name:'PBKDF2', salt, iterations: iter, hash:'SHA-256'}, base,
+      {name:'AES-GCM', length:256}, false, ['encrypt','decrypt']);
+  }
+  async function encryptCfg(cfg, pw){
+    const salt = crypto.getRandomValues(new Uint8Array(16));
+    const iv = crypto.getRandomValues(new Uint8Array(12));
+    const key = await deriveKey(pw, salt, KDF_ITER);
+    const data = new Uint8Array(await crypto.subtle.encrypt({name:'AES-GCM', iv}, key, new TextEncoder().encode(JSON.stringify(cfg))));
+    return {v:1, kdf:'PBKDF2-SHA256', iter:KDF_ITER, salt:bytesToB64(salt), iv:bytesToB64(iv), data:bytesToB64(data)};
+  }
+  async function decryptCfg(auth, pw){
+    const key = await deriveKey(pw, b64ToBytes(auth.salt), auth.iter);
+    const plain = await crypto.subtle.decrypt({name:'AES-GCM', iv:b64ToBytes(auth.iv)}, key, b64ToBytes(auth.data));
+    return JSON.parse(new TextDecoder().decode(plain));
+  }
+  // auth.json'u okur. Önce GitHub API (en güncel hali), olmazsa yayındaki dosya. Yoksa null döner.
+  async function fetchAuth(){
+    const g = guessRepo();
+    if(g){
+      try{
+        const r = await fetch('https://api.github.com/repos/' + encodeURIComponent(g.owner) + '/' + encodeURIComponent(g.repo) +
+          '/contents/' + AUTH_PATH + '?t=' + Date.now(), {headers:{'Accept':'application/vnd.github+json'}, cache:'no-store'});
+        if(r.ok) return JSON.parse(b64decode((await r.json()).content));
+        if(r.status === 404) return null;
+      }catch(e){}
+    }
+    const r = await fetch(AUTH_PATH + '?v=' + Date.now(), {cache:'no-store'});
+    if(r.status === 404) return null;
+    if(!r.ok) throw new Error('HTTP ' + r.status);
+    return r.json();
+  }
+  async function putFile(cfg, path, text, message){
+    let sha;
+    try{ sha = (await gh(cfg, 'GET', null, path)).sha; }catch(e){ if(e.status !== 404) throw e; }
+    return gh(cfg, 'PUT', {message, content: b64encode(text), branch: cfg.branch, sha}, path);
+  }
+  function setMsg(id, text, kind){
+    const el = $(id);
+    el.textContent = text;
+    el.className = 'msg' + (kind ? ' ' + kind : '');
+  }
   function b64encode(str){
     const bytes = new TextEncoder().encode(str);
     let bin = '';
@@ -264,9 +361,9 @@ h1,h2,h3{font-family:'Playfair Display',serif;margin:0}
     const bin = atob(b64.replace(/\s/g,''));
     return new TextDecoder().decode(Uint8Array.from(bin, ch => ch.charCodeAt(0)));
   }
-  async function gh(cfg, method, body){
+  async function gh(cfg, method, body, path){
     const url = 'https://api.github.com/repos/' + encodeURIComponent(cfg.owner) + '/' + encodeURIComponent(cfg.repo) +
-      '/contents/' + cfg.path.split('/').map(encodeURIComponent).join('/') +
+      '/contents/' + (path || cfg.path).split('/').map(encodeURIComponent).join('/') +
       (method === 'GET' ? '?ref=' + encodeURIComponent(cfg.branch) + '&t=' + Date.now() : '');
     const res = await fetch(url, {
       method,
@@ -290,25 +387,13 @@ h1,h2,h3{font-family:'Playfair Display',serif;margin:0}
   }
 
   async function loadMenu(){
-    const cfg = getCfg();
-    if(hasCfg(cfg)){
-      try{
-        const d = await gh(cfg, 'GET');
-        loadedSha = d.sha;
-        state = JSON.parse(b64decode(d.content));
-        afterLoad('GitHub\'dan yüklendi');
-        return;
-      }catch(e){
-        toast(ghErrorText(e) + ' Yayındaki dosya yükleniyor.', true, 6000);
-      }
-    }
     try{
-      const r = await fetch('menu.json?v=' + Date.now(), {cache:'no-store'});
-      if(!r.ok) throw new Error(r.status);
-      state = await r.json();
+      const d = await gh(session, 'GET');
+      loadedSha = d.sha;
+      state = JSON.parse(b64decode(d.content));
       afterLoad();
     }catch(e){
-      cats.innerHTML = '<div class="panel">menu.json okunamadı. Sayfa bilgisayardan doğrudan açıldıysa bu normaldir; <b>İşletme Bilgileri → Yedek yükle</b> ile menu.json dosyasını seçebilirsiniz.</div>';
+      cats.innerHTML = '<div class="panel">Menü yüklenemedi: ' + esc(ghErrorText(e)) + '</div>';
     }
   }
   function afterLoad(msg){
@@ -320,12 +405,8 @@ h1,h2,h3{font-family:'Playfair Display',serif;margin:0}
   }
 
   async function save(){
-    const cfg = getCfg();
-    if(!hasCfg(cfg)){
-      toast('Önce GitHub Bağlantısı sekmesini doldurun.', true);
-      showTab('github');
-      return;
-    }
+    const cfg = session;
+    if(!cfg || !state) return;
     const btn = $('#save-btn');
     btn.disabled = true; btn.textContent = 'Kaydediliyor…';
     try{
@@ -356,8 +437,6 @@ h1,h2,h3{font-family:'Playfair Display',serif;margin:0}
   function renderAll(){
     renderMenu();
     renderSite();
-    const cfg = getCfg();
-    $('#github-warning').classList.toggle('hide', !!hasCfg(cfg));
   }
 
   function renderMenu(){
@@ -693,54 +772,159 @@ h1,h2,h3{font-family:'Playfair Display',serif;margin:0}
     a.click();
   });
 
-  /* ---------- GitHub ayarları ---------- */
-  function fillCfgForm(){
-    const c = getCfg();
-    $('#gh-owner').value = c.owner || '';
-    $('#gh-repo').value = c.repo || '';
-    $('#gh-branch').value = c.branch || 'main';
-    $('#gh-path').value = c.path || 'menu.json';
-    $('#gh-token').value = c.token || '';
+  /* ---------- Giriş ---------- */
+  let failedLogins = 0;
+  const wait = ms => new Promise(r => setTimeout(r, ms));
+
+  function unlock(cfg){
+    session = cfg;
+    document.body.classList.remove('locked');
+    $('#login-pw').value = '';
+    loadMenu();
+    touch();
   }
-  $('#gh-save').addEventListener('click', async () => {
-    const c = {
-      owner: $('#gh-owner').value.trim(), repo: $('#gh-repo').value.trim(),
-      branch: $('#gh-branch').value.trim() || 'main', path: $('#gh-path').value.trim() || 'menu.json',
-      token: $('#gh-token').value.trim()
-    };
-    try{ localStorage.setItem(CFG_KEY, JSON.stringify(c)); }catch(e){}
-    const st = $('#gh-status');
-    if(!hasCfg(c)){ st.textContent = 'Kullanıcı adı, repo ve token zorunludur.'; return; }
-    st.textContent = 'Test ediliyor…';
+  function logout(){
+    session = null;
+    setDirty(false);
+    location.reload();
+  }
+
+  $('#login-form').addEventListener('submit', async e => {
+    e.preventDefault();
+    const btn = $('#login-btn');
+    btn.disabled = true;
+    setMsg('#login-msg', 'Kontrol ediliyor…');
     try{
-      const d = await gh(c, 'GET');
-      st.textContent = '✓ Bağlantı başarılı. menu.json bulundu.';
-      $('#github-warning').classList.add('hide');
-      if(!loadedSha) loadedSha = d.sha;
-    }catch(e){
-      st.textContent = '✗ ' + ghErrorText(e);
+      const auth = await fetchAuth();
+      if(!auth){ showSetup(); return; }
+      const cfg = await decryptCfg(auth, $('#login-pw').value);
+      failedLogins = 0;
+      setMsg('#login-msg', '');
+      unlock(cfg);
+    }catch(err){
+      failedLogins++;
+      // Art arda hatalı denemelerde bekleme süresi artar
+      await wait(Math.min(failedLogins * 1500, 15000));
+      setMsg('#login-msg', err instanceof DOMException || err.name === 'OperationError' ? 'Şifre yanlış.' : 'Giriş yapılamadı: ' + err.message, 'err');
+    }finally{
+      btn.disabled = false;
     }
   });
-  $('#gh-reload').addEventListener('click', () => {
+
+  function showSetup(){
+    const g = guessRepo() || {};
+    $('#setup-owner').value = g.owner || '';
+    $('#setup-repo').value = g.repo || '';
+    $('#lock-loading').classList.add('hide');
+    $('#login-form').classList.add('hide');
+    $('#setup-form').classList.remove('hide');
+  }
+  $('#setup-form').addEventListener('submit', async e => {
+    e.preventDefault();
+    const pw = $('#setup-pw').value;
+    if(pw.length < MIN_PW) return setMsg('#setup-msg', 'Şifre en az ' + MIN_PW + ' karakter olmalı.', 'err');
+    if(pw !== $('#setup-pw2').value) return setMsg('#setup-msg', 'Şifreler aynı değil.', 'err');
+    const cfg = {owner: $('#setup-owner').value.trim(), repo: $('#setup-repo').value.trim(),
+                 branch:'main', path:'menu.json', token: $('#setup-token').value.trim()};
+    const btn = $('#setup-btn');
+    btn.disabled = true;
+    try{
+      setMsg('#setup-msg', 'Token kontrol ediliyor…');
+      await gh(cfg, 'GET');
+      setMsg('#setup-msg', 'Şifreleniyor ve kaydediliyor…');
+      const auth = await encryptCfg(cfg, pw);
+      await putFile(cfg, AUTH_PATH, JSON.stringify(auth, null, 2) + '\n', 'Yönetici şifresi ayarlandı');
+      setMsg('#setup-msg', '✓ Kurulum tamamlandı.', 'ok');
+      $('#setup-form').reset();
+      unlock(cfg);
+    }catch(err){
+      setMsg('#setup-msg', err.status ? ghErrorText(err) : 'Hata: ' + err.message, 'err');
+    }finally{
+      btn.disabled = false;
+    }
+  });
+
+  /* ---------- Güvenlik sekmesi ---------- */
+  // Mevcut şifreyi, repodaki güncel auth.json'u çözerek doğrular
+  async function verifyPassword(pw){
+    const d = await gh(session, 'GET', null, AUTH_PATH);
+    try{ await decryptCfg(JSON.parse(b64decode(d.content)), pw); return true; }
+    catch(e){ return false; }
+  }
+  $('#pw-form').addEventListener('submit', async e => {
+    e.preventDefault();
+    const pw = $('#pw-new').value;
+    if(pw.length < MIN_PW) return setMsg('#pw-msg', 'Yeni şifre en az ' + MIN_PW + ' karakter olmalı.', 'err');
+    if(pw !== $('#pw-new2').value) return setMsg('#pw-msg', 'Yeni şifreler aynı değil.', 'err');
+    try{
+      setMsg('#pw-msg', 'Kontrol ediliyor…');
+      if(!await verifyPassword($('#pw-current').value)) return setMsg('#pw-msg', 'Mevcut şifre yanlış.', 'err');
+      const auth = await encryptCfg(session, pw);
+      await putFile(session, AUTH_PATH, JSON.stringify(auth, null, 2) + '\n', 'Yönetici şifresi değiştirildi');
+      $('#pw-form').reset();
+      setMsg('#pw-msg', '✓ Şifre değiştirildi. Diğer cihazlarda yeni şifreyle giriş yapın.', 'ok');
+    }catch(err){
+      setMsg('#pw-msg', err.status ? ghErrorText(err) : 'Hata: ' + err.message, 'err');
+    }
+  });
+  $('#token-form').addEventListener('submit', async e => {
+    e.preventDefault();
+    const cfg = Object.assign({}, session, {token: $('#tk-new').value.trim()});
+    const pw = $('#tk-pw').value;
+    try{
+      setMsg('#tk-msg', 'Kontrol ediliyor…');
+      if(!await verifyPassword(pw)) return setMsg('#tk-msg', 'Mevcut şifre yanlış.', 'err');
+      await gh(cfg, 'GET');
+      const auth = await encryptCfg(cfg, pw);
+      await putFile(cfg, AUTH_PATH, JSON.stringify(auth, null, 2) + '\n', 'GitHub token yenilendi');
+      session = cfg;
+      $('#token-form').reset();
+      setMsg('#tk-msg', '✓ Token güncellendi.', 'ok');
+    }catch(err){
+      setMsg('#tk-msg', err.status ? 'Yeni token çalışmıyor: ' + ghErrorText(err) : 'Hata: ' + err.message, 'err');
+    }
+  });
+  $('#reload-btn').addEventListener('click', () => {
     if(dirty && !confirm('Kaydedilmemiş değişiklikler kaybolacak. Devam edilsin mi?')) return;
     loadMenu();
+    toast('Menü GitHub\'dan yeniden yüklendi.');
   });
-  $('#gh-clear').addEventListener('click', () => {
-    try{ localStorage.removeItem(CFG_KEY); }catch(e){}
-    fillCfgForm();
-    $('#gh-status').textContent = 'Bu cihazdaki bağlantı bilgileri silindi.';
+  $('#logout-btn').addEventListener('click', () => {
+    if(dirty && !confirm('Kaydedilmemiş değişiklikler var. Yine de çıkış yapılsın mı?')) return;
+    logout();
   });
+
+  // 30 dakika hareketsizlikte otomatik çıkış
+  const IDLE_MS = 30 * 60 * 1000;
+  let lastActive = Date.now();
+  function touch(){ lastActive = Date.now(); }
+  ['click','keydown','touchstart','input'].forEach(ev => document.addEventListener(ev, touch, {passive:true}));
+  setInterval(() => { if(session && !dirty && Date.now() - lastActive > IDLE_MS) logout(); }, 60000);
 
   /* ---------- Sekmeler ---------- */
   function showTab(name){
     document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === name));
-    ['menu','site','qr','github'].forEach(n => $('#tab-' + n).classList.toggle('hide', n !== name));
+    ['menu','site','qr','security'].forEach(n => $('#tab-' + n).classList.toggle('hide', n !== name));
     if(name === 'qr' && !$('#qr-url').value){ $('#qr-url').value = defaultMenuUrl(); if($('#qr-url').value) makeQr(); }
   }
   document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => showTab(t.dataset.tab)));
 
-  fillCfgForm();
-  loadMenu();
+  /* ---------- Açılış ---------- */
+  (async function init(){
+    if(!window.crypto || !crypto.subtle){
+      $('#lock-loading').innerHTML = '<p class="msg err">Panel yalnızca güvenli (https) adresten açılabilir. Lütfen GitHub Pages adresini kullanın.</p>';
+      return;
+    }
+    try{
+      const auth = await fetchAuth();
+      if(!auth) return showSetup();
+      $('#lock-loading').classList.add('hide');
+      $('#login-form').classList.remove('hide');
+      $('#login-pw').focus();
+    }catch(e){
+      $('#lock-loading').innerHTML = '<p class="msg err">Bağlantı kurulamadı. Sayfayı yenileyin.</p>';
+    }
+  })();
 })();
 </script>
 </body>

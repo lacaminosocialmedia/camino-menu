@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Menü Yönetim Paneli</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f7f4ee; --card:#fff; --text:#1c1a18; --muted:#7b746b; --accent:#9c6a3d;
+  --accent-soft:#f4eee5; --line:#e6dfd4; --danger:#b3261e; --ok:#2e7d32;
+  --shadow:0 8px 24px rgba(0,0,0,.06);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:14px/1.45 'DM Sans',system-ui,sans-serif}
+button,input,select,textarea{font:inherit;color:inherit}
+h1,h2,h3{font-family:'Playfair Display',serif;margin:0}
+
+/* Üst çubuk */
+.topbar{position:sticky;top:0;z-index:50;background:#1c1a18;color:#fff;padding:10px 16px}
+.topbar-inner{max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.topbar h1{font-size:20px;margin-right:auto}
+.dirty{font-size:12px;background:#f0b44c;color:#1c1a18;padding:3px 9px;border-radius:999px;font-weight:700}
+.btn{border:1px solid var(--line);background:#fff;border-radius:10px;padding:8px 13px;cursor:pointer;font-weight:700;white-space:nowrap}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn.primary:disabled{opacity:.6;cursor:wait}
+.btn.ghost{background:transparent;color:#fff;border-color:rgba(255,255,255,.35)}
+.btn.danger{color:var(--danger);border-color:#f0c9c1;background:#fff}
+.btn.sm{padding:5px 9px;font-size:12px;border-radius:8px}
+
+.tabs{max-width:1100px;margin:14px auto 0;padding:0 16px;display:flex;gap:6px;flex-wrap:wrap}
+.tab{border:1px solid var(--line);background:#fff;padding:9px 15px;border-radius:999px;cursor:pointer;font-weight:700}
+.tab.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.page{max-width:1100px;margin:0 auto;padding:14px 16px 80px}
+.panel{background:var(--card);border-radius:18px;box-shadow:var(--shadow);padding:18px;margin-bottom:14px}
+.panel h2{font-size:22px;margin-bottom:10px}
+.hint{color:var(--muted);font-size:13px;margin:4px 0 0}
+.banner{padding:10px 14px;border-radius:12px;background:#fff6e5;border:1px solid #f0d9a8;margin-bottom:12px;font-weight:600}
+
+/* Genel araçlar */
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.toolbar .search{flex:1 1 220px;padding:9px 12px;border:1px solid var(--line);border-radius:10px;background:#fff}
+.switch{display:inline-flex;align-items:center;gap:8px;cursor:pointer;user-select:none;font-weight:700}
+.switch input{appearance:none;width:40px;height:22px;border-radius:999px;background:#d9d2c7;position:relative;cursor:pointer;transition:.15s;flex:none;margin:0}
+.switch input::after{content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#fff;transition:.15s}
+.switch input:checked{background:var(--ok)}
+.switch input:checked::after{left:21px}
+.switch.small{font-size:12px;gap:5px;font-weight:600}
+.switch.small input{width:32px;height:18px}
+.switch.small input::after{width:12px;height:12px}
+.switch.small input:checked::after{left:17px}
+
+/* Kategoriler */
+.cat{background:#fff;border-radius:16px;box-shadow:var(--shadow);margin-bottom:10px;border:1px solid transparent}
+.cat.is-hidden{opacity:.6;border-style:dashed;border-color:#cbbfae}
+.cat-head{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:12px 14px}
+.cat-title{font-weight:800;font-size:16px;cursor:pointer;flex:1 1 160px;min-width:0}
+.cat-title small{display:block;color:var(--muted);font-weight:500;font-size:12px}
+.handle,.cat-handle{cursor:grab;color:#b3a894;font-size:18px;padding:2px 4px;touch-action:none;user-select:none}
+.cat-body{border-top:1px solid var(--line);padding:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.field label{display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:4px}
+.field input,.field textarea,.field select{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:9px;background:#fff}
+.field textarea{min-height:60px;resize:vertical}
+
+.items{margin-top:12px}
+.item{border-top:1px solid var(--line);padding:9px 0}
+.item-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.item-row .in{padding:7px 9px;border:1px solid var(--line);border-radius:8px;background:#fff;min-width:0}
+.item-row .in.name{flex:2 1 180px;font-weight:700}
+.item-row .in.price{flex:0 1 130px;width:130px}
+.item.is-hidden .in.name{text-decoration:line-through;color:var(--muted)}
+.item.no-price .in.price{color:var(--muted);background:#f3f0ea;text-decoration:line-through}
+.item-detail{margin:10px 0 4px 28px;padding:12px;background:#faf8f4;border-radius:12px}
+.allergens{display:flex;flex-wrap:wrap;gap:6px}
+.allergens label{display:inline-flex;gap:4px;align-items:center;font-size:12px;background:#fff;border:1px solid var(--line);padding:4px 8px;border-radius:999px;cursor:pointer}
+.row-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.sortable-ghost{opacity:.35}
+.hide{display:none!important}
+.empty{color:var(--muted);padding:10px 0}
+
+/* QR */
+.qr-wrap{display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start}
+#qr-box{background:#fff;padding:16px;border-radius:16px;border:1px solid var(--line);display:inline-block}
+#qr-box img,#qr-box canvas{display:block;max-width:100%;height:auto}
+
+.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:#1c1a18;color:#fff;padding:11px 18px;border-radius:12px;box-shadow:var(--shadow);z-index:100;max-width:92vw;font-weight:600}
+.toast.err{background:var(--danger)}
+
+@media(max-width:640px){
+  .topbar h1{font-size:17px;width:100%}
+  .item-row .in.price{flex:1 1 100px}
+  .item-detail{margin-left:0}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <h1>Menü Yönetim Paneli</h1>
+    <span class="dirty hide" id="dirty">Kaydedilmemiş değişiklik var</span>
+    <a class="btn ghost" href="index.html" target="_blank" rel="noopener">Menüyü Aç</a>
+    <button class="btn primary" id="save-btn">Kaydet ve Yayınla</button>
+  </div>
+</div>
+
+<div class="tabs">
+  <button class="tab active" data-tab="menu">Menü</button>
+  <button class="tab" data-tab="site">İşletme Bilgileri</button>
+  <button class="tab" data-tab="qr">QR Kod</button>
+  <button class="tab" data-tab="github">GitHub Bağlantısı</button>
+</div>
+
+<!-- MENÜ -->
+<div class="page" id="tab-menu">
+  <div class="banner hide" id="github-warning">GitHub bağlantısı ayarlanmamış. Değişiklikleri yayınlamak için önce <b>GitHub Bağlantısı</b> sekmesini doldurun.</div>
+  <div class="banner hide" id="prices-off-banner">Tüm fiyatlar şu an menüde <b>gizli</b>.</div>
+  <div class="panel">
+    <div class="toolbar">
+      <label class="switch"><input type="checkbox" id="global-prices"> Menüde fiyatları göster</label>
+      <input class="search" id="search" type="search" placeholder="Ürün veya kategori ara…">
+      <button class="btn sm" id="expand-all">Tümünü aç</button>
+      <button class="btn sm" id="collapse-all">Tümünü kapat</button>
+      <button class="btn sm" id="add-cat">+ Kategori ekle</button>
+    </div>
+    <p class="hint">Sıralamayı değiştirmek için ⋮⋮ tutamacından sürükleyin veya ▲ ▼ düğmelerini kullanın. Değişiklikler <b>Kaydet ve Yayınla</b> düğmesine basınca yayına girer.</p>
+  </div>
+  <div id="cats"><div class="empty">Menü yükleniyor…</div></div>
+</div>
+
+<!-- İŞLETME -->
+<div class="page hide" id="tab-site">
+  <div class="panel">
+    <h2>İşletme Bilgileri</h2>
+    <div class="grid" id="site-fields"></div>
+  </div>
+  <div class="panel">
+    <h2>Yedekleme</h2>
+    <p class="hint">Menünün tamamını bilgisayarınıza JSON dosyası olarak indirebilir veya daha önce indirdiğiniz bir yedeği geri yükleyebilirsiniz.</p>
+    <div class="row-actions">
+      <button class="btn" id="export-json">Yedeği indir (menu.json)</button>
+      <label class="btn">Yedek yükle<input type="file" id="import-json" accept=".json,application/json" hidden></label>
+    </div>
+  </div>
+</div>
+
+<!-- QR -->
+<div class="page hide" id="tab-qr">
+  <div class="panel">
+    <h2>QR Kod</h2>
+    <div class="grid">
+      <div class="field"><label>Menü adresi (URL)</label><input id="qr-url" placeholder="https://kullaniciadi.github.io/repo-adi/"></div>
+      <div class="field"><label>Boyut (piksel)</label>
+        <select id="qr-size"><option>256</option><option selected>512</option><option>1024</option></select>
+      </div>
+    </div>
+    <div class="row-actions">
+      <button class="btn primary" id="qr-make">QR Oluştur</button>
+      <button class="btn" id="qr-download">PNG indir</button>
+    </div>
+    <p class="hint">Bu QR kod sabittir; menüyü panelden ne kadar değiştirirseniz değiştirin aynı QR çalışmaya devam eder. Yeniden basmanız gerekmez.</p>
+  </div>
+  <div class="qr-wrap"><div id="qr-box"></div></div>
+</div>
+
+<!-- GITHUB -->
+<div class="page hide" id="tab-github">
+  <div class="panel">
+    <h2>GitHub Bağlantısı</h2>
+    <p class="hint">Bu bilgiler yalnızca bu cihazın tarayıcısında saklanır. Token, menu.json dosyasını güncellemek için kullanılır; kimseyle paylaşmayın.</p>
+    <div class="grid" style="margin-top:12px">
+      <div class="field"><label>GitHub kullanıcı adı</label><input id="gh-owner" placeholder="ornek-kullanici"></div>
+      <div class="field"><label>Repo adı</label><input id="gh-repo" placeholder="camino-menu"></div>
+      <div class="field"><label>Branch</label><input id="gh-branch" placeholder="main"></div>
+      <div class="field"><label>Dosya yolu</label><input id="gh-path" placeholder="menu.json"></div>
+      <div class="field" style="grid-column:1/-1"><label>Kişisel erişim token'ı (Fine-grained, Contents: Read and write)</label><input id="gh-token" type="password" placeholder="github_pat_…" autocomplete="off"></div>
+    </div>
+    <div class="row-actions">
+      <button class="btn primary" id="gh-save">Kaydet ve Test Et</button>
+      <button class="btn" id="gh-reload">Menüyü GitHub'dan yeniden yükle</button>
+      <button class="btn danger" id="gh-clear">Bu cihazdan bilgileri sil</button>
+    </div>
+    <p class="hint" id="gh-status"></p>
+  </div>
+</div>
+
+<div class="toast hide" id="toast"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.2/Sortable.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+(function(){
+  const ALLERGENS = [{"key": "gluten", "label": "Gluten içeren tahıllar"}, {"key": "crustaceans", "label": "Kabuklular"}, {"key": "egg", "label": "Yumurta"}, {"key": "fish", "label": "Balık"}, {"key": "peanut", "label": "Yerfıstığı"}, {"key": "soy", "label": "Soya"}, {"key": "milk", "label": "Süt (laktoz dahil)"}, {"key": "nuts", "label": "Sert kabuklu meyveler"}, {"key": "celery", "label": "Kereviz"}, {"key": "mustard", "label": "Hardal"}, {"key": "sesame", "label": "Susam"}, {"key": "sulfites", "label": "Kükürt dioksit ve sülfitler"}, {"key": "lupin", "label": "Acı bakla"}, {"key": "molluscs", "label": "Yumuşakçalar"}];
+  const SITE_FIELDS = [
+    ['name','İşletme adı'],['tagline','Slogan'],['address','Adres'],['phone','Telefon'],
+    ['email','E-posta'],['opening','Açılış saati'],['closing','Kapanış saati'],['hero','Kapak görseli URL']
+  ];
+  const CFG_KEY = 'cqr-admin-github';
+
+  let state = null;        // menü verisi
+  let loadedSha = null;    // GitHub'daki dosyanın yüklendiği andaki sürümü
+  let dirty = false;
+  const openCats = new WeakSet();
+  const openItems = new WeakSet();
+  let sortables = [];
+
+  const $ = s => document.querySelector(s);
+  const cats = $('#cats');
+
+  function esc(s){
+    return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+  function slugify(s){
+    const map = {'ç':'c','ğ':'g','ı':'i','ö':'o','ş':'s','ü':'u','Ç':'c','Ğ':'g','İ':'i','Ö':'o','Ş':'s','Ü':'u'};
+    return String(s).replace(/[çğıöşüÇĞİÖŞÜ]/g, c => map[c]).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'') || 'kategori';
+  }
+  function uniqueId(base){
+    let id = base, n = 2;
+    while(state.categories.some(c => c.id === id)) id = base + '-' + (n++);
+    return id;
+  }
+  function toast(msg, isErr, ms){
+    const t = $('#toast');
+    t.textContent = msg;
+    t.className = 'toast' + (isErr ? ' err' : '');
+    clearTimeout(toast._t);
+    toast._t = setTimeout(() => t.classList.add('hide'), ms || 3500);
+  }
+  function setDirty(v){
+    dirty = v;
+    $('#dirty').classList.toggle('hide', !v);
+  }
+  window.addEventListener('beforeunload', e => { if(dirty){ e.preventDefault(); e.returnValue = ''; } });
+
+  /* ---------- GitHub ---------- */
+  function getCfg(){
+    let c = {};
+    try{ c = JSON.parse(localStorage.getItem(CFG_KEY) || '{}'); }catch(e){}
+    // github.io üzerinde açılıyorsa kullanıcı adı ve repo adresi otomatik tahmin edilir
+    const host = location.hostname;
+    if(host.endsWith('.github.io')){
+      if(!c.owner) c.owner = host.split('.')[0];
+      if(!c.repo){
+        const seg = location.pathname.split('/').filter(Boolean)[0];
+        c.repo = (seg && !/\.html$/.test(seg)) ? seg : host;
+      }
+    }
+    c.branch = c.branch || 'main';
+    c.path = c.path || 'menu.json';
+    return c;
+  }
+  function hasCfg(c){ return c.owner && c.repo && c.token; }
+  function b64encode(str){
+    const bytes = new TextEncoder().encode(str);
+    let bin = '';
+    for(let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
+    return btoa(bin);
+  }
+  function b64decode(b64){
+    const bin = atob(b64.replace(/\s/g,''));
+    return new TextDecoder().decode(Uint8Array.from(bin, ch => ch.charCodeAt(0)));
+  }
+  async function gh(cfg, method, body){
+    const url = 'https://api.github.com/repos/' + encodeURIComponent(cfg.owner) + '/' + encodeURIComponent(cfg.repo) +
+      '/contents/' + cfg.path.split('/').map(encodeURIComponent).join('/') +
+      (method === 'GET' ? '?ref=' + encodeURIComponent(cfg.branch) + '&t=' + Date.now() : '');
+    const res = await fetch(url, {
+      method,
+      headers: {'Authorization':'Bearer ' + cfg.token, 'Accept':'application/vnd.github+json'},
+      body: body ? JSON.stringify(body) : undefined,
+      cache: 'no-store'
+    });
+    const data = await res.json().catch(() => ({}));
+    if(!res.ok){
+      const err = new Error(data.message || ('HTTP ' + res.status));
+      err.status = res.status;
+      throw err;
+    }
+    return data;
+  }
+  function ghErrorText(e){
+    if(e.status === 401) return 'Token geçersiz veya süresi dolmuş.';
+    if(e.status === 403) return 'Token\'ın bu repoya yazma izni yok (Contents: Read and write gerekli).';
+    if(e.status === 404) return 'Repo, branch veya dosya bulunamadı. Bilgileri kontrol edin.';
+    return 'GitHub hatası: ' + e.message;
+  }
+
+  async function loadMenu(){
+    const cfg = getCfg();
+    if(hasCfg(cfg)){
+      try{
+        const d = await gh(cfg, 'GET');
+        loadedSha = d.sha;
+        state = JSON.parse(b64decode(d.content));
+        afterLoad('GitHub\'dan yüklendi');
+        return;
+      }catch(e){
+        toast(ghErrorText(e) + ' Yayındaki dosya yükleniyor.', true, 6000);
+      }
+    }
+    try{
+      const r = await fetch('menu.json?v=' + Date.now(), {cache:'no-store'});
+      if(!r.ok) throw new Error(r.status);
+      state = await r.json();
+      afterLoad();
+    }catch(e){
+      cats.innerHTML = '<div class="panel">menu.json okunamadı. Sayfa bilgisayardan doğrudan açıldıysa bu normaldir; <b>İşletme Bilgileri → Yedek yükle</b> ile menu.json dosyasını seçebilirsiniz.</div>';
+    }
+  }
+  function afterLoad(msg){
+    state.site = state.site || {};
+    state.categories = state.categories || [];
+    setDirty(false);
+    renderAll();
+    if(msg) toast(msg);
+  }
+
+  async function save(){
+    const cfg = getCfg();
+    if(!hasCfg(cfg)){
+      toast('Önce GitHub Bağlantısı sekmesini doldurun.', true);
+      showTab('github');
+      return;
+    }
+    const btn = $('#save-btn');
+    btn.disabled = true; btn.textContent = 'Kaydediliyor…';
+    try{
+      let sha = null;
+      try{ sha = (await gh(cfg, 'GET')).sha; }catch(e){ if(e.status !== 404) throw e; }
+      if(loadedSha && sha && sha !== loadedSha &&
+         !confirm('Menü siz paneli açtıktan sonra başka bir yerden değiştirilmiş. Sizin sürümünüz onun üzerine yazılsın mı?')){
+        return;
+      }
+      const res = await gh(cfg, 'PUT', {
+        message: 'Menü güncellendi (' + new Date().toLocaleString('tr-TR') + ')',
+        content: b64encode(JSON.stringify(state, null, 2) + '\n'),
+        branch: cfg.branch,
+        sha: sha || undefined
+      });
+      loadedSha = res.content.sha;
+      setDirty(false);
+      toast('Kaydedildi! Değişiklikler 1-2 dakika içinde menüde görünür.', false, 6000);
+    }catch(e){
+      toast(ghErrorText(e), true, 7000);
+    }finally{
+      btn.disabled = false; btn.textContent = 'Kaydet ve Yayınla';
+    }
+  }
+  $('#save-btn').addEventListener('click', save);
+
+  /* ---------- Menü düzenleyici ---------- */
+  function renderAll(){
+    renderMenu();
+    renderSite();
+    const cfg = getCfg();
+    $('#github-warning').classList.toggle('hide', !!hasCfg(cfg));
+  }
+
+  function renderMenu(){
+    sortables.forEach(s => s.destroy());
+    sortables = [];
+    const showPrices = state.site.showPrices !== false;
+    $('#global-prices').checked = showPrices;
+    $('#prices-off-banner').classList.toggle('hide', showPrices);
+
+    if(!state.categories.length){
+      cats.innerHTML = '<div class="panel empty">Henüz kategori yok. “+ Kategori ekle” ile başlayın.</div>';
+      return;
+    }
+    cats.innerHTML = state.categories.map(catHtml).join('');
+
+    const searching = !!$('#search').value.trim();
+    sortables.push(Sortable.create(cats, {
+      handle: '.cat-handle', draggable: '.cat', animation: 150, disabled: searching,
+      onEnd: e => { if(e.oldIndex !== e.newIndex){ move(state.categories, e.oldIndex, e.newIndex); setDirty(true); setTimeout(renderMenu); } }
+    }));
+    cats.querySelectorAll('.items').forEach(list => {
+      const cat = state.categories[+list.dataset.c];
+      sortables.push(Sortable.create(list, {
+        handle: '.handle', draggable: '.item', animation: 150, disabled: searching,
+        onEnd: e => { if(e.oldIndex !== e.newIndex){ move(cat.items, e.oldIndex, e.newIndex); setDirty(true); setTimeout(renderMenu); } }
+      }));
+    });
+    applySearch();
+  }
+
+  function catHtml(cat, ci){
+    const items = cat.items || (cat.items = []);
+    const hiddenCount = items.filter(i => i.hidden).length;
+    const open = openCats.has(cat);
+    return '<div class="cat' + (cat.hidden ? ' is-hidden' : '') + '" data-c="' + ci + '">' +
+      '<div class="cat-head">' +
+        '<span class="cat-handle" title="Sürükle">⋮⋮</span>' +
+        '<div class="cat-title" data-act="cat-toggle">' + (open ? '▾ ' : '▸ ') + '<span class="cat-name">' + esc(cat.title) + '</span>' +
+          '<small>' + items.length + ' ürün' + (hiddenCount ? ' · ' + hiddenCount + ' gizli' : '') + (cat.hidePrices ? ' · fiyatlar gizli' : '') + '</small></div>' +
+        '<label class="switch small" title="Kategoriyi menüde göster"><input type="checkbox" data-f="hidden" data-neg="1"' + (cat.hidden ? '' : ' checked') + '> Görünür</label>' +
+        '<label class="switch small" title="Bu kategorideki fiyatları göster"><input type="checkbox" data-f="hidePrices" data-neg="1"' + (cat.hidePrices ? '' : ' checked') + '> Fiyatlar</label>' +
+        '<button class="btn sm" data-act="cat-up" title="Yukarı taşı">▲</button>' +
+        '<button class="btn sm" data-act="cat-down" title="Aşağı taşı">▼</button>' +
+      '</div>' +
+      (open ? catBodyHtml(cat, ci) : '') +
+    '</div>';
+  }
+
+  function catBodyHtml(cat, ci){
+    const collage = cat.collage || [];
+    return '<div class="cat-body">' +
+      '<div class="grid">' +
+        '<div class="field"><label>Kategori adı</label><input data-f="title" value="' + esc(cat.title) + '"></div>' +
+        '<div class="field"><label>Alt başlık</label><input data-f="subtitle" value="' + esc(cat.subtitle) + '"></div>' +
+        '<div class="field"><label>Bağlantı kimliği (id)</label><input data-f="id" value="' + esc(cat.id) + '"></div>' +
+      '</div>' +
+      '<div class="grid" style="margin-top:10px">' +
+        [0,1,2].map(k => '<div class="field"><label>Görsel ' + (k+1) + ' URL</label><input data-f="collage" data-k="' + k + '" value="' + esc(collage[k]) + '"></div>').join('') +
+      '</div>' +
+      '<div class="row-actions">' +
+        '<label class="switch small"><input type="checkbox" data-f="hideCollage" data-neg="1"' + (cat.hideCollage ? '' : ' checked') + '> Görselleri göster</label>' +
+      '</div>' +
+      '<div class="items" data-c="' + ci + '">' +
+        (cat.items.length ? cat.items.map((it, ii) => itemHtml(it, ci, ii)).join('') : '<div class="empty">Bu kategoride ürün yok.</div>') +
+      '</div>' +
+      '<div class="row-actions">' +
+        '<button class="btn sm" data-act="item-add">+ Ürün ekle</button>' +
+        '<button class="btn sm" data-act="cat-prices-all">Tüm ürün fiyatlarını aç</button>' +
+        '<button class="btn sm danger" data-act="cat-del">Kategoriyi sil</button>' +
+      '</div>' +
+    '</div>';
+  }
+
+  function itemHtml(it, ci, ii){
+    const open = openItems.has(it);
+    const priceOff = it.hidePrice || state.categories[ci].hidePrices || state.site.showPrices === false;
+    return '<div class="item' + (it.hidden ? ' is-hidden' : '') + (priceOff ? ' no-price' : '') + '" data-c="' + ci + '" data-i="' + ii + '">' +
+      '<div class="item-row">' +
+        '<span class="handle" title="Sürükle">⋮⋮</span>' +
+        '<input class="in name" data-f="name" value="' + esc(it.name) + '" placeholder="Ürün adı">' +
+        '<input class="in price" data-f="price" value="' + esc(it.price) + '" placeholder="Fiyat">' +
+        '<label class="switch small" title="Ürünü menüde göster"><input type="checkbox" data-f="hidden" data-neg="1"' + (it.hidden ? '' : ' checked') + '> Görünür</label>' +
+        '<label class="switch small" title="Ürünün fiyatını göster"><input type="checkbox" data-f="hidePrice" data-neg="1"' + (it.hidePrice ? '' : ' checked') + '> Fiyat</label>' +
+        '<button class="btn sm" data-act="item-up" title="Yukarı">▲</button>' +
+        '<button class="btn sm" data-act="item-down" title="Aşağı">▼</button>' +
+        '<button class="btn sm" data-act="item-toggle">' + (open ? 'Kapat' : 'Detay') + '</button>' +
+      '</div>' +
+      (open ? itemDetailHtml(it, ci) : '') +
+    '</div>';
+  }
+
+  function itemDetailHtml(it, ci){
+    const al = Array.isArray(it.allergens) ? it.allergens : [];
+    return '<div class="item-detail">' +
+      '<div class="grid">' +
+        '<div class="field" style="grid-column:1/-1"><label>Açıklama / içerik</label><textarea data-f="description">' + esc(it.description) + '</textarea></div>' +
+        '<div class="field"><label>Kalori (kcal)</label><input data-f="calories" value="' + esc(it.calories) + '"></div>' +
+        '<div class="field"><label>Eser miktar uyarısı</label><input data-f="traceWarning" value="' + esc(it.traceWarning) + '"></div>' +
+        '<div class="field"><label>Kategoriye taşı</label><select data-act-change="item-move">' +
+          state.categories.map((c, k) => '<option value="' + k + '"' + (k === ci ? ' selected' : '') + '>' + esc(c.title) + '</option>').join('') +
+        '</select></div>' +
+      '</div>' +
+      '<div class="row-actions"><label class="switch small"><input type="checkbox" data-f="calorieEstimated"' + (it.calorieEstimated ? ' checked' : '') + '> Kalori yaklaşık (≈)</label></div>' +
+      '<div class="field" style="margin-top:10px"><label>Alerjenler</label><div class="allergens">' +
+        ALLERGENS.map(a => '<label><input type="checkbox" data-f="allergen" data-k="' + a.key + '"' + (al.includes(a.key) ? ' checked' : '') + '> ' + esc(a.label) + '</label>').join('') +
+      '</div></div>' +
+      '<div class="row-actions">' +
+        '<button class="btn sm" data-act="item-dup">Kopyala</button>' +
+        '<button class="btn sm danger" data-act="item-del">Ürünü sil</button>' +
+      '</div>' +
+    '</div>';
+  }
+
+  function move(arr, from, to){
+    if(to < 0 || to >= arr.length) return false;
+    arr.splice(to, 0, arr.splice(from, 1)[0]);
+    return true;
+  }
+
+  function ctx(el){
+    const itemEl = el.closest('.item');
+    const catEl = el.closest('.cat');
+    const cat = catEl ? state.categories[+catEl.dataset.c] : null;
+    const item = itemEl ? cat.items[+itemEl.dataset.i] : null;
+    return {cat, item, ci: catEl ? +catEl.dataset.c : -1, ii: itemEl ? +itemEl.dataset.i : -1};
+  }
+
+  // Metin alanları: yazdıkça veriyi güncelle, yeniden çizme (odak kaybolmasın)
+  cats.addEventListener('input', e => {
+    const el = e.target, f = el.dataset.f;
+    if(!f || el.type === 'checkbox') return;
+    const {cat, item} = ctx(el);
+    const target = item || cat;
+    if(f === 'collage'){
+      cat.collage = cat.collage || [];
+      cat.collage[+el.dataset.k] = el.value.trim();
+      cat.collage = cat.collage.map(x => x || '');
+    }else{
+      target[f] = el.value;
+      if(!item && f === 'title') el.closest('.cat').querySelector('.cat-name').textContent = el.value;
+    }
+    setDirty(true);
+  });
+
+  cats.addEventListener('change', e => {
+    const el = e.target, f = el.dataset.f;
+    const {cat, item, ci, ii} = ctx(el);
+    if(el.dataset.actChange === 'item-move'){
+      const to = +el.value;
+      if(to !== ci){
+        cat.items.splice(ii, 1);
+        state.categories[to].items.push(item);
+        openCats.add(state.categories[to]);
+        setDirty(true);
+        renderMenu();
+        toast('Ürün “' + state.categories[to].title + '” kategorisine taşındı.');
+      }
+      return;
+    }
+    if(el.type !== 'checkbox' || !f) return;
+    const target = item || cat;
+    if(f === 'allergen'){
+      const set = new Set(Array.isArray(item.allergens) ? item.allergens : []);
+      el.checked ? set.add(el.dataset.k) : set.delete(el.dataset.k);
+      item.allergens = ALLERGENS.map(a => a.key).filter(k => set.has(k));
+    }else{
+      const v = el.dataset.neg ? !el.checked : el.checked;
+      if(v) target[f] = true; else delete target[f];
+      if(f === 'calorieEstimated') target[f] = el.checked;
+    }
+    setDirty(true);
+    renderMenu();
+  });
+
+  cats.addEventListener('click', e => {
+    const btn = e.target.closest('[data-act]');
+    if(!btn) return;
+    const act = btn.dataset.act;
+    const {cat, item, ci, ii} = ctx(btn);
+    let changed = false;
+    switch(act){
+      case 'cat-toggle':
+        openCats.has(cat) ? openCats.delete(cat) : openCats.add(cat);
+        break;
+      case 'cat-up': changed = move(state.categories, ci, ci - 1); break;
+      case 'cat-down': changed = move(state.categories, ci, ci + 1); break;
+      case 'cat-del':
+        if(!confirm('“' + cat.title + '” kategorisi ve içindeki ' + cat.items.length + ' ürün silinsin mi?')) return;
+        state.categories.splice(ci, 1); changed = true; break;
+      case 'cat-prices-all':
+        delete cat.hidePrices;
+        cat.items.forEach(i => delete i.hidePrice);
+        changed = true; break;
+      case 'item-add': {
+        const it = {name:'Yeni ürün', price:'', description:'', calories:'', calorieEstimated:true, allergens:[], traceWarning:''};
+        cat.items.push(it); openItems.add(it); changed = true; break;
+      }
+      case 'item-up': changed = move(cat.items, ii, ii - 1); break;
+      case 'item-down': changed = move(cat.items, ii, ii + 1); break;
+      case 'item-toggle':
+        openItems.has(item) ? openItems.delete(item) : openItems.add(item);
+        break;
+      case 'item-dup': {
+        const copy = JSON.parse(JSON.stringify(item));
+        copy.name += ' (kopya)';
+        cat.items.splice(ii + 1, 0, copy); openItems.add(copy); changed = true; break;
+      }
+      case 'item-del':
+        if(!confirm('“' + item.name + '” silinsin mi?')) return;
+        cat.items.splice(ii, 1); changed = true; break;
+    }
+    if(changed) setDirty(true);
+    renderMenu();
+  });
+
+  $('#global-prices').addEventListener('change', e => {
+    if(e.target.checked) delete state.site.showPrices; else state.site.showPrices = false;
+    setDirty(true);
+    renderMenu();
+  });
+  $('#add-cat').addEventListener('click', () => {
+    const title = prompt('Yeni kategori adı:');
+    if(!title) return;
+    const cat = {id: uniqueId(slugify(title)), title: title.trim(), subtitle:'', collage:[], items:[]};
+    state.categories.push(cat);
+    openCats.add(cat);
+    setDirty(true);
+    $('#search').value = '';
+    renderMenu();
+    cats.lastElementChild.scrollIntoView({behavior:'smooth', block:'center'});
+  });
+  $('#expand-all').addEventListener('click', () => { state.categories.forEach(c => openCats.add(c)); renderMenu(); });
+  $('#collapse-all').addEventListener('click', () => { state.categories.forEach(c => openCats.delete(c)); renderMenu(); });
+
+  // Arama: eşleşen kategorileri açar, eşleşmeyen satırları gizler (arama sırasında sürükleme kapalıdır)
+  let searchTimer;
+  $('#search').addEventListener('input', () => {
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(() => {
+      const q = norm($('#search').value.trim());
+      if(q) state.categories.forEach(c => {
+        if(norm(c.title).includes(q) || c.items.some(i => norm(i.name).includes(q))) openCats.add(c);
+      });
+      renderMenu();
+    }, 200);
+  });
+  function norm(s){ return String(s || '').toLocaleLowerCase('tr-TR'); }
+  function applySearch(){
+    const q = norm($('#search').value.trim());
+    if(!q) return;
+    cats.querySelectorAll('.cat').forEach(catEl => {
+      const cat = state.categories[+catEl.dataset.c];
+      const catMatch = norm(cat.title).includes(q);
+      let any = false;
+      catEl.querySelectorAll('.item').forEach(itEl => {
+        const m = catMatch || norm(cat.items[+itEl.dataset.i].name).includes(q);
+        itEl.classList.toggle('hide', !m);
+        any = any || m;
+      });
+      catEl.classList.toggle('hide', !catMatch && !any);
+    });
+  }
+
+  /* ---------- İşletme bilgileri ---------- */
+  function renderSite(){
+    $('#site-fields').innerHTML = SITE_FIELDS.map(([k, label]) =>
+      '<div class="field"><label>' + label + '</label><input data-site="' + k + '" value="' + esc(state.site[k]) + '"></div>'
+    ).join('');
+  }
+  $('#site-fields').addEventListener('input', e => {
+    const k = e.target.dataset.site;
+    if(!k) return;
+    state.site[k] = e.target.value;
+    setDirty(true);
+  });
+
+  $('#export-json').addEventListener('click', () => {
+    const blob = new Blob([JSON.stringify(state, null, 2) + '\n'], {type:'application/json'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'menu-' + new Date().toISOString().slice(0,10) + '.json';
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  });
+  $('#import-json').addEventListener('change', e => {
+    const file = e.target.files[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      try{
+        const data = JSON.parse(reader.result);
+        if(!Array.isArray(data.categories)) throw new Error();
+        state = data;
+        afterLoad('Yedek yüklendi. Yayına almak için “Kaydet ve Yayınla”ya basın.');
+        setDirty(true);
+      }catch(err){ toast('Geçersiz menü dosyası.', true); }
+    };
+    reader.readAsText(file, 'utf-8');
+    e.target.value = '';
+  });
+
+  /* ---------- QR ---------- */
+  function defaultMenuUrl(){
+    if(location.protocol.startsWith('http')) return location.origin + location.pathname.replace(/admin\.html$/, '');
+    return '';
+  }
+  function makeQr(){
+    const url = $('#qr-url').value.trim();
+    const box = $('#qr-box');
+    box.innerHTML = '';
+    if(!url){ toast('Menü adresini girin.', true); return; }
+    const size = +$('#qr-size').value;
+    new QRCode(box, {text: url, width: size, height: size, colorDark:'#1c1a18', colorLight:'#ffffff', correctLevel: QRCode.CorrectLevel.H});
+    const canvas = box.querySelector('canvas');
+    if(canvas) canvas.style.width = Math.min(size, 320) + 'px';
+    box.querySelectorAll('img').forEach(img => img.style.width = Math.min(size, 320) + 'px');
+  }
+  $('#qr-make').addEventListener('click', makeQr);
+  $('#qr-download').addEventListener('click', () => {
+    let canvas = $('#qr-box canvas');
+    if(!canvas){ makeQr(); canvas = $('#qr-box canvas'); }
+    if(!canvas) return;
+    // Kenarlarda beyaz boşluk bırakarak indir (okuyucular için daha güvenli)
+    const pad = Math.round(canvas.width * 0.08);
+    const out = document.createElement('canvas');
+    out.width = canvas.width + pad * 2; out.height = canvas.height + pad * 2;
+    const ctx2 = out.getContext('2d');
+    ctx2.fillStyle = '#fff'; ctx2.fillRect(0, 0, out.width, out.height);
+    ctx2.drawImage(canvas, pad, pad);
+    const a = document.createElement('a');
+    a.href = out.toDataURL('image/png');
+    a.download = 'menu-qr.png';
+    a.click();
+  });
+
+  /* ---------- GitHub ayarları ---------- */
+  function fillCfgForm(){
+    const c = getCfg();
+    $('#gh-owner').value = c.owner || '';
+    $('#gh-repo').value = c.repo || '';
+    $('#gh-branch').value = c.branch || 'main';
+    $('#gh-path').value = c.path || 'menu.json';
+    $('#gh-token').value = c.token || '';
+  }
+  $('#gh-save').addEventListener('click', async () => {
+    const c = {
+      owner: $('#gh-owner').value.trim(), repo: $('#gh-repo').value.trim(),
+      branch: $('#gh-branch').value.trim() || 'main', path: $('#gh-path').value.trim() || 'menu.json',
+      token: $('#gh-token').value.trim()
+    };
+    try{ localStorage.setItem(CFG_KEY, JSON.stringify(c)); }catch(e){}
+    const st = $('#gh-status');
+    if(!hasCfg(c)){ st.textContent = 'Kullanıcı adı, repo ve token zorunludur.'; return; }
+    st.textContent = 'Test ediliyor…';
+    try{
+      const d = await gh(c, 'GET');
+      st.textContent = '✓ Bağlantı başarılı. menu.json bulundu.';
+      $('#github-warning').classList.add('hide');
+      if(!loadedSha) loadedSha = d.sha;
+    }catch(e){
+      st.textContent = '✗ ' + ghErrorText(e);
+    }
+  });
+  $('#gh-reload').addEventListener('click', () => {
+    if(dirty && !confirm('Kaydedilmemiş değişiklikler kaybolacak. Devam edilsin mi?')) return;
+    loadMenu();
+  });
+  $('#gh-clear').addEventListener('click', () => {
+    try{ localStorage.removeItem(CFG_KEY); }catch(e){}
+    fillCfgForm();
+    $('#gh-status').textContent = 'Bu cihazdaki bağlantı bilgileri silindi.';
+  });
+
+  /* ---------- Sekmeler ---------- */
+  function showTab(name){
+    document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === name));
+    ['menu','site','qr','github'].forEach(n => $('#tab-' + n).classList.toggle('hide', n !== name));
+    if(name === 'qr' && !$('#qr-url').value){ $('#qr-url').value = defaultMenuUrl(); if($('#qr-url').value) makeQr(); }
+  }
+  document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => showTab(t.dataset.tab)));
+
+  fillCfgForm();
+  loadMenu();
+})();
+</script>
+</body>
+</html>

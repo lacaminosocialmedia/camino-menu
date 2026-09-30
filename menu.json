@@ -31,7 +31,8 @@
             "egg",
             "milk"
           ],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "makarnalar--fettuccine-alfredo"
         },
         {
           "name": "Deniz Mahsüllü Pappardelle",
@@ -46,7 +47,8 @@
             "molluscs",
             "milk"
           ],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "makarnalar--deniz-mahsullu-pappardelle"
         },
         {
           "name": "Penne Arabiata",
@@ -58,7 +60,8 @@
             "gluten",
             "milk"
           ],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "makarnalar--penne-arabiata"
         }
       ]
     },
@@ -83,7 +86,8 @@
             "egg",
             "milk"
           ],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "burgerler--cheese-burger"
         },
         {
           "name": "Tavuk Burger",
@@ -96,7 +100,8 @@
             "egg",
             "milk"
           ],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "burgerler--tavuk-burger"
         },
         {
           "name": "Camino Burger",
@@ -109,7 +114,8 @@
             "egg",
             "milk"
           ],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "burgerler--camino-burger"
         }
       ],
       "hidden": true
@@ -135,7 +141,8 @@
             "egg",
             "milk"
           ],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "paylasim-tabagi--citir-tabagi"
         },
         {
           "name": "Trüf & Parmesanlı Patates",
@@ -146,7 +153,8 @@
           "allergens": [
             "milk"
           ],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "paylasim-tabagi--truf-parmesanli-patates"
         },
         {
           "name": "Patates Kızartması",
@@ -155,7 +163,8 @@
           "calories": "520",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "paylasim-tabagi--patates-kizartmasi"
         },
         {
           "name": "Elma Dilim Patates",
@@ -164,7 +173,8 @@
           "calories": "540",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "paylasim-tabagi--elma-dilim-patates"
         },
         {
           "name": "Çıtır Tavuk Tabağı",
@@ -176,7 +186,8 @@
             "gluten",
             "egg"
           ],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "paylasim-tabagi--citir-tavuk-tabagi"
         },
         {
           "name": "Cheddar Patates",
@@ -187,7 +198,8 @@
           "allergens": [
             "milk"
           ],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "paylasim-tabagi--cheddar-patates"
         },
         {
           "name": "Kaşık Patates",
@@ -196,7 +208,8 @@
           "calories": "520",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "paylasim-tabagi--kasik-patates"
         },
         {
           "name": "Sosis Tabağı",
@@ -207,7 +220,8 @@
           "allergens": [
             "egg"
           ],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "paylasim-tabagi--sosis-tabagi"
         }
       ]
     },
@@ -228,7 +242,8 @@
           "calories": "70",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "soslar--jack-bbq"
         },
         {
           "name": "Ballı Hardal",
@@ -240,7 +255,8 @@
             "egg",
             "mustard"
           ],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "soslar--balli-hardal"
         },
         {
           "name": "Sweet Chili",
@@ -249,7 +265,8 @@
           "calories": "60",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "soslar--sweet-chili"
         },
         {
           "name": "Aioli Sos",
@@ -260,7 +277,8 @@
           "allergens": [
             "egg"
           ],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "soslar--aioli-sos"
         },
         {
           "name": "Acı Sos",
@@ -269,7 +287,8 @@
           "calories": "15",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "soslar--aci-sos"
         },
         {
           "name": "Trüf Mayonez",
@@ -280,7 +299,8 @@
           "allergens": [
             "egg"
           ],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "soslar--truf-mayonez"
         },
         {
           "name": "Ranch Sos",
@@ -292,7 +312,8 @@
             "egg",
             "milk"
           ],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "soslar--ranch-sos"
         },
         {
           "name": "Chipotle Sos",
@@ -303,7 +324,8 @@
           "allergens": [
             "egg"
           ],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "soslar--chipotle-sos"
         }
       ]
     },
@@ -327,7 +349,8 @@
             "gluten",
             "milk"
           ],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "izgaralar--dana-fajita"
         },
         {
           "name": "Tavuk Fajita",
@@ -339,7 +362,8 @@
             "gluten",
             "milk"
           ],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "izgaralar--tavuk-fajita"
         },
         {
           "name": "Dana Bonfile",
@@ -348,7 +372,8 @@
           "calories": "650",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "izgaralar--dana-bonfile"
         },
         {
           "name": "Izgara Köfte",
@@ -360,7 +385,8 @@
             "gluten",
             "egg"
           ],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "izgaralar--izgara-kofte"
         }
       ]
     },
@@ -385,7 +411,8 @@
             "egg",
             "fish"
           ],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "aperatifler--fish-and-chips"
         },
         {
           "name": "Sebzeli Çıtır Deniz Mahsülleri",
@@ -399,7 +426,8 @@
             "crustaceans",
             "molluscs"
           ],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "aperatifler--sebzeli-citir-deniz-mahsulleri"
         },
         {
           "name": "Frankfurter Sosis",
@@ -411,7 +439,8 @@
             "egg",
             "mustard"
           ],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "aperatifler--frankfurter-sosis"
         },
         {
           "name": "Şinitzel Tavuk",
@@ -424,7 +453,8 @@
             "egg",
             "mustard"
           ],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "aperatifler--sinitzel-tavuk"
         },
         {
           "name": "Kalamar",
@@ -438,7 +468,8 @@
             "milk",
             "nuts"
           ],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "aperatifler--kalamar"
         },
         {
           "name": "Crispy Karides",
@@ -453,7 +484,8 @@
             "milk",
             "nuts"
           ],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "aperatifler--crispy-karides"
         }
       ]
     },
@@ -477,7 +509,8 @@
             "gluten",
             "milk"
           ],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "pizzalar--margarita-pizza"
         },
         {
           "name": "Peperoni Pizza",
@@ -489,7 +522,8 @@
             "gluten",
             "milk"
           ],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "pizzalar--peperoni-pizza"
         },
         {
           "name": "Mantarlı Pizza",
@@ -501,7 +535,8 @@
             "gluten",
             "milk"
           ],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "pizzalar--mantarli-pizza"
         },
         {
           "name": "Karışık Pizza",
@@ -513,7 +548,8 @@
             "gluten",
             "milk"
           ],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "pizzalar--karisik-pizza"
         }
       ]
     },
@@ -534,7 +570,8 @@
           "calories": "180",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "pizza-ilaveleri--sosis"
         },
         {
           "name": "Pastırma (100 gr)",
@@ -543,7 +580,8 @@
           "calories": "250",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "pizza-ilaveleri--pastirma-100-gr"
         },
         {
           "name": "Mantar",
@@ -552,7 +590,8 @@
           "calories": "25",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "pizza-ilaveleri--mantar"
         },
         {
           "name": "Yeşil Zeytin",
@@ -561,7 +600,8 @@
           "calories": "60",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "pizza-ilaveleri--yesil-zeytin"
         },
         {
           "name": "Mısır",
@@ -570,7 +610,8 @@
           "calories": "60",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "pizza-ilaveleri--misir"
         },
         {
           "name": "Yeşil Biber",
@@ -579,7 +620,8 @@
           "calories": "10",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "pizza-ilaveleri--yesil-biber"
         },
         {
           "name": "Chili Biber",
@@ -588,7 +630,8 @@
           "calories": "10",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "pizza-ilaveleri--chili-biber"
         }
       ]
     },
@@ -612,7 +655,8 @@
             "gluten",
             "egg"
           ],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "ilave-lezzetler--sogan-halkasi-6-adet"
         },
         {
           "name": "Frankfurter Sosis",
@@ -621,7 +665,8 @@
           "calories": "450",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "ilave-lezzetler--frankfurter-sosis"
         },
         {
           "name": "120 gr Burger köftesi",
@@ -630,7 +675,8 @@
           "calories": "320",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "ilave-lezzetler--120-gr-burger-koftesi"
         },
         {
           "name": "Mozzarella Stick (4 Adet)",
@@ -643,7 +689,8 @@
             "egg",
             "milk"
           ],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "ilave-lezzetler--mozzarella-stick-4-adet"
         },
         {
           "name": "Çıtır Tavuk Parçacıkları (2 Adet)",
@@ -655,7 +702,8 @@
             "gluten",
             "egg"
           ],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "ilave-lezzetler--citir-tavuk-parcaciklari-2-adet"
         }
       ]
     },
@@ -681,7 +729,8 @@
             "milk",
             "soy"
           ],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "tatlilar--brownie"
         },
         {
           "name": "Belçika Çikolatalı Sufle",
@@ -695,7 +744,8 @@
             "milk",
             "soy"
           ],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "tatlilar--belcika-cikolatali-sufle"
         }
       ]
     },
@@ -716,7 +766,8 @@
           "calories": "3",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "kahveler--espresso"
         },
         {
           "name": "Doppio",
@@ -725,7 +776,8 @@
           "calories": "6",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "kahveler--doppio"
         },
         {
           "name": "Americano",
@@ -734,7 +786,8 @@
           "calories": "5",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "kahveler--americano"
         },
         {
           "name": "Latte",
@@ -745,7 +798,8 @@
           "allergens": [
             "milk"
           ],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "kahveler--latte"
         },
         {
           "name": "Cappuccino",
@@ -756,7 +810,8 @@
           "allergens": [
             "milk"
           ],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "kahveler--cappuccino"
         },
         {
           "name": "Flat White",
@@ -767,7 +822,8 @@
           "allergens": [
             "milk"
           ],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "kahveler--flat-white"
         },
         {
           "name": "White Mocha",
@@ -779,7 +835,8 @@
             "milk",
             "soy"
           ],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "kahveler--white-mocha"
         },
         {
           "name": "Mocha",
@@ -791,7 +848,8 @@
             "milk",
             "soy"
           ],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "kahveler--mocha"
         }
       ]
     },
@@ -812,7 +870,8 @@
           "calories": "139",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "soguk-icecekler--cola"
         },
         {
           "name": "Cola Zero",
@@ -821,7 +880,8 @@
           "calories": "1",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "soguk-icecekler--cola-zero"
         },
         {
           "name": "Fanta",
@@ -830,7 +890,8 @@
           "calories": "99",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "soguk-icecekler--fanta"
         },
         {
           "name": "Sprite",
@@ -839,7 +900,8 @@
           "calories": "43",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "soguk-icecekler--sprite"
         },
         {
           "name": "Fuse Tea",
@@ -848,7 +910,8 @@
           "calories": "66",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "soguk-icecekler--fuse-tea"
         },
         {
           "name": "Red Bull",
@@ -857,7 +920,8 @@
           "calories": "113",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "soguk-icecekler--red-bull"
         },
         {
           "name": "Nar Suyu",
@@ -866,7 +930,8 @@
           "calories": "135",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "soguk-icecekler--nar-suyu"
         },
         {
           "name": "Taze Sıkılmış Portakal Suyu",
@@ -875,7 +940,8 @@
           "calories": "113",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "soguk-icecekler--taze-sikilmis-portakal-suyu"
         },
         {
           "name": "Soda",
@@ -884,7 +950,8 @@
           "calories": "0",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "soguk-icecekler--soda"
         },
         {
           "name": "Su",
@@ -893,7 +960,8 @@
           "calories": "0",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "soguk-icecekler--su"
         }
       ]
     },
@@ -914,7 +982,8 @@
           "calories": "320",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "dunya-klasikleri--long-island-ice-tea"
         },
         {
           "name": "Lynchburg Lemonade",
@@ -923,7 +992,8 @@
           "calories": "190",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "dunya-klasikleri--lynchburg-lemonade"
         },
         {
           "name": "Margarita",
@@ -932,7 +1002,8 @@
           "calories": "175",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "dunya-klasikleri--margarita"
         },
         {
           "name": "Viski Sour",
@@ -943,7 +1014,8 @@
           "allergens": [
             "egg"
           ],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "dunya-klasikleri--viski-sour"
         },
         {
           "name": "Cuba Libre",
@@ -952,7 +1024,8 @@
           "calories": "175",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "dunya-klasikleri--cuba-libre"
         },
         {
           "name": "Tom Collins",
@@ -961,7 +1034,8 @@
           "calories": "170",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "dunya-klasikleri--tom-collins"
         },
         {
           "name": "Pina Colada",
@@ -972,7 +1046,8 @@
           "allergens": [
             "milk"
           ],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "dunya-klasikleri--pina-colada"
         }
       ]
     },
@@ -993,7 +1068,8 @@
           "calories": "165",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "imza-kokteyller--feslegen-kavun"
         },
         {
           "name": "İsli Viski Mango",
@@ -1002,7 +1078,8 @@
           "calories": "210",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "imza-kokteyller--isli-viski-mango"
         },
         {
           "name": "Sorrel Kiss",
@@ -1011,7 +1088,8 @@
           "calories": "190",
           "allergens": [],
           "traceWarning": "",
-          "calorieEstimated": false
+          "calorieEstimated": false,
+          "id": "imza-kokteyller--sorrel-kiss"
         },
         {
           "name": "Scarlet Dream",
@@ -1020,7 +1098,8 @@
           "calories": "215",
           "allergens": [],
           "traceWarning": "",
-          "calorieEstimated": false
+          "calorieEstimated": false,
+          "id": "imza-kokteyller--scarlet-dream"
         },
         {
           "name": "Morange",
@@ -1029,7 +1108,8 @@
           "calories": "210",
           "allergens": [],
           "traceWarning": "",
-          "calorieEstimated": false
+          "calorieEstimated": false,
+          "id": "imza-kokteyller--morange"
         },
         {
           "name": "Bella",
@@ -1038,7 +1118,8 @@
           "calories": "195",
           "allergens": [],
           "traceWarning": "",
-          "calorieEstimated": false
+          "calorieEstimated": false,
+          "id": "imza-kokteyller--bella"
         },
         {
           "name": "AAS",
@@ -1047,7 +1128,8 @@
           "calories": "165",
           "allergens": [],
           "traceWarning": "",
-          "calorieEstimated": false
+          "calorieEstimated": false,
+          "id": "imza-kokteyller--aas"
         },
         {
           "name": "Lime Ekstra",
@@ -1056,7 +1138,8 @@
           "calories": "140",
           "allergens": [],
           "traceWarning": "",
-          "calorieEstimated": false
+          "calorieEstimated": false,
+          "id": "imza-kokteyller--lime-ekstra"
         },
         {
           "name": "Peach Fire",
@@ -1065,7 +1148,8 @@
           "calories": "155",
           "allergens": [],
           "traceWarning": "",
-          "calorieEstimated": false
+          "calorieEstimated": false,
+          "id": "imza-kokteyller--peach-fire"
         },
         {
           "name": "Priapos",
@@ -1074,7 +1158,8 @@
           "calories": "210",
           "allergens": [],
           "traceWarning": "",
-          "calorieEstimated": false
+          "calorieEstimated": false,
+          "id": "imza-kokteyller--priapos"
         }
       ]
     },
@@ -1097,7 +1182,8 @@
           "allergens": [
             "sulfites"
           ],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "stir--negroni"
         }
       ]
     },
@@ -1118,7 +1204,8 @@
           "calories": "170",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "muddle--mojito-cilek-pasion-mango-seftali"
         }
       ]
     },
@@ -1141,7 +1228,8 @@
           "allergens": [
             "sulfites"
           ],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "martini--dry-martini"
         },
         {
           "name": "Espresso Martini",
@@ -1150,7 +1238,8 @@
           "calories": "185",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "martini--espresso-martini"
         },
         {
           "name": "Pornstar Martini",
@@ -1161,7 +1250,8 @@
           "allergens": [
             "sulfites"
           ],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "martini--pornstar-martini"
         }
       ]
     },
@@ -1184,7 +1274,8 @@
           "allergens": [
             "sulfites"
           ],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "sampanya-kokteylleri--aperol-spritz"
         }
       ]
     },
@@ -1207,7 +1298,8 @@
           "allergens": [
             "sulfites"
           ],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "saraplar--trio-sise-75-cl"
         },
         {
           "name": "Trio Kadeh 18.5 cl",
@@ -1218,7 +1310,8 @@
           "allergens": [
             "sulfites"
           ],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "saraplar--trio-kadeh-18-5-cl"
         }
       ]
     },
@@ -1239,7 +1332,8 @@
           "calories": "160",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "mocktails--sweet-sunset"
         },
         {
           "name": "Lime Breeze",
@@ -1248,7 +1342,8 @@
           "calories": "90",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "mocktails--lime-breeze"
         },
         {
           "name": "Virgin Mojito",
@@ -1257,7 +1352,8 @@
           "calories": "",
           "allergens": [],
           "traceWarning": "",
-          "calorieEstimated": false
+          "calorieEstimated": false,
+          "id": "mocktails--virgin-mojito"
         }
       ]
     },
@@ -1280,7 +1376,8 @@
           "allergens": [
             "milk"
           ],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "alkollu-kahveler--baileys-latte"
         },
         {
           "name": "Irish Coffee",
@@ -1289,7 +1386,8 @@
           "calories": "155",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "alkollu-kahveler--irish-coffee"
         }
       ]
     },
@@ -1310,7 +1408,8 @@
           "calories": "110 / 176",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "gin--beefeater"
         },
         {
           "name": "Beefeater Pink",
@@ -1319,7 +1418,8 @@
           "calories": "110 / 176",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "gin--beefeater-pink"
         },
         {
           "name": "Hendricks",
@@ -1328,7 +1428,8 @@
           "calories": "114 / 183",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "gin--hendricks"
         },
         {
           "name": "Green Baboon",
@@ -1337,7 +1438,8 @@
           "calories": "110 / 176",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "gin--green-baboon"
         },
         {
           "name": "Monkey 47",
@@ -1346,7 +1448,8 @@
           "calories": "130 / 207",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "gin--monkey-47"
         },
         {
           "name": "Tanqueray",
@@ -1355,7 +1458,8 @@
           "calories": "119 / 190",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "gin--tanqueray"
         },
         {
           "name": "Tanqueray No:Ten",
@@ -1364,7 +1468,8 @@
           "calories": "131 / 210",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "gin--tanqueray-no-ten"
         },
         {
           "name": "Bottega Gin Bacur",
@@ -1373,7 +1478,8 @@
           "calories": "110 / 176",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "gin--bottega-gin-bacur"
         }
       ]
     },
@@ -1394,7 +1500,8 @@
           "calories": "110 / 176",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "vodka--absolut"
         },
         {
           "name": "Absolut Vanilia",
@@ -1403,7 +1510,8 @@
           "calories": "110 / 176",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "vodka--absolut-vanilia"
         },
         {
           "name": "Grey Goose",
@@ -1412,7 +1520,8 @@
           "calories": "110 / 176",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "vodka--grey-goose"
         }
       ]
     },
@@ -1433,7 +1542,8 @@
           "calories": "104 / 166",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "rum--bacardi"
         },
         {
           "name": "Captain Morgan",
@@ -1442,7 +1552,8 @@
           "calories": "97 / 155",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "rum--captain-morgan"
         },
         {
           "name": "Havana 7",
@@ -1451,7 +1562,8 @@
           "calories": "110 / 176",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "rum--havana-7"
         }
       ]
     },
@@ -1472,7 +1584,8 @@
           "calories": "110 / 176",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "viski--aberlour-12"
         },
         {
           "name": "Chivas 12",
@@ -1481,7 +1594,8 @@
           "calories": "110 / 176",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "viski--chivas-12"
         },
         {
           "name": "Chivas 18",
@@ -1490,7 +1604,8 @@
           "calories": "110 / 176",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "viski--chivas-18"
         },
         {
           "name": "Royal Salute 21",
@@ -1499,7 +1614,8 @@
           "calories": "110 / 176",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "viski--royal-salute-21"
         },
         {
           "name": "Monkey Shoulder",
@@ -1508,7 +1624,8 @@
           "calories": "110 / 176",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "viski--monkey-shoulder"
         },
         {
           "name": "Gentlemen Jack",
@@ -1517,7 +1634,8 @@
           "calories": "110 / 176",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "viski--gentlemen-jack"
         },
         {
           "name": "Talisker 11",
@@ -1526,7 +1644,8 @@
           "calories": "150 / 240",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "viski--talisker-11"
         },
         {
           "name": "Bulliet Bourbon",
@@ -1535,7 +1654,8 @@
           "calories": "124 / 199",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "viski--bulliet-bourbon"
         },
         {
           "name": "Jack Daniels",
@@ -1544,7 +1664,8 @@
           "calories": "110 / 176",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "viski--jack-daniels"
         },
         {
           "name": "Jack Daniels Single Barrel",
@@ -1553,7 +1674,8 @@
           "calories": "124 / 199",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "viski--jack-daniels-single-barrel"
         },
         {
           "name": "Woodford Reserve",
@@ -1562,7 +1684,8 @@
           "calories": "119 / 191",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "viski--woodford-reserve"
         },
         {
           "name": "Jameson Black Barrel",
@@ -1571,7 +1694,8 @@
           "calories": "110 / 176",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "viski--jameson-black-barrel"
         },
         {
           "name": "Jameson",
@@ -1580,7 +1704,8 @@
           "calories": "110 / 176",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "viski--jameson"
         },
         {
           "name": "J.W Black Label",
@@ -1589,7 +1714,8 @@
           "calories": "110 / 176",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "viski--j-w-black-label"
         },
         {
           "name": "J.W Double Black Label",
@@ -1598,7 +1724,8 @@
           "calories": "110 / 176",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "viski--j-w-double-black-label"
         },
         {
           "name": "J.W Gold Label",
@@ -1607,7 +1734,8 @@
           "calories": "110 / 176",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "viski--j-w-gold-label"
         },
         {
           "name": "Glenfiddich 12",
@@ -1616,7 +1744,8 @@
           "calories": "110 / 176",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "viski--glenfiddich-12"
         }
       ]
     },
@@ -1637,7 +1766,8 @@
           "calories": "66",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "shot--olmeca-silver"
         },
         {
           "name": "Don Julio",
@@ -1646,7 +1776,8 @@
           "calories": "66",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "shot--don-julio"
         },
         {
           "name": "Jagermeister",
@@ -1655,7 +1786,8 @@
           "calories": "75",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "shot--jagermeister"
         },
         {
           "name": "Shanky's Whip",
@@ -1664,7 +1796,8 @@
           "calories": "84",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "shot--shanky-s-whip"
         },
         {
           "name": "Jameson",
@@ -1673,7 +1806,8 @@
           "calories": "66",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "shot--jameson"
         },
         {
           "name": "Olmeca Altos",
@@ -1682,7 +1816,8 @@
           "calories": "66",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "shot--olmeca-altos"
         },
         {
           "name": "Patron",
@@ -1691,7 +1826,8 @@
           "calories": "66",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "shot--patron"
         },
         {
           "name": "Smirnoff North",
@@ -1700,7 +1836,8 @@
           "calories": "55",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "shot--smirnoff-north"
         },
         {
           "name": "Skinos",
@@ -1709,7 +1846,8 @@
           "calories": "80",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "shot--skinos"
         },
         {
           "name": "Baileys",
@@ -1720,7 +1858,8 @@
           "allergens": [
             "milk"
           ],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "shot--baileys"
         },
         {
           "name": "Kahlua",
@@ -1729,7 +1868,8 @@
           "calories": "70",
           "calorieEstimated": true,
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "shot--kahlua"
         }
       ]
     },
@@ -1752,7 +1892,8 @@
           "allergens": [
             "gluten"
           ],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "bira--efes-malt"
         },
         {
           "name": "Bomonti Filtresiz",
@@ -1763,7 +1904,8 @@
           "allergens": [
             "gluten"
           ],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "bira--bomonti-filtresiz"
         },
         {
           "name": "Bud",
@@ -1774,7 +1916,8 @@
           "allergens": [
             "gluten"
           ],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "bira--bud"
         },
         {
           "name": "Amsterdam",
@@ -1785,7 +1928,8 @@
           "allergens": [
             "gluten"
           ],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "bira--amsterdam"
         },
         {
           "name": "Corona",
@@ -1796,7 +1940,8 @@
           "allergens": [
             "gluten"
           ],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "bira--corona"
         },
         {
           "name": "Efes Glutensiz",
@@ -1807,7 +1952,8 @@
           "allergens": [
             "gluten"
           ],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "bira--efes-glutensiz"
         },
         {
           "name": "Efes Pilsen",
@@ -1818,7 +1964,8 @@
           "allergens": [
             "gluten"
           ],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "bira--efes-pilsen"
         },
         {
           "name": "Efes Özel Seri",
@@ -1829,7 +1976,8 @@
           "allergens": [
             "gluten"
           ],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "bira--efes-ozel-seri"
         },
         {
           "name": "Efes Hoegaarden",
@@ -1840,7 +1988,8 @@
           "allergens": [
             "gluten"
           ],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "bira--efes-hoegaarden"
         },
         {
           "name": "Miller",
@@ -1851,7 +2000,8 @@
           "allergens": [
             "gluten"
           ],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "bira--miller"
         },
         {
           "name": "Stella Artoıs",
@@ -1862,7 +2012,8 @@
           "allergens": [
             "gluten"
           ],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "bira--stella-artois"
         },
         {
           "name": "Belfast",
@@ -1871,7 +2022,8 @@
           "calories": "",
           "allergens": [],
           "traceWarning": "",
-          "calorieEstimated": false
+          "calorieEstimated": false,
+          "id": "bira--belfast"
         },
         {
           "name": "Becks",
@@ -1879,7 +2031,8 @@
           "description": "",
           "calories": "",
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "bira--becks"
         },
         {
           "name": "Erdinger",
@@ -1887,7 +2040,8 @@
           "description": "",
           "calories": "",
           "allergens": [],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "bira--erdinger"
         }
       ]
     },
@@ -1910,7 +2064,8 @@
           "allergens": [
             "gluten"
           ],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "ficilar--efes-pilsen"
         },
         {
           "name": "Becks",
@@ -1921,7 +2076,8 @@
           "allergens": [
             "gluten"
           ],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "ficilar--becks"
         },
         {
           "name": "Belfast",
@@ -1932,7 +2088,8 @@
           "allergens": [
             "gluten"
           ],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "ficilar--belfast"
         },
         {
           "name": "Stella Artoıs",
@@ -1943,7 +2100,8 @@
           "allergens": [
             "gluten"
           ],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "ficilar--stella-artois"
         }
       ]
     },
@@ -1966,7 +2124,8 @@
           "allergens": [
             "gluten"
           ],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "happy-hour--efes-pilsen-fici"
         },
         {
           "name": "Belfast Fıçı",
@@ -1977,9 +2136,37 @@
           "allergens": [
             "gluten"
           ],
-          "traceWarning": ""
+          "traceWarning": "",
+          "id": "happy-hour--belfast-fici"
         }
       ]
+    }
+  ],
+  "campaigns": [
+    {
+      "id": "kmuo3czbn",
+      "enabled": true,
+      "title": "Duyuru",
+      "badge": "DUYURU",
+      "text": "Bu akşam canlı müzik!",
+      "from": "",
+      "to": "",
+      "days": [],
+      "start": "",
+      "end": "",
+      "discount": {
+        "type": "none",
+        "value": 0,
+        "round": 5
+      },
+      "all": false,
+      "categories": [],
+      "items": [],
+      "popup": {
+        "enabled": true,
+        "image": "",
+        "button": "Menüye Göz At"
+      }
     }
   ]
 }

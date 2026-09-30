@@ -301,6 +301,19 @@ body.no-scroll{overflow:hidden}
 .pst-cap .cta{opacity:1;animation:none;margin-top:14px;padding:12px 24px;background:var(--text);color:#0a0a0a;border-color:var(--text)}
 .pst-cap .cta::before{background:#0a0a0a}
 .pst-cap .cta:hover{color:var(--text)}
+.pst-card{max-height:calc(100svh - var(--top) - 150px);overflow-y:auto;scrollbar-width:none}
+.pst-card::-webkit-scrollbar{display:none}
+.pst-info{margin:14px 0 0;text-align:left;border-top:1px solid var(--line)}
+.pst-info div{display:flex;justify-content:space-between;gap:14px;padding:9px 0;border-bottom:1px solid var(--line)}
+.pst-info dt{font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);padding-top:2px;white-space:nowrap}
+.pst-info dd{margin:0;text-align:right;font-size:14px}
+.pst-info a{border-bottom:1px solid var(--line2)}
+.pst-acts{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:14px}
+.pst-act{display:inline-flex;align-items:center;gap:7px;padding:9px 14px;border:1px solid var(--line2);border-radius:999px;font-size:12px;letter-spacing:.1em;text-transform:uppercase;transition:all .3s}
+.pst-act:hover{background:var(--text);color:#0a0a0a}
+.pst-act svg{width:15px;height:15px}
+.ev-price{margin-top:4px;font-size:12px;letter-spacing:.12em;color:var(--muted)}
+.ev.today .ev-price{color:rgba(10,10,10,.6)}
 .pst-foot{display:flex;align-items:center;justify-content:center;gap:14px;padding-top:14px}
 .pst-dots{display:flex;gap:7px}
 .pst-dots button{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.3);transition:all .4s var(--ease)}
@@ -621,7 +634,8 @@ body.no-scroll .social{opacity:0;pointer-events:none}
         '<div class="ev-top"><div class="ev-date"><span>' + esc(dayName(o.day, {weekday:'long'})) + '</span><b>' + dayName(o.day, {day:'2-digit'}) + '</b><span>' + esc(dayName(o.day, {month:'long'})) + '</span></div>' +
           (flag ? '<span class="ev-flag">' + flag + '</span>' : '') + '</div>' +
         '<div><span class="ev-type">' + t.icon + ' ' + esc(t.label) + '</span><h4>' + esc(ev.title) + '</h4>' +
-          (ev.text ? '<p>' + esc(ev.text) + '</p>' : '') + '<div class="ev-time">' + esc(evTime(ev)) + '</div></div>' +
+          (ev.text ? '<p>' + esc(ev.text) + '</p>' : '') + '<div class="ev-time">' + esc(evTime(ev)) + '</div>' +
+          (ev.price ? '<div class="ev-price">' + esc(ev.price) + '</div>' : '') + '</div>' +
       '</button></article>';
     }).join('');
   }
@@ -630,7 +644,7 @@ body.no-scroll .social{opacity:0;pointer-events:none}
     if(!ev) return;
     const n = C.now(), w = C.eventWindow(ev, +day);
     openPosters([decorate({kind:'event', key:'e:' + id, title: ev.title, badge: C.eventType(ev).label, text: ev.text, image: ev.image,
-      day: +day, start: w.start, live: w.start <= n.wall, src: ev}, n)], 0);
+      day: +day, start: w.start, live: w.start <= n.wall, info: C.posterInfo(ev, DATA.site), src: ev}, n)], 0);
   }
 
   /* ---------- Afişler: duyurular, kampanyalar, etkinlikler ---------- */
@@ -707,6 +721,25 @@ body.no-scroll .social{opacity:0;pointer-events:none}
       '<div class="nthumb">' + posterArt(s, 500) + '</div><div class="tags">' + esc(s.badge) + '</div><h4>' + esc(s.title) + '</h4></button></article>').join('');
   }
 
+  // Afiş altındaki detaylar (ücret, tarih, rezervasyon, konum) ve hızlı düğmeler (ara, WhatsApp, yol tarifi)
+  function infoHtml(s){
+    const f = s.info;
+    if(!f) return '';
+    const rows = [];
+    if(f.when) rows.push(['Tarih', esc(f.when)]);
+    if(f.price) rows.push(['Ücret', esc(f.price)]);
+    if(f.phone) rows.push(['Rezervasyon', '<a href="tel:' + esc(f.phone.replace(/[^\d+]/g, '')) + '">' + esc(f.phone) + '</a>']);
+    if(f.place) rows.push(['Konum', esc(f.place)]);
+    const wa = f.whatsapp ? 'https://wa.me/' + f.phone.replace(/\D/g, '').replace(/^0/, '90') + '?text=' +
+      encodeURIComponent('Merhaba, "' + s.title + '" için rezervasyon yapmak istiyorum.') : '';
+    const btns = [];
+    if(f.phone) btns.push('<a class="pst-act" href="tel:' + esc(f.phone.replace(/[^\d+]/g, '')) + '">' + SOCIAL_ICONS.phone + 'Ara</a>');
+    if(wa) btns.push('<a class="pst-act" href="' + esc(wa) + '" target="_blank" rel="noopener">' + SOCIAL_ICONS.whatsapp + 'WhatsApp</a>');
+    if(f.directions) btns.push('<a class="pst-act" href="' + esc(f.mapUrl) + '" target="_blank" rel="noopener">' + SOCIAL_ICONS.map + 'Yol tarifi</a>');
+    return (rows.length ? '<dl class="pst-info">' + rows.map(r => '<div><dt>' + r[0] + '</dt><dd>' + r[1] + '</dd></div>').join('') + '</dl>' : '') +
+      (btns.length ? '<div class="pst-acts">' + btns.join('') + '</div>' : '');
+  }
+
   let pstTimer = null, pstPaused = false;
   function openPosters(slides, start){
     if(!slides.length) return;
@@ -721,6 +754,7 @@ body.no-scroll .social{opacity:0;pointer-events:none}
           '<div class="pst-cap">' +
             (s.image ? '<h3>' + esc(s.title) + '</h3>' + (s.text ? '<p>' + esc(s.text) + '</p>' : '') + (s.when ? '<p style="margin-top:6px;font-size:12px;letter-spacing:.14em;text-transform:uppercase">' + esc(s.when) + '</p>' : '')
               : (s.photo && s.text ? '<p>' + esc(s.text) + '</p>' : '')) +
+            infoHtml(s) +
             (s.endsAt ? '<div class="timer">Bitmesine<b data-ends="' + s.endsAt + '"></b></div>' : '') +
             (s.link ? '<a class="cta" href="' + esc(s.link) + '" target="_blank" rel="noopener">' + esc(s.button || 'Detaylar') + '</a>'
                     : '<button class="cta" data-pop-go="' + esc(s.go || 'menu') + '">' + esc(s.button || 'Menüye Göz At') + '</button>') +

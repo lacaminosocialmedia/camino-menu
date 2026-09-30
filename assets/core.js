@@ -356,6 +356,14 @@
     return {id: 'd' + Date.now().toString(36), title: 'Yeni duyuru', text: '', image: '', link: '', button: '',
       from: '', to: '', published: true, popup: true};
   }
+  // Duyuru ve etkinliklerin isteğe bağlı detayları: ücret, tarih/saat metni, rezervasyon telefonu, WhatsApp, konum, yol tarifi
+  function posterInfo(o, site){
+    const phone = String(o.phone || '').trim();
+    const place = String(o.place || '').trim() || (site && site.address) || '';
+    return {price: String(o.price || '').trim(), when: String(o.when || '').trim(), phone, whatsapp: !!(o.whatsapp && phone),
+      place: String(o.place || '').trim(), directions: !!(o.directions && place),
+      mapUrl: place ? 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(place) : ''};
+  }
   // Açılış popup'ında gösterilecek afişler, sırasıyla: duyurular (panel sırası) → aktif kampanyalar → yaklaşan etkinlikler
   function posterSlides(data, n){
     n = n || now();
@@ -363,7 +371,7 @@
     (data.announcements || []).forEach(a => {
       if(a.popup === false || announcementState(a, n) !== 'live') return;
       out.push({kind:'ann', key:'a:' + a.id, title: a.title, badge: 'DUYURU', text: a.text, image: a.image, link: a.link,
-        button: a.button, endsAt: parseWall(a.to), src: a});
+        button: a.button, endsAt: parseWall(a.to), info: posterInfo(a, data.site), src: a});
     });
     (data.campaigns || []).forEach(c => {
       const st = campaignState(c, n);
@@ -374,7 +382,7 @@
     upcomingEvents(data, n, 7).forEach(o => {
       if(!o.ev.popup) return;
       out.push({kind:'event', key:'e:' + o.ev.id + ':' + o.day, title: o.ev.title, badge: eventType(o.ev).label, text: o.ev.text,
-        image: o.ev.image, day: o.day, start: o.start, live: o.live, src: o.ev});
+        image: o.ev.image, day: o.day, start: o.start, live: o.live, info: posterInfo(o.ev, data.site), src: o.ev});
     });
     return out;
   }
@@ -417,7 +425,7 @@
     now, setNowOverride, parseWall, parseHM, hm,
     campaignState, describeSchedule, campaignTargets, applyDiscount, discountLabel, priceInfo, formatCountdown, newCampaign,
     campaignOnDay, EVENT_TYPES, eventType, eventDays, eventWindow, upcomingEvents, newEvent,
-    announcementState, newAnnouncement, posterSlides, SOCIALS, socialLinks,
+    announcementState, newAnnouncement, posterSlides, posterInfo, SOCIALS, socialLinks,
     openState
   };
 })(window);

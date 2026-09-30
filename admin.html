@@ -205,6 +205,9 @@ h1,h2,h3{font-family:'Playfair Display',serif;margin:0}
 .pv b{display:block;margin-top:6px}
 .pv small{color:var(--muted)}
 
+.details-box{margin-top:14px;padding:12px;border:1px solid var(--line);border-radius:12px;background:#faf8f4}
+.details-box h3{font-family:'DM Sans',sans-serif;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 8px}
+
 /* Pencere */
 .modal-veil{position:fixed;inset:0;z-index:80;background:rgba(0,0,0,.45);display:flex;align-items:flex-start;justify-content:center;padding:30px 12px;overflow:auto}
 .modal{background:#fff;border-radius:18px;box-shadow:0 20px 60px rgba(0,0,0,.25);padding:20px;width:min(640px,100%)}
@@ -357,6 +360,7 @@ body.locked .lock{display:flex}
       <div class="field"><label>Yayın başlangıcı (isteğe bağlı)</label><input type="datetime-local" id="annf-from"></div>
       <div class="field"><label>Yayın bitişi (isteğe bağlı)</label><input type="datetime-local" id="annf-to"></div>
     </div>
+    <div class="details-box" data-details="annf" data-when="1"></div>
     <div class="row-actions" style="margin-top:14px">
       <label class="switch small"><input type="checkbox" id="annf-published"> Yayında</label>
       <label class="switch small"><input type="checkbox" id="annf-popup"> Açılış popup'ında göster</label>
@@ -384,6 +388,7 @@ body.locked .lock{display:flex}
       <div class="field"><label>Tekrar</label><select id="evf-repeat"><option value="none">Tek seferlik</option><option value="weekly">Her hafta aynı gün</option></select></div>
       <div class="field" id="evf-until-wrap"><label>Tekrar bitişi (isteğe bağlı)</label><input type="date" id="evf-until"></div>
     </div>
+    <div class="details-box" data-details="evf"></div>
     <div class="photo-row">
       <div class="thumb wide" id="evf-thumb"></div>
       <div class="field"><label>Fotoğraf (isteğe bağlı)</label><input id="evf-image" placeholder="https://… veya yükleyin">
@@ -1321,6 +1326,37 @@ body.locked .lock{display:flex}
   }
   function evLine(ev){ const t = Core.eventType(ev); return t.icon + ' ' + (ev.start ? ev.start + ' ' : '') + ev.title; }
 
+  /* ---------- Duyuru / etkinlik detayları (ücret, rezervasyon, konum) ---------- */
+  document.querySelectorAll('[data-details]').forEach(box => {
+    const p = box.dataset.details;
+    box.innerHTML = '<h3>Detaylar (isteğe bağlı)</h3><div class="grid">' +
+      (box.dataset.when ? '<div class="field"><label>Tarih / saat bilgisi</label><input id="' + p + '-when" placeholder="ör. 31 Aralık, 21:00"></div>' : '') +
+      '<div class="field"><label>Ücret</label><input id="' + p + '-price" placeholder="ör. Giriş 300 TL · 1 içki dahil"></div>' +
+      '<div class="field"><label>Rezervasyon telefonu</label><input id="' + p + '-phone" type="tel" placeholder="0530 000 00 00">' +
+        '<button type="button" class="btn sm" style="margin-top:6px" data-fillphone="' + p + '">İşletme telefonunu yaz</button></div>' +
+      '<div class="field"><label>Konum (boş: işletme adresi)</label><input id="' + p + '-place" placeholder="ör. Camino Bahçe"></div>' +
+      '</div><div class="row-actions" style="margin-top:10px">' +
+      '<label class="switch small"><input type="checkbox" id="' + p + '-whatsapp"> WhatsApp ile rezervasyon düğmesi</label>' +
+      '<label class="switch small"><input type="checkbox" id="' + p + '-directions"> Yol tarifi düğmesi</label></div>' +
+      '<p class="hint">Doldurduğunuz bilgiler afişin altında görünür; telefon için “Ara” düğmesi otomatik çıkar.</p>';
+  });
+  document.addEventListener('click', e => {
+    const b = e.target.closest('[data-fillphone]');
+    if(b && state) $('#' + b.dataset.fillphone + '-phone').value = state.site.phone || '';
+  });
+  const DETAIL_KEYS = ['when', 'price', 'phone', 'place', 'whatsapp', 'directions'];
+  function fillDetails(p, o){
+    DETAIL_KEYS.forEach(k => { const el = $('#' + p + '-' + k); if(!el) return; if(el.type === 'checkbox') el.checked = !!o[k]; else el.value = o[k] || ''; });
+  }
+  function readDetails(p, o){
+    DETAIL_KEYS.forEach(k => {
+      const el = $('#' + p + '-' + k);
+      if(!el) return;
+      const v = el.type === 'checkbox' ? el.checked : el.value.trim();
+      if(v) o[k] = v; else delete o[k];
+    });
+  }
+
   /* ---------- Etkinlikler ---------- */
   let editing = null;   // {ev, isNew}
   $('#evf-type').innerHTML = Core.EVENT_TYPES.map(t => '<option value="' + t.key + '">' + t.icon + ' ' + t.label + '</option>').join('');
@@ -1338,6 +1374,7 @@ body.locked .lock{display:flex}
     $('#evf-image').value = ev.image || '';
     $('#evf-published').checked = ev.published !== false;
     $('#evf-popup').checked = !!ev.popup;
+    fillDetails('evf', ev);
     $('#evf-delete').classList.toggle('hide', isNew);
     syncEventForm();
     $('#ev-modal').classList.remove('hide');
@@ -1374,6 +1411,7 @@ body.locked .lock{display:flex}
       repeat: $('#evf-repeat').value, until: $('#evf-repeat').value === 'weekly' ? $('#evf-until').value : '',
       image: $('#evf-image').value.trim(), published: $('#evf-published').checked, popup: $('#evf-popup').checked
     });
+    readDetails('evf', ev);
     if(editing.isNew) state.events.push(ev);
     state.events.sort((a, b) => (a.date + (a.start || '')).localeCompare(b.date + (b.start || '')));
     const d = Core.parseWall(ev.date);
@@ -1538,6 +1576,7 @@ body.locked .lock{display:flex}
     $('#annf-to').value = a.to || '';
     $('#annf-published').checked = a.published !== false;
     $('#annf-popup').checked = a.popup !== false;
+    fillDetails('annf', a);
     $('#annf-delete').classList.toggle('hide', isNew);
     syncAnnThumb();
     $('#ann-modal').classList.remove('hide');
@@ -1563,6 +1602,7 @@ body.locked .lock{display:flex}
     Object.assign(a, {title: $('#annf-title').value.trim(), text: $('#annf-text').value.trim(), image: $('#annf-image').value.trim(),
       link: $('#annf-link').value.trim(), button: $('#annf-button').value.trim(), from: $('#annf-from').value, to: $('#annf-to').value,
       published: $('#annf-published').checked, popup: $('#annf-popup').checked});
+    readDetails('annf', a);
     if(annEditing.isNew) state.announcements.unshift(a);
     closeAnnForm(); setDirty(true); renderAnn();
     toast('Duyuru kaydedildi. Yayına almak için “Kaydet ve Yayınla”ya basın.', false, 5000);

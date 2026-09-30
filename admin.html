@@ -213,6 +213,13 @@ h1,h2,h3{font-family:'Playfair Display',serif;margin:0}
 .modal{background:#fff;border-radius:18px;box-shadow:0 20px 60px rgba(0,0,0,.25);padding:20px;width:min(640px,100%)}
 .modal h2{font-size:24px;margin-bottom:12px}
 
+/* Hazır şablonlar */
+.tpl-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px;margin-top:8px}
+.tpl{border:1px dashed #d4c7b4;border-radius:12px;padding:10px 12px;background:#faf8f4;text-align:left;cursor:pointer;font:inherit;transition:border-color .2s,background .2s}
+.tpl:hover{border-color:var(--accent);background:#fff}
+.tpl b{display:block;font-size:14px}
+.tpl small{display:block;color:var(--muted);font-size:12px;margin-top:3px;line-height:1.4}
+
 /* Giriş ekranı */
 body.locked .topbar,body.locked .tabs,body.locked .page{display:none!important}
 .lock{display:none;min-height:100vh;align-items:center;justify-content:center;padding:24px 16px}
@@ -333,6 +340,8 @@ body.locked .lock{display:flex}
     <div class="row-actions">
       <button class="btn primary" id="ann-add">+ Yeni duyuru / afiş</button>
     </div>
+    <p class="hint" style="margin-top:14px"><b>Hazır örnekler</b> – tıklayınca doldurulmuş form açılır; metni kendinize göre düzenleyip “Tamam” deyin:</p>
+    <div class="tpl-row" id="ann-tpls"></div>
   </div>
   <div class="panel">
     <h2>Şu an açılış popup'ında görünecekler</h2>
@@ -431,10 +440,10 @@ body.locked .lock{display:flex}
     <p class="hint">Happy hour saatleri, belirli tarihler arasında geçerli indirimler ve menü açılınca çıkan popup duyuruları buradan yönetilir.
       Kampanya bitince fiyatlar <b>otomatik olarak normale döner</b>. Saatler Türkiye saatine göre işler. Listede üstte olan kampanya önceliklidir.</p>
     <div class="row-actions">
-      <button class="btn primary" id="camp-add">+ Yeni kampanya</button>
-      <button class="btn" id="camp-add-hh">+ Hazır şablon: Happy Hour</button>
-      <button class="btn" id="camp-add-popup">+ Hazır şablon: Sadece duyuru (popup)</button>
+      <button class="btn primary" id="camp-add">+ Yeni kampanya (boş)</button>
     </div>
+    <p class="hint" style="margin-top:14px"><b>Hazır örnekler</b> – tıklayınca kapalı olarak eklenir; saat, oran ve ürünleri düzenleyip açabilirsiniz:</p>
+    <div class="tpl-row" id="camp-tpls"></div>
   </div>
   <div id="camp-list"></div>
 </div>
@@ -1286,10 +1295,30 @@ body.locked .lock{display:flex}
     setDirty(true);
     renderCampaigns();
   });
+  // Hazır kampanya örnekleri (hepsi kapalı eklenir)
+  const wallIso = w => new Date(w).toISOString().slice(0, 16);
+  const existingCats = ids => ids.filter(id => state.categories.some(x => x.id === id));
+  const CAMP_TPLS = [
+    {key:'hh', name:'Happy Hour', desc:'Hafta içi 16:00–19:00 · fıçı biralarda %20 indirim'},
+    {key:'lunch', name:'Öğle Menüsü', desc:'Hafta içi 12:00–15:00 · makarna ve burgerlerde %15'},
+    {key:'weekend', name:'Hafta Sonu Kokteyl Gecesi', desc:'Cuma–Cumartesi 22:00–02:00 · imza kokteyllerde 100 TL indirim'},
+    {key:'week', name:'7 Günlük İndirim', desc:'Bugünden itibaren 7 gün tüm menüde %10; süre bitince fiyatlar normale döner'},
+    {key:'pizza', name:'Pizza Günü', desc:'Her salı tüm gün · pizzalarda %25'},
+    {key:'popup', name:'Sadece duyuru (popup)', desc:'Fiyat değişmez; menü açılınca kısa bir mesaj gösterir'}
+  ];
   function addCampaign(kind){
     const c = Core.newCampaign();
+    const n = Core.now();
     if(kind === 'blank'){ Object.assign(c, {title:'Yeni kampanya', badge:'', text:'', start:'', end:''}); }
-    if(kind === 'hh'){ if(state.categories.some(x => x.id === 'ficilar')) c.categories = ['ficilar']; }
+    if(kind === 'hh'){ Object.assign(c, {days:[1,2,3,4,5], text:'Hafta içi 16:00–19:00 arası fıçı biralarda %20 indirim!', categories: existingCats(['ficilar'])}); }
+    if(kind === 'lunch'){ Object.assign(c, {title:'Öğle Menüsü', badge:'ÖĞLE MENÜSÜ', text:'Hafta içi öğle saatlerinde makarna ve burgerlerde %15 indirim.',
+      days:[1,2,3,4,5], start:'12:00', end:'15:00', discount:{type:'percent', value:15, round:5}, categories: existingCats(['makarnalar','burgerler'])}); c.popup.button = 'İndirimli Ürünleri Gör'; }
+    if(kind === 'weekend'){ Object.assign(c, {title:'Hafta Sonu Kokteyl Gecesi', badge:'KOKTEYL GECESİ', text:'Cuma ve cumartesi geceleri imza kokteyllerimizde 100 TL indirim.',
+      days:[5,6], start:'22:00', end:'02:00', discount:{type:'amount', value:100, round:10}, categories: existingCats(['imza-kokteyller'])}); c.popup.button = 'Kokteylleri Gör'; }
+    if(kind === 'week'){ Object.assign(c, {title:'Bir Haftalık Özel İndirim', badge:'%10 İNDİRİM', text:'Sadece 7 gün: tüm menüde %10 indirim!',
+      from: wallIso(n.dayStart), to: wallIso(n.dayStart + 7 * DAY_MS), start:'', end:'', all:true, discount:{type:'percent', value:10, round:5}}); }
+    if(kind === 'pizza'){ Object.assign(c, {title:'Salı Pizza Günü', badge:'PİZZA GÜNÜ', text:'Her salı tüm pizzalarda %25 indirim!',
+      days:[2], start:'', end:'', discount:{type:'percent', value:25, round:5}, categories: existingCats(['pizzalar'])}); c.popup.button = 'Pizzaları Gör'; }
     if(kind === 'popup'){ Object.assign(c, {title:'Duyuru', badge:'DUYURU', text:'Bu akşam canlı müzik!', start:'', end:'', discount:{type:'none', value:0, round:5}}); c.popup.button = 'Menüye Göz At'; }
     state.campaigns.unshift(c);
     openCamps.add(c);
@@ -1298,8 +1327,8 @@ body.locked .lock{display:flex}
     toast('Kampanya eklendi (kapalı). Ayarlayıp açtıktan sonra “Kaydet ve Yayınla”ya basın.', false, 5000);
   }
   $('#camp-add').addEventListener('click', () => addCampaign('blank'));
-  $('#camp-add-hh').addEventListener('click', () => addCampaign('hh'));
-  $('#camp-add-popup').addEventListener('click', () => addCampaign('popup'));
+  $('#camp-tpls').innerHTML = CAMP_TPLS.map(t => '<button type="button" class="tpl" data-tpl="' + t.key + '"><b>+ ' + esc(t.name) + '</b><small>' + esc(t.desc) + '</small></button>').join('');
+  $('#camp-tpls').addEventListener('click', e => { const b = e.target.closest('[data-tpl]'); if(b) addCampaign(b.dataset.tpl); });
   // Durum etiketlerini (kalan süre vb.) canlı tut
   setInterval(() => {
     if(!state || $('#tab-campaigns').classList.contains('hide')) return;
@@ -1608,6 +1637,35 @@ body.locked .lock{display:flex}
     toast('Duyuru kaydedildi. Yayına almak için “Kaydet ve Yayınla”ya basın.', false, 5000);
   });
   $('#ann-add').addEventListener('click', () => openAnnForm(Core.newAnnouncement(), true));
+
+  // Hazır duyuru örnekleri: doldurulmuş form açılır, "Tamam" denmeden eklenmez
+  const ANN_TPLS = [
+    {key:'reserve', name:'Rezervasyon hatırlatma', desc:'Hafta sonu yoğunluğu · telefon ve WhatsApp düğmeli'},
+    {key:'special', name:'Özel gece (biletli)', desc:'Yılbaşı gibi özel geceler · ücret, saat, rezervasyon, yol tarifi'},
+    {key:'newmenu', name:'Menümüz yenilendi', desc:'Yeni lezzet duyurusu · 14 gün yayında kalır'},
+    {key:'birthday', name:'Doğum günü sürprizi', desc:'“Tatlınız bizden” · popup’sız, menüdeki duyurularda'},
+    {key:'insta', name:'Instagram’da takip edin', desc:'Sosyal medya hesabınıza yönlendiren düğme'}
+  ];
+  function annTemplate(key){
+    const a = Core.newAnnouncement(), n = Core.now(), site = state.site;
+    const insta = (site.social || {}).instagram || '';
+    const year = new Date(n.dayStart).getUTCFullYear();
+    if(key === 'reserve') Object.assign(a, {title:'Hafta sonu masanızı ayırtın', text:'Cuma ve cumartesi akşamları çok yoğunuz. Masanızı önceden ayırtın, sizi bekletmeyelim.',
+      when:'Cuma – Cumartesi · 20:00 sonrası', phone: site.phone || '', whatsapp: true, popup: true});
+    if(key === 'special') Object.assign(a, {title:'Yılbaşı Gecesi', text:'Canlı müzik, özel akşam menüsü ve gece yarısı kutlaması. Kontenjan sınırlıdır!',
+      when:'31 Aralık · 21:00', price:'Kişi başı 2.500 TL', phone: site.phone || '', whatsapp: true, directions: true,
+      to: (year + 1) + '-01-01T04:00', popup: true});
+    if(key === 'newmenu') Object.assign(a, {title:'Menümüz yenilendi!', text:'Yeni imza kokteyllerimizi ve mutfağımızın yeni lezzetlerini keşfedin. Afiyet olsun!',
+      to: wallIso(n.dayStart + 14 * DAY_MS), popup: true});
+    if(key === 'birthday') Object.assign(a, {title:'Doğum gününüz mü?', text:'Doğum gününüzü Camino’da kutlayın; kimliğinizi gösterin, tatlınız bizden!', popup: false});
+    if(key === 'insta') Object.assign(a, {title:'Bizi Instagram’da takip edin', text:'Etkinlikler, yeni lezzetler ve sürprizlerden ilk siz haberdar olun.',
+      link: insta ? (/^https?:\/\//i.test(insta) ? insta : 'https://instagram.com/' + insta.replace(/^@/, '')) : '', button:'Takip Et', popup: false});
+    openAnnForm(a, true);
+    if(key === 'special') toast('Tarih, ücret ve metni kendi etkinliğinize göre düzenleyin.', false, 5000);
+    if(key === 'insta' && !insta) toast('İşletme Bilgileri’nde Instagram hesabınızı girerseniz bağlantı otomatik dolar.', false, 6000);
+  }
+  $('#ann-tpls').innerHTML = ANN_TPLS.map(t => '<button type="button" class="tpl" data-tpl="' + t.key + '"><b>+ ' + esc(t.name) + '</b><small>' + esc(t.desc) + '</small></button>').join('');
+  $('#ann-tpls').addEventListener('click', e => { const b = e.target.closest('[data-tpl]'); if(b) annTemplate(b.dataset.tpl); });
 
   /* ---------- Sosyal medya ---------- */
   function renderSocialFields(){

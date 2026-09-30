@@ -2144,6 +2144,58 @@
   ],
   "campaigns": [
     {
+      "id": "kmuo5pw3u",
+      "enabled": false,
+      "title": "Happy Hour",
+      "badge": "HAPPY HOUR",
+      "text": "Seçili içeceklerde happy hour fiyatları!",
+      "from": "",
+      "to": "",
+      "days": [],
+      "start": "16:00",
+      "end": "19:00",
+      "discount": {
+        "type": "percent",
+        "value": 20,
+        "round": 5
+      },
+      "all": false,
+      "categories": [
+        "ficilar"
+      ],
+      "items": [],
+      "popup": {
+        "enabled": true,
+        "image": "",
+        "button": "Kampanyalı Ürünleri Gör"
+      }
+    },
+    {
+      "id": "kmuo5pom4",
+      "enabled": false,
+      "title": "Yeni kampanya",
+      "badge": "",
+      "text": "",
+      "from": "",
+      "to": "",
+      "days": [],
+      "start": "",
+      "end": "",
+      "discount": {
+        "type": "percent",
+        "value": 20,
+        "round": 5
+      },
+      "all": false,
+      "categories": [],
+      "items": [],
+      "popup": {
+        "enabled": true,
+        "image": "",
+        "button": "Kampanyalı Ürünleri Gör"
+      }
+    },
+    {
       "id": "kmuo3czbn",
       "enabled": true,
       "title": "Duyuru",
@@ -2168,5 +2220,6 @@
         "button": "Menüye Göz At"
       }
     }
-  ]
+  ],
+  "events": []
 }

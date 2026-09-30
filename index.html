@@ -115,6 +115,28 @@ body.no-scroll{overflow:hidden}
 .deal-card{flex:0 0 min(260px,68vw);scroll-snap-align:start}
 .deal-card .ph{aspect-ratio:4/5}
 
+/* ---------- Etkinlikler ---------- */
+.events{padding-block:70px 10px}
+.ev{flex:0 0 min(300px,80vw);scroll-snap-align:start}
+.ev button{position:relative;display:flex;flex-direction:column;justify-content:space-between;width:100%;height:100%;min-height:250px;padding:22px;
+  border:1px solid var(--line2);overflow:hidden;isolation:isolate;transition:border-color .4s}
+.ev button:hover{border-color:var(--text)}
+.ev .ev-bg{position:absolute;inset:0;z-index:-1;background:center/cover no-repeat;filter:grayscale(1) brightness(.35);transform:scale(1.05);transition:transform 1.2s var(--ease)}
+.ev button:hover .ev-bg{transform:scale(1.12)}
+.ev-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.ev-date b{display:block;font:400 64px/.85 var(--serif)}
+.ev-date span{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--muted)}
+.ev-flag{font:600 10px/1 var(--sans);letter-spacing:.2em;padding:7px 9px;background:var(--text);color:#0a0a0a;white-space:nowrap}
+.ev-type{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--muted);margin-top:26px;display:block}
+.ev h4{font:400 26px/1.1 var(--serif);margin:8px 0 6px}
+.ev p{margin:0;color:var(--muted);font-size:13px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.ev-time{margin-top:12px;font-size:12px;letter-spacing:.16em;color:var(--text)}
+.ev.today button{background:var(--text);color:#0a0a0a;border-color:var(--text)}
+.ev.today .ev-date span,.ev.today .ev-type,.ev.today p{color:rgba(10,10,10,.6)}
+.ev.today .ev-time{color:#0a0a0a}
+.ev.today .ev-flag{background:#0a0a0a;color:var(--text)}
+.ev.today .ev-bg{display:none}
+
 /* ---------- Menü ---------- */
 .intro-block{padding-block:90px 30px;text-align:center}
 .intro-block h2{font:400 clamp(40px,7vw,84px)/.95 var(--serif);margin:16px 0 18px;letter-spacing:-.01em}
@@ -299,6 +321,13 @@ body.no-scroll{overflow:hidden}
   <div class="deal-row" id="deal-row"></div>
 </section>
 
+<section class="events wrap" id="events" hidden>
+  <div class="sec-head">
+    <div><div class="eyebrow">Etkinlikler &amp; duyurular</div><h2 class="serif">Bu hafta <em>Camino</em>’da</h2></div>
+  </div>
+  <div class="deal-row" id="ev-row"></div>
+</section>
+
 <main id="menu">
   <div class="intro-block wrap">
     <div class="eyebrow">Mutfak &amp; Bar</div>
@@ -452,8 +481,54 @@ body.no-scroll{overflow:hidden}
     }).join('');
 
     renderDeals(n);
+    renderEvents(n);
     renderTicker(n);
     observeReveal();
+  }
+
+  /* ---------- Etkinlikler ---------- */
+  const dayName = (w, o) => new Date(w).toLocaleDateString('tr-TR', Object.assign({timeZone:'UTC'}, o));
+  function evTime(ev){ return ev.start ? ev.start + (ev.end ? ' – ' + ev.end : '') : 'Tüm gün'; }
+  function evFlag(o, n){
+    if(o.live) return 'ŞU AN';
+    if(o.day === n.dayStart) return new Date(o.start).getUTCHours() >= 17 ? 'BU AKŞAM' : 'BUGÜN';
+    if(o.day === n.dayStart + 86400000) return 'YARIN';
+    return '';
+  }
+  function renderEvents(n){
+    const list = C.upcomingEvents(DATA, n, 10).slice(0, 12);
+    $('#events').hidden = !list.length;
+    $('#ev-row').innerHTML = list.map((o, i) => {
+      const ev = o.ev, t = C.eventType(ev), flag = evFlag(o, n);
+      const today = o.live || o.day === n.dayStart;
+      return '<article class="ev rv' + (today ? ' today' : '') + '" style="--i:' + (i % 5) + '"><button data-ev="' + esc(ev.id) + '|' + o.day + '">' +
+        (ev.image ? '<span class="ev-bg" style="background-image:url(\'' + esc(C.sized(ev.image, 700).replace(/'/g, '%27')) + '\')"></span>' : '') +
+        '<div class="ev-top"><div class="ev-date"><span>' + esc(dayName(o.day, {weekday:'long'})) + '</span><b>' + dayName(o.day, {day:'2-digit'}) + '</b><span>' + esc(dayName(o.day, {month:'long'})) + '</span></div>' +
+          (flag ? '<span class="ev-flag">' + flag + '</span>' : '') + '</div>' +
+        '<div><span class="ev-type">' + t.icon + ' ' + esc(t.label) + '</span><h4>' + esc(ev.title) + '</h4>' +
+          (ev.text ? '<p>' + esc(ev.text) + '</p>' : '') + '<div class="ev-time">' + esc(evTime(ev)) + '</div></div>' +
+      '</button></article>';
+    }).join('');
+  }
+  function eventPopupHtml(ev, day, n){
+    const t = C.eventType(ev);
+    const photo = ev.image ? C.sized(ev.image, 900) : C.heroPhotos(DATA.site, 900)[0];
+    const flag = evFlag(Object.assign({day}, C.eventWindow(ev, day), {live: C.eventWindow(ev, day).start <= n.wall}), n);
+    return '<button class="icon-btn" data-close-pop aria-label="Kapat">' + ICON_X + '</button>' +
+      (photo ? '<div class="ph">' + img(photo, ev.title, true) + '</div>' : '') +
+      '<div class="pop-body"><span class="pop-badge">' + t.icon + ' ' + esc(flag || t.label.toLocaleUpperCase('tr-TR')) + '</span>' +
+        '<h3>' + esc(ev.title) + '</h3>' +
+        (ev.text ? '<p>' + esc(ev.text) + '</p>' : '') +
+        '<p style="margin-top:12px;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint)">' +
+          esc(dayName(day, {day:'numeric', month:'long', weekday:'long'})) + ' · ' + esc(evTime(ev)) + '</p>' +
+        '<button class="cta" data-pop-go="menu">Menüye Göz At</button>' +
+      '</div>';
+  }
+  function openEvent(id, day){
+    const ev = (DATA.events || []).find(e => e.id === id);
+    if(!ev) return;
+    $('#pop').innerHTML = eventPopupHtml(ev, +day, C.now());
+    openLayer('pop');
   }
 
   function dishHtml(cat, it, n, feature, i){
@@ -479,7 +554,8 @@ body.no-scroll{overflow:hidden}
 
   /* ---------- Kampanyalar ---------- */
   function campaignSignature(n){
-    return activeCampaigns(n).map(x => x.c.id + ':' + x.st.active + ':' + (x.st.startsAt || '')).join('|') + '|' + (C.openState(DATA.site, n) || {}).open;
+    return activeCampaigns(n).map(x => x.c.id + ':' + x.st.active + ':' + (x.st.startsAt || '')).join('|') + '|' + (C.openState(DATA.site, n) || {}).open +
+      '|' + C.upcomingEvents(DATA, n, 10).map(o => o.ev.id + o.day + o.live).join(',') + '|' + n.dayStart;
   }
   function dealItems(n){
     const out = [];
@@ -516,10 +592,14 @@ body.no-scroll{overflow:hidden}
       if(st.active){
         hot = true;
         msgs.push('<b>' + esc(C.discountLabel(c)) + '</b> şimdi aktif' + (st.endsAt ? ' · <span data-ends="' + st.endsAt + '"></span> kaldı' : ''));
-        if(c.title && c.title !== C.discountLabel(c)) msgs.push(esc(c.title));
+        if(c.title && c.title.toLocaleUpperCase('tr-TR') !== C.discountLabel(c).toLocaleUpperCase('tr-TR')) msgs.push(esc(c.title));
       }else if(st.startsAt){
         msgs.push('Bugün ' + esc(C.hm(new Date(st.startsAt).getUTCHours() * 60 + new Date(st.startsAt).getUTCMinutes())) + ' · <b>' + esc(C.discountLabel(c)) + '</b> başlıyor');
       }
+    });
+    C.upcomingEvents(DATA, n, 1).filter(o => o.live || o.day === n.dayStart).forEach(o => {
+      const t = C.eventType(o.ev);
+      msgs.push((o.live ? 'Şu an' : (evFlag(o, n) === 'BU AKŞAM' ? 'Bu akşam ' : 'Bugün ') + (o.ev.start || '')) + ' · ' + t.icon + ' <b>' + esc(o.ev.title) + '</b>');
     });
     if(!msgs.length){
       msgs.push(esc(site.name || 'Camino Pub'), 'Pub &amp; Bistro', 'Her gün ' + esc(site.opening || '') + ' – ' + esc(site.closing || ''), 'İmza kokteyller', 'Soğuk fıçı bira', 'Afiyet olsun');
@@ -535,7 +615,16 @@ body.no-scroll{overflow:hidden}
   function maybePopup(){
     const n = C.now();
     const hit = activeCampaigns(n).find(x => x.st.active && x.c.popup && x.c.popup.enabled);
-    if(!hit) return;
+    if(!hit){
+      // Kampanya popup'ı yoksa: bugünkü (popup'ı açık) etkinlik
+      const o = C.upcomingEvents(DATA, n, 1).find(x => x.ev.popup && (x.live || x.day === n.dayStart));
+      if(!o) return;
+      const key = 'cqr-ev-' + o.ev.id + '-' + o.day + '-' + (o.ev.title + o.ev.text + o.ev.start).length;
+      try{ if(sessionStorage.getItem(key)) return; sessionStorage.setItem(key, '1'); }catch(e){}
+      $('#pop').innerHTML = eventPopupHtml(o.ev, o.day, n);
+      openLayer('pop');
+      return;
+    }
     // Aynı oturumda aynı gün bir kez gösterilir; kampanya düzenlenirse (içerik değişirse) yeniden gösterilir
     const ver = JSON.stringify([hit.c.title, hit.c.text, hit.c.badge, hit.c.popup, hit.c.discount, hit.c.start, hit.c.end, hit.c.from, hit.c.to]);
     let h = 0; for(let i = 0; i < ver.length; i++) h = (h * 31 + ver.charCodeAt(i)) | 0;
@@ -625,10 +714,13 @@ body.no-scroll{overflow:hidden}
   document.addEventListener('click', e => {
     const open = e.target.closest('[data-open]');
     if(open){ e.preventDefault(); openSheet(open.dataset.open); return; }
+    const evBtn = e.target.closest('[data-ev]');
+    if(evBtn){ const [id, day] = evBtn.dataset.ev.split('|'); openEvent(id, day); return; }
     if(e.target.closest('[data-close-sheet],[data-close-pop]')){ closeLayer(); return; }
-    if(e.target.closest('[data-pop-go]')){
+    const go = e.target.closest('[data-pop-go]');
+    if(go){
       closeLayer();
-      setTimeout(() => { const t = $('#deals').hidden ? $('#menu') : $('#deals'); t.scrollIntoView({behavior:'smooth'}); }, 80);
+      setTimeout(() => { const t = (go.dataset.popGo === 'menu' || $('#deals').hidden) ? $('#menu') : $('#deals'); t.scrollIntoView({behavior:'smooth'}); }, 80);
     }
   });
 

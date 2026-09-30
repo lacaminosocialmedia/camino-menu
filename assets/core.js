@@ -111,6 +111,7 @@
     data.site = data.site || {};
     data.categories = data.categories || [];
     data.campaigns = data.campaigns || [];
+    data.events = data.events || [];
     const used = new Set();
     data.categories.forEach(cat => (cat.items || []).forEach(it => { if(it.id) used.add(it.id); }));
     data.categories.forEach(cat => {
@@ -279,6 +280,67 @@
       popup: {enabled: true, image: '', button: 'Kampanyalı Ürünleri Gör'}};
   }
 
+  // Takvim için: kampanya o gün (herhangi bir saatte) geçerli mi?
+  function campaignOnDay(c, dayStart){
+    if(!c || !c.enabled) return null;
+    const from = parseWall(c.from), to = parseWall(c.to);
+    if(from != null && from >= dayStart + DAY_MS) return null;
+    if(to != null && to <= dayStart) return null;
+    const days = Array.isArray(c.days) ? c.days : [];
+    if(days.length && !days.includes(new Date(dayStart).getUTCDay())) return null;
+    const s = parseHM(c.start), e = parseHM(c.end);
+    return {time: s != null && e != null ? c.start + '–' + c.end : 'Tüm gün'};
+  }
+
+  /* ---------- Etkinlikler / duyurular ---------- */
+  // Etkinlik: {id, type, title, text, date:'YYYY-MM-DD', start, end, repeat:'none'|'weekly', until, image, popup, published}
+  const EVENT_TYPES = [
+    {key:'music', label:'Canlı Müzik', icon:'♪'}, {key:'match', label:'Maç Yayını', icon:'◉'},
+    {key:'party', label:'DJ / Parti', icon:'✦'}, {key:'quiz', label:'Quiz Gecesi', icon:'?'},
+    {key:'special', label:'Özel Gün', icon:'★'}, {key:'announce', label:'Duyuru', icon:'!'},
+    {key:'closed', label:'Kapalıyız / Özel saat', icon:'—'}
+  ];
+  const EVENT_TYPE = Object.fromEntries(EVENT_TYPES.map(t => [t.key, t]));
+  function eventType(ev){ return EVENT_TYPE[ev.type] || EVENT_TYPE.announce; }
+  // Etkinliğin [fromDay, toDay] aralığındaki günleri (gün başlangıcı, duvar saati ms)
+  function eventDays(ev, fromDay, toDay){
+    const base = parseWall(ev.date);
+    if(base == null) return [];
+    if(ev.repeat !== 'weekly') return base >= fromDay && base <= toDay ? [base] : [];
+    const until = parseWall(ev.until);
+    const W = 7 * DAY_MS, out = [];
+    let d = base;
+    if(fromDay > base) d = base + Math.ceil((fromDay - base) / W) * W;
+    for(; d <= toDay && (until == null || d <= until); d += W) out.push(d);
+    return out;
+  }
+  function eventWindow(ev, day){
+    const s = parseHM(ev.start), e = parseHM(ev.end);
+    const start = day + (s != null ? s * 60000 : 0);
+    let end = day + DAY_MS;
+    if(e != null) end = day + e * 60000 + (s != null && e <= s ? DAY_MS : 0);
+    else if(s != null) end = Math.max(day + DAY_MS, start + 4 * 3600000);   // bitiş yoksa gece boyunca
+    return {start, end};
+  }
+  // Menüde gösterilecek yaklaşan etkinlikler (bitmemiş olanlar), tarih sırasıyla
+  function upcomingEvents(data, n, days){
+    n = n || now();
+    const out = [];
+    (data.events || []).forEach(ev => {
+      if(ev.published === false) return;
+      eventDays(ev, n.dayStart - DAY_MS, n.dayStart + (days || 14) * DAY_MS).forEach(day => {
+        const w = eventWindow(ev, day);
+        if(w.end <= n.wall) return;
+        out.push({ev, day, start: w.start, end: w.end, live: w.start <= n.wall, today: day === n.dayStart || w.start <= n.wall});
+      });
+    });
+    return out.sort((a, b) => a.start - b.start);
+  }
+  function newEvent(date){
+    return {id: 'e' + Date.now().toString(36), type: 'music', title: 'Canlı Müzik', text: '', date: date || '',
+      start: '21:00', end: '', repeat: 'none', until: '', image: '', popup: false, published: true};
+  }
+
   /* ---------- Açık / kapalı ---------- */
   function openState(site, n){
     n = n || now();
@@ -293,6 +355,7 @@
     itemPhoto, isDefaultPhoto, coverPhoto, heroPhotos, layoutFor, sized,
     now, setNowOverride, parseWall, parseHM, hm,
     campaignState, describeSchedule, campaignTargets, applyDiscount, discountLabel, priceInfo, formatCountdown, newCampaign,
+    campaignOnDay, EVENT_TYPES, eventType, eventDays, eventWindow, upcomingEvents, newEvent,
     openState
   };
 })(window);

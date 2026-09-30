@@ -123,6 +123,80 @@ h1,h2,h3{font-family:'Playfair Display',serif;margin:0}
 .pick-results button:hover{background:var(--accent-soft)}
 .preview-box{margin-top:10px;padding:10px 12px;background:#faf8f4;border-radius:10px;font-size:13px}
 
+/* Genel bakış */
+.dash-top{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:14px}
+.dash-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px}
+@media(max-width:760px){.dash-top,.dash-grid{grid-template-columns:1fr}}
+.dash-now .clock{font-family:'Playfair Display',serif;font-size:40px;line-height:1}
+.dash-now .date{color:var(--muted);margin-top:4px}
+.dash-now .state{margin-top:14px;font-weight:800;font-size:16px}
+.dash-now .state i{display:inline-block;width:10px;height:10px;border-radius:50%;background:#bbb;margin-right:7px}
+.dash-now .state.open i{background:var(--ok)}
+.dash-now .stats{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.stat{background:var(--accent-soft);border-radius:10px;padding:8px 12px;font-size:12px;color:var(--muted)}
+.stat b{display:block;font-size:18px;color:var(--text)}
+.quick{display:flex;flex-wrap:wrap;gap:8px}
+.alert{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-top:1px solid var(--line)}
+.alert:first-child{border-top:0}
+.alert .ic{flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:13px;background:#eee;color:#555}
+.alert.warn .ic{background:#fff0d6;color:#9a5b00}
+.alert.ok .ic{background:#e3f4e4;color:var(--ok)}
+.alert .tx{flex:1;min-width:0}
+.alert .tx small{display:block;color:var(--muted)}
+.live-row{display:flex;gap:10px;align-items:center;padding:9px 0;border-top:1px solid var(--line);flex-wrap:wrap}
+.live-row:first-child{border-top:0}
+.live-row .tx{flex:1 1 160px;min-width:0}
+.live-row .tx small{display:block;color:var(--muted)}
+.week-day{display:flex;gap:12px;padding:10px 0;border-top:1px solid var(--line);align-items:flex-start;cursor:pointer}
+.week-day:first-child{border-top:0}
+.week-day .d{flex:none;width:92px;font-weight:800}
+.week-day .d small{display:block;color:var(--muted);font-weight:500}
+.week-day.is-today .d{color:var(--accent)}
+
+/* Takvim */
+.cal-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.cal-head h2{margin:0 6px;min-width:150px;text-align:center}
+.cal-legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-bottom:10px}
+.cal-legend span{display:inline-flex;align-items:center}
+.cal-cell .chips-wrap{display:flex;flex-direction:column;gap:3px;min-width:0}
+.lg{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.lg.ev,.cchip.ev{background:#1c1a18;color:#fff}
+.lg.camp{background:var(--accent)}
+.lg.off{border:1px dashed #999}
+.cal-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
+.cal-dow{font-size:11px;font-weight:800;color:var(--muted);text-align:center;padding:4px 0;text-transform:uppercase;letter-spacing:.06em}
+.cal-cell{min-height:96px;border:1px solid var(--line);border-radius:10px;padding:5px;background:#fff;cursor:pointer;display:flex;flex-direction:column;gap:3px;text-align:left;font:inherit;min-width:0}
+.cal-cell:hover{border-color:var(--accent)}
+.cal-cell.out{opacity:.4}
+.cal-cell.today{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.cal-cell.sel{background:var(--accent-soft)}
+.cal-cell .num{font-weight:800;font-size:13px}
+.cal-cell.today .num{color:var(--accent)}
+.cchip{display:block;font-size:10.5px;line-height:1.25;padding:3px 5px;border-radius:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cchip.camp{background:#f4e6d8;color:#6f4c2d}
+.cchip.off{background:#fff;color:var(--muted);border:1px dashed #bbb}
+.cmore{font-size:10.5px;color:var(--muted)}
+@media(max-width:640px){
+  .cal-cell{min-height:58px;padding:4px}
+  .cchip{font-size:0;padding:0;width:8px;height:8px;border-radius:50%;display:inline-block}
+  .cal-cell .chips-wrap{flex-direction:row;flex-wrap:wrap;gap:3px}
+  .cmore{font-size:9px}
+}
+.day-item{display:flex;gap:10px;align-items:center;padding:10px 0;border-top:1px solid var(--line);flex-wrap:wrap}
+.day-item .tx{flex:1 1 200px;min-width:0}
+.day-item .tx small{display:block;color:var(--muted)}
+.ev-row{display:flex;gap:10px;align-items:center;padding:10px 0;border-top:1px solid var(--line);flex-wrap:wrap}
+.ev-row.past{opacity:.5}
+.ev-row .dt{flex:none;width:110px;font-weight:800;font-size:13px}
+.ev-row .dt small{display:block;color:var(--muted);font-weight:500}
+.ev-row .tx{flex:1 1 180px;min-width:0}
+.ev-row .tx small{display:block;color:var(--muted)}
+
+/* Pencere */
+.modal-veil{position:fixed;inset:0;z-index:80;background:rgba(0,0,0,.45);display:flex;align-items:flex-start;justify-content:center;padding:30px 12px;overflow:auto}
+.modal{background:#fff;border-radius:18px;box-shadow:0 20px 60px rgba(0,0,0,.25);padding:20px;width:min(640px,100%)}
+.modal h2{font-size:24px;margin-bottom:12px}
+
 /* Giriş ekranı */
 body.locked .topbar,body.locked .tabs,body.locked .page{display:none!important}
 .lock{display:none;min-height:100vh;align-items:center;justify-content:center;padding:24px 16px}
@@ -180,15 +254,92 @@ body.locked .lock{display:flex}
 </div>
 
 <div class="tabs">
-  <button class="tab active" data-tab="menu">Menü</button>
+  <button class="tab active" data-tab="home">Genel Bakış</button>
+  <button class="tab" data-tab="menu">Menü</button>
+  <button class="tab" data-tab="calendar">Takvim</button>
   <button class="tab" data-tab="campaigns">Kampanyalar</button>
   <button class="tab" data-tab="site">İşletme Bilgileri</button>
   <button class="tab" data-tab="qr">QR Kod</button>
   <button class="tab" data-tab="security">Güvenlik</button>
 </div>
 
+<!-- GENEL BAKIŞ -->
+<div class="page" id="tab-home">
+  <div class="dash-top">
+    <div class="panel dash-now" id="dash-now"></div>
+    <div class="panel">
+      <h2>Hızlı işlemler</h2>
+      <div class="quick">
+        <button class="btn primary" data-quick="event">+ Etkinlik / duyuru</button>
+        <button class="btn" data-quick="campaign">+ Kampanya</button>
+        <button class="btn" data-quick="hh">+ Happy Hour</button>
+        <button class="btn" data-quick="calendar">Takvimi aç</button>
+        <a class="btn" href="index.html" target="_blank" rel="noopener">Menüyü aç ↗</a>
+        <button class="btn" data-quick="qr">QR kod</button>
+      </div>
+      <label class="switch" style="margin-top:14px"><input type="checkbox" id="dash-prices"> Menüde fiyatları göster</label>
+    </div>
+  </div>
+  <div class="dash-grid">
+    <div class="panel"><h2>Bildirimler</h2><div id="dash-alerts"></div></div>
+    <div class="panel"><h2>Şu an menüde</h2><div id="dash-live"></div></div>
+  </div>
+  <div class="panel"><h2>Önümüzdeki 7 gün</h2><div id="dash-week"></div></div>
+</div>
+
+<!-- TAKVİM -->
+<div class="page hide" id="tab-calendar">
+  <div class="panel">
+    <div class="cal-head">
+      <button class="btn sm" id="cal-prev" aria-label="Önceki ay">‹</button>
+      <h2 id="cal-title"></h2>
+      <button class="btn sm" id="cal-next" aria-label="Sonraki ay">›</button>
+      <button class="btn sm" id="cal-today">Bugün</button>
+      <span style="flex:1"></span>
+      <button class="btn primary" id="ev-add">+ Etkinlik / duyuru ekle</button>
+    </div>
+    <div class="cal-legend"><span><i class="lg ev"></i>Etkinlik / duyuru</span><span><i class="lg camp"></i>Kampanya</span><span><i class="lg off"></i>Yayında değil</span></div>
+    <div class="cal-grid" id="cal-grid"></div>
+  </div>
+  <div class="panel" id="cal-day"></div>
+  <div class="panel"><h2>Tüm etkinlik ve duyurular</h2><div id="ev-list"></div></div>
+</div>
+
+<!-- Etkinlik düzenleme penceresi -->
+<div class="modal-veil hide" id="ev-modal">
+  <form class="modal" id="ev-form" autocomplete="off">
+    <h2 id="ev-form-title">Etkinlik</h2>
+    <div class="grid">
+      <div class="field"><label>Tür</label><select id="evf-type"></select></div>
+      <div class="field"><label>Başlık</label><input id="evf-title" required placeholder="ör. Canlı Müzik: Akustik Gece"></div>
+      <div class="field" style="grid-column:1/-1"><label>Açıklama</label><textarea id="evf-text" placeholder="ör. Sahnede Deniz Yılmaz. Rezervasyon için arayın."></textarea></div>
+      <div class="field"><label>Tarih</label><input type="date" id="evf-date" required></div>
+      <div class="field"><label>Başlangıç saati</label><input type="time" id="evf-start"></div>
+      <div class="field"><label>Bitiş saati (isteğe bağlı)</label><input type="time" id="evf-end"></div>
+      <div class="field"><label>Tekrar</label><select id="evf-repeat"><option value="none">Tek seferlik</option><option value="weekly">Her hafta aynı gün</option></select></div>
+      <div class="field" id="evf-until-wrap"><label>Tekrar bitişi (isteğe bağlı)</label><input type="date" id="evf-until"></div>
+    </div>
+    <div class="photo-row">
+      <div class="thumb wide" id="evf-thumb"></div>
+      <div class="field"><label>Fotoğraf (isteğe bağlı)</label><input id="evf-image" placeholder="https://… veya yükleyin">
+        <div class="row-actions" style="margin-top:6px"><button type="button" class="btn sm" id="evf-upload">Fotoğraf yükle</button></div></div>
+    </div>
+    <div class="row-actions" style="margin-top:14px">
+      <label class="switch small"><input type="checkbox" id="evf-published"> Menüde göster</label>
+      <label class="switch small"><input type="checkbox" id="evf-popup"> O gün menü açılınca popup göster</label>
+    </div>
+    <p class="hint">Etkinlik, bitiş saatine kadar (bitiş yoksa gece boyunca) menüdeki “Bu hafta Camino’da” bölümünde görünür, sonra kendiliğinden kalkar.</p>
+    <div class="row-actions" style="margin-top:16px">
+      <button type="submit" class="btn primary">Tamam</button>
+      <button type="button" class="btn" id="evf-cancel">Vazgeç</button>
+      <span style="flex:1"></span>
+      <button type="button" class="btn danger" id="evf-delete">Sil</button>
+    </div>
+  </form>
+</div>
+
 <!-- MENÜ -->
-<div class="page" id="tab-menu">
+<div class="page hide" id="tab-menu">
   <div class="banner hide" id="prices-off-banner">Tüm fiyatlar şu an menüde <b>gizli</b>.</div>
   <div class="panel">
     <div class="toolbar">
@@ -335,8 +486,10 @@ body.locked .lock{display:flex}
     toast._t = setTimeout(() => t.classList.add('hide'), ms || 3500);
   }
   function setDirty(v){
+    const changed = dirty !== v;
     dirty = v;
     $('#dirty').classList.toggle('hide', !v);
+    if(changed && state && !$('#tab-home').classList.contains('hide')) renderDash();
   }
   window.addEventListener('beforeunload', e => { if(dirty){ e.preventDefault(); e.returnValue = ''; } });
 
@@ -532,6 +685,8 @@ body.locked .lock{display:flex}
     renderMenu();
     renderCampaigns();
     renderSite();
+    renderDash();
+    if(!$('#tab-calendar').classList.contains('hide')) renderCalendar();
   }
 
   function renderMenu(){
@@ -1076,6 +1231,260 @@ body.locked .lock{display:flex}
     });
   }, 30000);
 
+  /* ---------- Ortak tarih yardımcıları ---------- */
+  const fmtDay = (w, o) => new Date(w).toLocaleDateString('tr-TR', Object.assign({timeZone:'UTC'}, o));
+  const isoDay = w => new Date(w).toISOString().slice(0, 10);
+  // Bir günün etkinlik ve kampanyaları (takvim, genel bakış için)
+  function dayItems(day){
+    const evs = [];
+    state.events.forEach(ev => { if(Core.eventDays(ev, day, day).length) evs.push(ev); });
+    evs.sort((a, b) => (a.start || '99').localeCompare(b.start || '99'));
+    const camps = [];
+    // Geçmiş günlerde kampanya gösterilmez (o gün gerçekten açık olup olmadığı bilinmez)
+    if(day >= Core.now().dayStart) state.campaigns.forEach(c => { const info = Core.campaignOnDay(c, day); if(info) camps.push({c, info}); });
+    return {evs, camps};
+  }
+  function evLine(ev){ const t = Core.eventType(ev); return t.icon + ' ' + (ev.start ? ev.start + ' ' : '') + ev.title; }
+
+  /* ---------- Etkinlikler ---------- */
+  let editing = null;   // {ev, isNew}
+  $('#evf-type').innerHTML = Core.EVENT_TYPES.map(t => '<option value="' + t.key + '">' + t.icon + ' ' + t.label + '</option>').join('');
+  function openEventForm(ev, isNew){
+    editing = {ev, isNew};
+    $('#ev-form-title').textContent = isNew ? 'Yeni etkinlik / duyuru' : 'Etkinliği düzenle';
+    $('#evf-type').value = ev.type || 'music';
+    $('#evf-title').value = ev.title || '';
+    $('#evf-text').value = ev.text || '';
+    $('#evf-date').value = ev.date || '';
+    $('#evf-start').value = ev.start || '';
+    $('#evf-end').value = ev.end || '';
+    $('#evf-repeat').value = ev.repeat || 'none';
+    $('#evf-until').value = ev.until || '';
+    $('#evf-image').value = ev.image || '';
+    $('#evf-published').checked = ev.published !== false;
+    $('#evf-popup').checked = !!ev.popup;
+    $('#evf-delete').classList.toggle('hide', isNew);
+    syncEventForm();
+    $('#ev-modal').classList.remove('hide');
+    setTimeout(() => $('#evf-title').focus(), 50);
+  }
+  function syncEventForm(){
+    $('#evf-until-wrap').classList.toggle('hide', $('#evf-repeat').value !== 'weekly');
+    const im = $('#evf-image').value.trim();
+    $('#evf-thumb').style.backgroundImage = im ? 'url("' + previewUrl(im).replace(/"/g, '%22') + '")' : '';
+    $('#evf-thumb').innerHTML = im ? '' : '<small>Fotoğraf yok</small>';
+  }
+  function closeEventForm(){ $('#ev-modal').classList.add('hide'); editing = null; }
+  // Tür değişince başlık hâlâ varsayılan ise türün adıyla güncellenir
+  $('#evf-type').addEventListener('change', () => {
+    const t = $('#evf-title');
+    if(!t.value.trim() || Core.EVENT_TYPES.some(x => x.label === t.value)) t.value = Core.eventType({type: $('#evf-type').value}).label;
+  });
+  ['#evf-repeat', '#evf-image'].forEach(s => $(s).addEventListener('input', syncEventForm));
+  $('#evf-upload').addEventListener('click', () => pickAndUpload('etkinlik-' + ($('#evf-title').value || 'foto'), p => { $('#evf-image').value = p; syncEventForm(); }));
+  $('#evf-cancel').addEventListener('click', closeEventForm);
+  $('#ev-modal').addEventListener('click', e => { if(e.target.id === 'ev-modal') closeEventForm(); });
+  $('#evf-delete').addEventListener('click', () => {
+    if(!editing || !confirm('“' + editing.ev.title + '” silinsin mi?' + (editing.ev.repeat === 'weekly' ? ' (Tekrarlayan etkinliğin tüm haftaları silinir.)' : ''))) return;
+    state.events = state.events.filter(e => e !== editing.ev);
+    closeEventForm(); setDirty(true); refreshPlanner();
+    toast('Etkinlik silindi. Yayına almak için “Kaydet ve Yayınla”ya basın.');
+  });
+  $('#ev-form').addEventListener('submit', e => {
+    e.preventDefault();
+    const ev = editing.ev;
+    Object.assign(ev, {
+      type: $('#evf-type').value, title: $('#evf-title').value.trim(), text: $('#evf-text').value.trim(),
+      date: $('#evf-date').value, start: $('#evf-start').value, end: $('#evf-end').value,
+      repeat: $('#evf-repeat').value, until: $('#evf-repeat').value === 'weekly' ? $('#evf-until').value : '',
+      image: $('#evf-image').value.trim(), published: $('#evf-published').checked, popup: $('#evf-popup').checked
+    });
+    if(editing.isNew) state.events.push(ev);
+    state.events.sort((a, b) => (a.date + (a.start || '')).localeCompare(b.date + (b.start || '')));
+    const d = Core.parseWall(ev.date);
+    if(d != null){ selDay = d; calMonth = {y: new Date(d).getUTCFullYear(), m: new Date(d).getUTCMonth()}; }
+    closeEventForm(); setDirty(true); refreshPlanner();
+    toast('Etkinlik kaydedildi. Yayına almak için “Kaydet ve Yayınla”ya basın.', false, 5000);
+  });
+  function addEvent(day){
+    openEventForm(Core.newEvent(isoDay(day != null ? day : (selDay != null ? selDay : Core.now().dayStart))), true);
+  }
+
+  /* ---------- Takvim ---------- */
+  let calMonth = null, selDay = null;
+  function renderCalendar(){
+    const n = Core.now();
+    if(!calMonth){ const d = new Date(n.dayStart); calMonth = {y: d.getUTCFullYear(), m: d.getUTCMonth()}; }
+    if(selDay == null) selDay = n.dayStart;
+    const first = Date.UTC(calMonth.y, calMonth.m, 1);
+    $('#cal-title').textContent = fmtDay(first, {month:'long', year:'numeric'});
+    const offset = (new Date(first).getUTCDay() + 6) % 7;   // Pazartesi ile başla
+    const start = first - offset * DAY_MS;
+    let html = Core.DAYS.map(x => '<div class="cal-dow">' + x.s + '</div>').join('');
+    for(let i = 0; i < 42; i++){
+      const day = start + i * DAY_MS;
+      const inMonth = new Date(day).getUTCMonth() === calMonth.m;
+      if(i >= 35 && !inMonth) break;
+      const {evs, camps} = dayItems(day);
+      const chips = evs.map(ev => '<span class="cchip ' + (ev.published === false ? 'off' : 'ev') + '" title="' + esc(evLine(ev)) + '">' + esc(evLine(ev)) + '</span>')
+        .concat(camps.map(x => '<span class="cchip camp" title="' + esc(x.c.title + ' · ' + x.info.time) + '">% ' + esc(Core.discountLabel(x.c)) + '</span>'));
+      html += '<button type="button" class="cal-cell' + (inMonth ? '' : ' out') + (day === n.dayStart ? ' today' : '') + (day === selDay ? ' sel' : '') + '" data-day="' + day + '">' +
+        '<span class="num">' + new Date(day).getUTCDate() + '</span><span class="chips-wrap">' + chips.slice(0, 3).join('') + '</span>' +
+        (chips.length > 3 ? '<span class="cmore">+' + (chips.length - 3) + ' daha</span>' : '') + '</button>';
+    }
+    $('#cal-grid').innerHTML = html;
+    renderDayPanel();
+    renderEventList();
+  }
+  function renderDayPanel(){
+    const day = selDay, n = Core.now();
+    const {evs, camps} = dayItems(day);
+    const title = fmtDay(day, {day:'numeric', month:'long', weekday:'long'}) + (day === n.dayStart ? ' · Bugün' : '');
+    $('#cal-day').innerHTML = '<div class="cal-head" style="margin:0"><h2 style="margin:0;text-align:left">' + esc(title) + '</h2><span style="flex:1"></span>' +
+        '<button class="btn primary sm" data-dact="add">+ Bu güne etkinlik ekle</button></div>' +
+      (!evs.length && !camps.length ? '<p class="hint">Bu gün için planlanmış etkinlik veya kampanya yok.</p>' : '') +
+      evs.map(ev => { const t = Core.eventType(ev); return '<div class="day-item"><span class="lg ' + (ev.published === false ? 'off' : 'ev') + '"></span><div class="tx"><b>' + t.icon + ' ' + esc(ev.title) + '</b>' +
+        '<small>' + esc(t.label) + ' · ' + esc(ev.start ? ev.start + (ev.end ? '–' + ev.end : '') : 'Tüm gün') + (ev.repeat === 'weekly' ? ' · her hafta' : '') + (ev.popup ? ' · popup' : '') + (ev.published === false ? ' · yayında değil' : '') + '</small></div>' +
+        '<button class="btn sm" data-dact="edit" data-id="' + esc(ev.id) + '">Düzenle</button></div>'; }).join('') +
+      camps.map(x => '<div class="day-item"><span class="lg camp"></span><div class="tx"><b>% ' + esc(x.c.title) + '</b><small>Kampanya · ' + esc(Core.describeSchedule(x.c)) + '</small></div>' +
+        '<button class="btn sm" data-dact="camp" data-id="' + esc(x.c.id) + '">Kampanyayı aç</button></div>').join('');
+  }
+  function renderEventList(){
+    const n = Core.now();
+    if(!state.events.length){ $('#ev-list').innerHTML = '<p class="hint">Henüz etkinlik yok. “+ Etkinlik / duyuru ekle” ile başlayın.</p>'; return; }
+    // Yaklaşanlar önce (tarih sırasıyla), geçmişler en sonda
+    const key = ev => { const d = Core.parseWall(ev.date) || 0, u = Core.parseWall(ev.until);
+      const past = ev.repeat === 'weekly' ? (u != null && u < n.dayStart) : d < n.dayStart;
+      const next = ev.repeat === 'weekly' && !past ? (Core.eventDays(ev, n.dayStart, n.dayStart + 7 * DAY_MS)[0] || d) : d;
+      return (past ? 1e15 : 0) + next + (Core.parseHM(ev.start) || 0) * 60000; };
+    $('#ev-list').innerHTML = state.events.slice().sort((a, b) => key(a) - key(b)).map(ev => {
+      const t = Core.eventType(ev), d = Core.parseWall(ev.date), u = Core.parseWall(ev.until);
+      const past = ev.repeat === 'weekly' ? (u != null && u < n.dayStart) : (d != null && d < n.dayStart);
+      return '<div class="ev-row' + (past ? ' past' : '') + '"><div class="dt">' + (d != null ? esc(fmtDay(d, {day:'numeric', month:'short'})) : '—') +
+          '<small>' + (ev.repeat === 'weekly' ? 'Her ' + esc(fmtDay(d, {weekday:'long'})) : (d != null ? esc(fmtDay(d, {weekday:'long'})) : '')) + '</small></div>' +
+        '<div class="tx"><b>' + t.icon + ' ' + esc(ev.title) + '</b><small>' + esc(t.label) + ' · ' + esc(ev.start || 'Tüm gün') + (past ? ' · geçti' : '') + (ev.published === false ? ' · yayında değil' : '') + (ev.popup ? ' · popup' : '') + '</small></div>' +
+        '<label class="switch small" title="Menüde göster"><input type="checkbox" data-evpub="' + esc(ev.id) + '"' + (ev.published !== false ? ' checked' : '') + '> Yayında</label>' +
+        '<button class="btn sm" data-dact="edit" data-id="' + esc(ev.id) + '">Düzenle</button></div>';
+    }).join('');
+  }
+  function refreshPlanner(){
+    if(!$('#tab-calendar').classList.contains('hide')) renderCalendar();
+    if(!$('#tab-home').classList.contains('hide')) renderDash();
+  }
+  $('#cal-prev').addEventListener('click', () => { calMonth.m--; if(calMonth.m < 0){ calMonth.m = 11; calMonth.y--; } renderCalendar(); });
+  $('#cal-next').addEventListener('click', () => { calMonth.m++; if(calMonth.m > 11){ calMonth.m = 0; calMonth.y++; } renderCalendar(); });
+  $('#cal-today').addEventListener('click', () => { calMonth = null; selDay = null; renderCalendar(); });
+  $('#ev-add').addEventListener('click', () => addEvent());
+  $('#cal-grid').addEventListener('click', e => {
+    const c = e.target.closest('[data-day]');
+    if(!c) return;
+    selDay = +c.dataset.day;
+    renderCalendar();
+    if(window.innerWidth < 760) $('#cal-day').scrollIntoView({behavior:'smooth', block:'start'});
+  });
+  // Gün paneli, etkinlik listesi ve genel bakıştaki düğmeler
+  document.addEventListener('click', e => {
+    const b = e.target.closest('[data-dact]');
+    if(!b) return;
+    const act = b.dataset.dact;
+    if(act === 'add') addEvent(selDay);
+    if(act === 'edit'){ const ev = state.events.find(x => x.id === b.dataset.id); if(ev) openEventForm(ev, false); }
+    if(act === 'camp'){ const c = state.campaigns.find(x => x.id === b.dataset.id); if(c){ openCamps.add(c); showTab('campaigns'); renderCampaigns(); } }
+    if(act === 'day'){ selDay = +b.dataset.day; const d = new Date(selDay); calMonth = {y: d.getUTCFullYear(), m: d.getUTCMonth()}; showTab('calendar'); }
+    if(act === 'tab') showTab(b.dataset.tab);
+    if(act === 'save') save();
+    if(act === 'camp-off'){ const c = state.campaigns.find(x => x.id === b.dataset.id); if(c){ c.enabled = false; setDirty(true); renderDash(); renderCampaigns(); toast('Kampanya kapatıldı. “Kaydet ve Yayınla” ile yayına alın.'); } }
+  });
+  document.addEventListener('change', e => {
+    const id = e.target.dataset.evpub;
+    if(id){ const ev = state.events.find(x => x.id === id); if(ev){ ev.published = e.target.checked; setDirty(true); refreshPlanner(); } }
+    const cid = e.target.dataset.campon;
+    if(cid){ const c = state.campaigns.find(x => x.id === cid); if(c){ c.enabled = e.target.checked; setDirty(true); renderDash(); renderCampaigns(); } }
+  });
+
+  /* ---------- Genel bakış ---------- */
+  function alerts(){
+    const out = [], n = Core.now();
+    const add = (kind, text, sub, btn) => out.push({kind, text, sub, btn});
+    if(dirty) add('warn', 'Kaydedilmemiş değişiklikler var', 'Müşteriler değişiklikleri kaydedip yayınlayana kadar göremez.', '<button class="btn sm primary" data-dact="save">Kaydet ve Yayınla</button>');
+    if(state.site.showPrices === false) add('warn', 'Menüde tüm fiyatlar gizli', '', '<button class="btn sm" data-dact="tab" data-tab="menu">Menüye git</button>');
+    const hiddenCats = state.categories.filter(c => c.hidden);
+    if(hiddenCats.length) add('info', 'Gizli kategoriler: ' + hiddenCats.map(c => c.title).join(', '), 'Bu kategoriler müşteriye görünmüyor.', '<button class="btn sm" data-dact="tab" data-tab="menu">Menüye git</button>');
+    const noPrice = [];
+    state.categories.forEach(c => { if(!c.hidden) c.items.forEach(i => { if(!i.hidden && !String(i.price || '').trim()) noPrice.push(i.name); }); });
+    if(noPrice.length) add('warn', noPrice.length + ' üründe fiyat boş', noPrice.slice(0, 5).join(', ') + (noPrice.length > 5 ? '…' : ''), '<button class="btn sm" data-dact="tab" data-tab="menu">Menüye git</button>');
+    state.campaigns.forEach(c => {
+      if(!c.enabled) return;
+      const st = Core.campaignState(c, n);
+      if(st.expired) add('warn', '“' + c.title + '” kampanyasının süresi doldu ama hâlâ açık', 'Menüde görünmüyor; listeyi temiz tutmak için kapatabilirsiniz.', '<button class="btn sm" data-dact="camp-off" data-id="' + esc(c.id) + '">Kapat</button>');
+      const to = Core.parseWall(c.to);
+      if(!st.expired && to != null && to - n.wall < DAY_MS) add('info', '“' + c.title + '” ' + Core.formatCountdown(to - n.wall) + ' sonra bitiyor', 'Sonra fiyatlar kendiliğinden normale döner.', '');
+      if(c.discount && c.discount.type !== 'none' && !affected(c).length) add('warn', '“' + c.title + '” hiçbir ürünü kapsamıyor', 'Kampanyaya kategori veya ürün ekleyin.', '<button class="btn sm" data-dact="camp" data-id="' + esc(c.id) + '">Düzenle</button>');
+      const always = !c.from && !c.to && !(c.days || []).length && !(c.start && c.end);
+      if(always && c.popup && c.popup.enabled) add('info', '“' + c.title + '” popup’ı her gün, tüm gün gösteriliyor', 'Deneme amaçlıysa işiniz bitince kapatmayı unutmayın.', '<button class="btn sm" data-dact="camp-off" data-id="' + esc(c.id) + '">Kapat</button>');
+    });
+    const soon = Core.upcomingEvents(state, n, 7).filter(o => !o.ev.image);
+    if(soon.length) add('info', 'Yaklaşan ' + soon.length + ' etkinliğin fotoğrafı yok', 'Fotoğraflı etkinlikler menüde daha dikkat çekici görünür.', '<button class="btn sm" data-dact="tab" data-tab="calendar">Takvime git</button>');
+    let def = 0; state.categories.forEach(c => c.items.forEach(i => { if(!i.hidden && Core.isDefaultPhoto(i)) def++; }));
+    if(def) add('info', def + ' ürün hâlâ hazır (örnek) fotoğraf kullanıyor', 'Kendi fotoğraflarınızı Menü → ürün → Detay → Fotoğraf yükle ile ekleyebilirsiniz.', '');
+    if(!out.length) add('ok', 'Her şey yolunda', 'Uyarı gerektiren bir durum yok.', '');
+    return out;
+  }
+  function renderDash(){
+    if(!state) return;
+    const n = Core.now(), os = Core.openState(state.site, n);
+    let items = 0, hidden = 0;
+    state.categories.forEach(c => c.items.forEach(i => { items++; if(i.hidden || c.hidden) hidden++; }));
+    $('#dash-now').innerHTML =
+      '<div class="clock">' + Core.hm(n.min) + '</div><div class="date">' + esc(fmtDay(n.dayStart, {weekday:'long', day:'numeric', month:'long', year:'numeric'})) + ' · Türkiye saati</div>' +
+      (os ? '<div class="state' + (os.open ? ' open' : '') + '"><i></i>' + (os.open ? 'Şu an açık · Kapanış ' + os.closing : 'Şu an kapalı · Açılış ' + os.opening) + '</div>' : '') +
+      '<div class="stats"><div class="stat"><b>' + state.categories.length + '</b>kategori</div><div class="stat"><b>' + items + '</b>ürün</div>' +
+        '<div class="stat"><b>' + hidden + '</b>gizli</div><div class="stat"><b>' + state.campaigns.filter(c => c.enabled).length + '</b>açık kampanya</div>' +
+        '<div class="stat"><b>' + Core.upcomingEvents(state, n, 7).length + '</b>etkinlik (7 gün)</div></div>';
+    $('#dash-prices').checked = state.site.showPrices !== false;
+    $('#dash-alerts').innerHTML = alerts().map(a => '<div class="alert ' + a.kind + '"><span class="ic">' + (a.kind === 'warn' ? '!' : a.kind === 'ok' ? '✓' : 'i') + '</span>' +
+      '<div class="tx">' + esc(a.text) + (a.sub ? '<small>' + esc(a.sub) + '</small>' : '') + '</div>' + (a.btn || '') + '</div>').join('');
+    // Şu an menüde görünenler
+    const live = [];
+    state.campaigns.forEach(c => {
+      const st = Core.campaignState(c, n);
+      if(!st.active && !st.startsAt) return;
+      live.push('<div class="live-row"><div class="tx"><b>% ' + esc(c.title) + '</b><small>' + (st.active ? 'Aktif' + (st.endsAt ? ' · ' + Core.formatCountdown(st.endsAt - n.wall) + ' kaldı' : '') : 'Bugün ' + esc(Core.hm(new Date(st.startsAt).getUTCHours() * 60 + new Date(st.startsAt).getUTCMinutes())) + '’de başlıyor') + (c.popup && c.popup.enabled ? ' · popup açık' : '') + '</small></div>' +
+        '<label class="switch small"><input type="checkbox" data-campon="' + esc(c.id) + '" checked> Açık</label>' +
+        '<button class="btn sm" data-dact="camp" data-id="' + esc(c.id) + '">Düzenle</button></div>');
+    });
+    Core.upcomingEvents(state, n, 1).filter(o => o.live || o.day === n.dayStart).forEach(o => {
+      live.push('<div class="live-row"><div class="tx"><b>' + Core.eventType(o.ev).icon + ' ' + esc(o.ev.title) + '</b><small>' + (o.live ? 'Şu an' : 'Bugün') + ' · ' + esc(o.ev.start || 'tüm gün') + (o.ev.popup ? ' · popup açık' : '') + '</small></div>' +
+        '<button class="btn sm" data-dact="edit" data-id="' + esc(o.ev.id) + '">Düzenle</button></div>');
+    });
+    $('#dash-live').innerHTML = live.length ? live.join('') : '<p class="hint">Şu an aktif kampanya veya bugün etkinlik yok.</p>';
+    // Önümüzdeki 7 gün
+    let week = '';
+    for(let k = 0; k < 7; k++){
+      const day = n.dayStart + k * DAY_MS, {evs, camps} = dayItems(day);
+      week += '<div class="week-day' + (k === 0 ? ' is-today' : '') + '" data-dact="day" data-day="' + day + '"><div class="d">' + (k === 0 ? 'Bugün' : k === 1 ? 'Yarın' : esc(fmtDay(day, {weekday:'long'}))) +
+        '<small>' + esc(fmtDay(day, {day:'numeric', month:'long'})) + '</small></div><div style="flex:1;display:flex;flex-wrap:wrap;gap:5px">' +
+        (evs.length || camps.length
+          ? evs.map(ev => '<span class="cchip ' + (ev.published === false ? 'off' : 'ev') + '" style="font-size:12px;padding:4px 8px">' + esc(evLine(ev)) + '</span>').join('') +
+            camps.map(x => '<span class="cchip camp" style="font-size:12px;padding:4px 8px">% ' + esc(x.c.title) + ' · ' + esc(x.info.time) + '</span>').join('')
+          : '<span class="hint">—</span>') + '</div></div>';
+    }
+    $('#dash-week').innerHTML = week;
+  }
+  $('#dash-prices').addEventListener('change', e => {
+    if(e.target.checked) delete state.site.showPrices; else state.site.showPrices = false;
+    setDirty(true); renderMenu(); renderDash();
+  });
+  document.querySelectorAll('[data-quick]').forEach(b => b.addEventListener('click', () => {
+    const q = b.dataset.quick;
+    if(q === 'event') addEvent(Core.now().dayStart);
+    if(q === 'campaign'){ showTab('campaigns'); addCampaign('blank'); }
+    if(q === 'hh'){ showTab('campaigns'); addCampaign('hh'); }
+    if(q === 'calendar') showTab('calendar');
+    if(q === 'qr') showTab('qr');
+  }));
+  setInterval(() => { if(state && !$('#tab-home').classList.contains('hide') && $('#ev-modal').classList.contains('hide')) renderDash(); }, 30000);
+
   /* ---------- İşletme bilgileri ---------- */
   function renderSite(){
     $('#site-fields').innerHTML = SITE_FIELDS.map(([k, label]) =>
@@ -1293,8 +1702,11 @@ body.locked .lock{display:flex}
   /* ---------- Sekmeler ---------- */
   function showTab(name){
     document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === name));
-    ['menu','campaigns','site','qr','security'].forEach(n => $('#tab-' + n).classList.toggle('hide', n !== name));
+    ['home','menu','calendar','campaigns','site','qr','security'].forEach(n => $('#tab-' + n).classList.toggle('hide', n !== name));
     if(name === 'qr' && !$('#qr-url').value){ $('#qr-url').value = defaultMenuUrl(); if($('#qr-url').value) makeQr(); }
+    if(state && name === 'home') renderDash();
+    if(state && name === 'calendar') renderCalendar();
+    window.scrollTo(0, 0);
   }
   document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => showTab(t.dataset.tab)));
 

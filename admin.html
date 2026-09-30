@@ -192,6 +192,19 @@ h1,h2,h3{font-family:'Playfair Display',serif;margin:0}
 .ev-row .tx{flex:1 1 180px;min-width:0}
 .ev-row .tx small{display:block;color:var(--muted)}
 
+/* Duyurular */
+.thumb.poster{width:120px;height:150px;background-size:contain;background-color:#111}
+.ann{display:flex;gap:12px;align-items:center;background:#fff;border-radius:14px;box-shadow:var(--shadow);padding:12px;margin-bottom:8px;flex-wrap:wrap}
+.ann.off{opacity:.6}
+.ann .thumb{width:64px;height:80px;background-size:cover;background-color:#111}
+.ann .tx{flex:1 1 180px;min-width:0}
+.ann .tx small{display:block;color:var(--muted)}
+.pv-row{display:flex;gap:10px;overflow-x:auto;padding-bottom:6px}
+.pv{flex:0 0 120px;text-align:center;font-size:12px}
+.pv .thumb{width:120px;height:150px;background-size:cover;background-color:#1c1a18;color:#fff;display:grid;place-items:center;padding:8px;font-family:'Playfair Display',serif;font-size:15px;text-align:center;line-height:1.15}
+.pv b{display:block;margin-top:6px}
+.pv small{color:var(--muted)}
+
 /* Pencere */
 .modal-veil{position:fixed;inset:0;z-index:80;background:rgba(0,0,0,.45);display:flex;align-items:flex-start;justify-content:center;padding:30px 12px;overflow:auto}
 .modal{background:#fff;border-radius:18px;box-shadow:0 20px 60px rgba(0,0,0,.25);padding:20px;width:min(640px,100%)}
@@ -257,6 +270,7 @@ body.locked .lock{display:flex}
   <button class="tab active" data-tab="home">Genel Bakış</button>
   <button class="tab" data-tab="menu">Menü</button>
   <button class="tab" data-tab="calendar">Takvim</button>
+  <button class="tab" data-tab="ann">Duyurular</button>
   <button class="tab" data-tab="campaigns">Kampanyalar</button>
   <button class="tab" data-tab="site">İşletme Bilgileri</button>
   <button class="tab" data-tab="qr">QR Kod</button>
@@ -273,6 +287,7 @@ body.locked .lock{display:flex}
         <button class="btn primary" data-quick="event">+ Etkinlik / duyuru</button>
         <button class="btn" data-quick="campaign">+ Kampanya</button>
         <button class="btn" data-quick="hh">+ Happy Hour</button>
+        <button class="btn" data-quick="ann">+ Duyuru afişi</button>
         <button class="btn" data-quick="calendar">Takvimi aç</button>
         <a class="btn" href="index.html" target="_blank" rel="noopener">Menüyü aç ↗</a>
         <button class="btn" data-quick="qr">QR kod</button>
@@ -303,6 +318,56 @@ body.locked .lock{display:flex}
   </div>
   <div class="panel" id="cal-day"></div>
   <div class="panel"><h2>Tüm etkinlik ve duyurular</h2><div id="ev-list"></div></div>
+</div>
+
+<!-- DUYURULAR -->
+<div class="page hide" id="tab-ann">
+  <div class="panel">
+    <h2>Duyurular ve afişler</h2>
+    <p class="hint">Afiş (görsel) ve duyurular menü açılınca <b>kaydırmalı bir popup</b>ta ve menüdeki “Duyurular” bölümünde sırayla gösterilir.
+      Sıralamayı ⋮⋮ tutamacıyla sürükleyerek veya ▲ ▼ ile değiştirin. Tarih verirseniz o tarihte kendiliğinden yayına girer ve biter.
+      Instagram gönderisi boyutu (4:5 dikey veya kare) en iyi sonucu verir.</p>
+    <div class="row-actions">
+      <button class="btn primary" id="ann-add">+ Yeni duyuru / afiş</button>
+    </div>
+  </div>
+  <div class="panel">
+    <h2>Şu an açılış popup'ında görünecekler</h2>
+    <p class="hint">Sıra: önce duyurular, sonra aktif kampanyalar, sonra yaklaşan etkinlikler (popup'ı açık olanlar).</p>
+    <div id="ann-preview" class="pv-row"></div>
+  </div>
+  <div id="ann-list"></div>
+</div>
+
+<!-- Duyuru düzenleme penceresi -->
+<div class="modal-veil hide" id="ann-modal">
+  <form class="modal" id="ann-form" autocomplete="off">
+    <h2 id="ann-form-title">Duyuru</h2>
+    <div class="photo-row" style="margin-top:0">
+      <div class="thumb poster" id="annf-thumb"></div>
+      <div class="field"><label>Afiş görseli (isteğe bağlı)</label><input id="annf-image" placeholder="Boş bırakılırsa şık bir yazı afişi otomatik oluşturulur">
+        <div class="row-actions" style="margin-top:6px"><button type="button" class="btn sm primary" id="annf-upload">📷 Afiş yükle</button></div>
+        <p class="hint">Canva vb. ile hazırladığınız afişi doğrudan yükleyebilirsiniz; görsel kırpılmadan tam gösterilir.</p></div>
+    </div>
+    <div class="grid" style="margin-top:12px">
+      <div class="field"><label>Başlık</label><input id="annf-title" required></div>
+      <div class="field" style="grid-column:1/-1"><label>Açıklama</label><textarea id="annf-text"></textarea></div>
+      <div class="field"><label>Bağlantı (isteğe bağlı, ör. Instagram gönderisi, rezervasyon)</label><input id="annf-link" type="url" placeholder="https://…"></div>
+      <div class="field"><label>Buton yazısı (bağlantı varsa)</label><input id="annf-button" placeholder="Detaylar"></div>
+      <div class="field"><label>Yayın başlangıcı (isteğe bağlı)</label><input type="datetime-local" id="annf-from"></div>
+      <div class="field"><label>Yayın bitişi (isteğe bağlı)</label><input type="datetime-local" id="annf-to"></div>
+    </div>
+    <div class="row-actions" style="margin-top:14px">
+      <label class="switch small"><input type="checkbox" id="annf-published"> Yayında</label>
+      <label class="switch small"><input type="checkbox" id="annf-popup"> Açılış popup'ında göster</label>
+    </div>
+    <div class="row-actions" style="margin-top:16px">
+      <button type="submit" class="btn primary">Tamam</button>
+      <button type="button" class="btn" id="annf-cancel">Vazgeç</button>
+      <span style="flex:1"></span>
+      <button type="button" class="btn danger" id="annf-delete">Sil</button>
+    </div>
+  </form>
 </div>
 
 <!-- Etkinlik düzenleme penceresi -->
@@ -376,6 +441,15 @@ body.locked .lock{display:flex}
     <div class="grid" id="site-fields"></div>
     <div class="field" style="margin-top:12px"><label>Açılış ekranı fotoğrafları (her satıra bir adres; boş bırakılırsa hazır fotoğraflar kullanılır)</label><textarea id="hero-images" rows="4" placeholder="https://…"></textarea></div>
     <div class="row-actions"><label class="btn sm">Fotoğraf yükle ve ekle<input type="file" accept="image/*" id="hero-upload" hidden></label></div>
+  </div>
+  <div class="panel">
+    <h2>Sosyal medya</h2>
+    <p class="hint">Doldurduğunuz hesaplar menünün yanında kutucuk olarak ve en altta görünür. Kullanıcı adı (ör. <b>@caminopub</b>) veya tam adres yazabilirsiniz. WhatsApp için telefon numarası yazın.</p>
+    <div class="grid" id="social-fields" style="margin-top:10px"></div>
+    <div class="row-actions" style="margin-top:12px">
+      <label class="switch small"><input type="checkbox" id="social-phone"> Telefon (ara) kutucuğu</label>
+      <label class="switch small"><input type="checkbox" id="social-map"> Yol tarifi kutucuğu</label>
+    </div>
   </div>
   <div class="panel">
     <h2>Yedekleme</h2>
@@ -685,6 +759,7 @@ body.locked .lock{display:flex}
     renderMenu();
     renderCampaigns();
     renderSite();
+    renderAnn();
     renderDash();
     if(!$('#tab-calendar').classList.contains('hide')) renderCalendar();
   }
@@ -1402,6 +1477,120 @@ body.locked .lock{display:flex}
     if(cid){ const c = state.campaigns.find(x => x.id === cid); if(c){ c.enabled = e.target.checked; setDirty(true); renderDash(); renderCampaigns(); } }
   });
 
+  /* ---------- Duyurular ---------- */
+  let annEditing = null, annSortable = null;
+  const ANN_STATE = {live:['on','Yayında'], scheduled:['soon','Planlandı'], expired:['off','Süresi doldu'], off:['off','Yayında değil']};
+  function annWhen(a){
+    const f = Core.parseWall(a.from), t = Core.parseWall(a.to);
+    const fmt = w => fmtDay(w, {day:'numeric', month:'short'}) + ' ' + wallHM(w);
+    if(f != null && t != null) return fmt(f) + ' – ' + fmt(t);
+    if(t != null) return fmt(t) + ' tarihine kadar';
+    if(f != null) return fmt(f) + ' tarihinden itibaren';
+    return 'Süresiz';
+  }
+  function renderAnn(){
+    const n = Core.now();
+    // Popup önizlemesi (menüdeki sırayla aynı)
+    const slides = Core.posterSlides(state, n);
+    $('#ann-preview').innerHTML = slides.length ? slides.map((s, i) =>
+      '<div class="pv"><div class="thumb" style="' + (s.image ? 'background-image:url(\'' + esc(previewUrl(s.image)) + '\')' : '') + '">' + (s.image ? '' : esc(s.title)) + '</div>' +
+      '<b>' + (i + 1) + '. ' + esc(s.title) + '</b><small>' + ({ann:'Duyuru', camp:'Kampanya', event:'Etkinlik'})[s.kind] + '</small></div>').join('')
+      : '<p class="hint">Şu an açılışta gösterilecek bir şey yok; menü açılınca popup çıkmaz.</p>';
+    // Liste
+    const list = state.announcements;
+    if(annSortable){ annSortable.destroy(); annSortable = null; }
+    if(!list.length){ $('#ann-list').innerHTML = '<div class="panel empty">Henüz duyuru yok. “+ Yeni duyuru / afiş” ile ekleyin.</div>'; return; }
+    $('#ann-list').innerHTML = list.map((a, i) => {
+      const [cls, txt] = ANN_STATE[Core.announcementState(a, n)];
+      return '<div class="ann' + (cls === 'off' ? ' off' : '') + '" data-ai="' + i + '"><span class="handle" title="Sürükle">⋮⋮</span>' +
+        '<div class="thumb" style="' + (a.image ? 'background-image:url(\'' + esc(previewUrl(a.image)) + '\')' : '') + '"></div>' +
+        '<div class="tx"><b>' + esc(a.title) + '</b><small>' + esc(annWhen(a)) + (a.popup !== false ? ' · açılış popup’ında' : '') + (a.link ? ' · bağlantılı' : '') + '</small>' +
+          '<span class="pill ' + cls + '">' + txt + '</span></div>' +
+        '<label class="switch small"><input type="checkbox" data-annpub="' + i + '"' + (a.published !== false ? ' checked' : '') + '> Yayında</label>' +
+        '<button class="btn sm" data-annact="up">▲</button><button class="btn sm" data-annact="down">▼</button>' +
+        '<button class="btn sm" data-annact="edit">Düzenle</button></div>';
+    }).join('');
+    annSortable = Sortable.create($('#ann-list'), {handle:'.handle', draggable:'.ann', animation:150,
+      onEnd: e => { if(e.oldIndex !== e.newIndex){ move(state.announcements, e.oldIndex, e.newIndex); setDirty(true); setTimeout(renderAnn); } }});
+  }
+  $('#ann-list').addEventListener('click', e => {
+    const b = e.target.closest('[data-annact]');
+    if(!b) return;
+    const i = +b.closest('.ann').dataset.ai, L = state.announcements;
+    if(b.dataset.annact === 'edit') return openAnnForm(L[i], false);
+    if(move(L, i, i + (b.dataset.annact === 'up' ? -1 : 1))){ setDirty(true); renderAnn(); }
+  });
+  $('#ann-list').addEventListener('change', e => {
+    const i = e.target.dataset.annpub;
+    if(i === undefined) return;
+    state.announcements[+i].published = e.target.checked;
+    setDirty(true); renderAnn();
+  });
+  function openAnnForm(a, isNew){
+    annEditing = {a, isNew};
+    $('#ann-form-title').textContent = isNew ? 'Yeni duyuru / afiş' : 'Duyuruyu düzenle';
+    $('#annf-title').value = a.title || '';
+    $('#annf-text').value = a.text || '';
+    $('#annf-image').value = a.image || '';
+    $('#annf-link').value = a.link || '';
+    $('#annf-button').value = a.button || '';
+    $('#annf-from').value = a.from || '';
+    $('#annf-to').value = a.to || '';
+    $('#annf-published').checked = a.published !== false;
+    $('#annf-popup').checked = a.popup !== false;
+    $('#annf-delete').classList.toggle('hide', isNew);
+    syncAnnThumb();
+    $('#ann-modal').classList.remove('hide');
+  }
+  function syncAnnThumb(){
+    const im = $('#annf-image').value.trim();
+    $('#annf-thumb').style.backgroundImage = im ? 'url("' + previewUrl(im).replace(/"/g, '%22') + '")' : '';
+    $('#annf-thumb').innerHTML = im ? '' : '<small>Yazı afişi</small>';
+  }
+  function closeAnnForm(){ $('#ann-modal').classList.add('hide'); annEditing = null; }
+  $('#annf-image').addEventListener('input', syncAnnThumb);
+  $('#annf-upload').addEventListener('click', () => pickAndUpload('afis-' + ($('#annf-title').value || 'duyuru'), p => { $('#annf-image').value = p; syncAnnThumb(); }));
+  $('#annf-cancel').addEventListener('click', closeAnnForm);
+  $('#ann-modal').addEventListener('click', e => { if(e.target.id === 'ann-modal') closeAnnForm(); });
+  $('#annf-delete').addEventListener('click', () => {
+    if(!annEditing || !confirm('“' + annEditing.a.title + '” silinsin mi?')) return;
+    state.announcements = state.announcements.filter(x => x !== annEditing.a);
+    closeAnnForm(); setDirty(true); renderAnn();
+  });
+  $('#ann-form').addEventListener('submit', e => {
+    e.preventDefault();
+    const a = annEditing.a;
+    Object.assign(a, {title: $('#annf-title').value.trim(), text: $('#annf-text').value.trim(), image: $('#annf-image').value.trim(),
+      link: $('#annf-link').value.trim(), button: $('#annf-button').value.trim(), from: $('#annf-from').value, to: $('#annf-to').value,
+      published: $('#annf-published').checked, popup: $('#annf-popup').checked});
+    if(annEditing.isNew) state.announcements.unshift(a);
+    closeAnnForm(); setDirty(true); renderAnn();
+    toast('Duyuru kaydedildi. Yayına almak için “Kaydet ve Yayınla”ya basın.', false, 5000);
+  });
+  $('#ann-add').addEventListener('click', () => openAnnForm(Core.newAnnouncement(), true));
+
+  /* ---------- Sosyal medya ---------- */
+  function renderSocialFields(){
+    const s = state.site.social || {};
+    $('#social-fields').innerHTML = Core.SOCIALS.map(x =>
+      '<div class="field"><label>' + esc(x.label) + '</label><input data-social="' + x.key + '" value="' + esc(s[x.key]) + '" placeholder="' +
+        ({whatsapp:'0530 000 00 00', google:'https://g.page/r/…', youtube:'@kanal veya adres'}[x.key] || '@kullaniciadi') + '"></div>').join('');
+    $('#social-phone').checked = s.showPhone !== false;
+    $('#social-map').checked = s.showMap !== false;
+  }
+  $('#social-fields').addEventListener('input', e => {
+    const k = e.target.dataset.social;
+    if(!k) return;
+    state.site.social = state.site.social || {};
+    if(e.target.value.trim()) state.site.social[k] = e.target.value.trim(); else delete state.site.social[k];
+    setDirty(true);
+  });
+  [['#social-phone', 'showPhone'], ['#social-map', 'showMap']].forEach(([sel, k]) => $(sel).addEventListener('change', e => {
+    state.site.social = state.site.social || {};
+    if(e.target.checked) delete state.site.social[k]; else state.site.social[k] = false;
+    setDirty(true);
+  }));
+
   /* ---------- Genel bakış ---------- */
   function alerts(){
     const out = [], n = Core.now();
@@ -1423,6 +1612,10 @@ body.locked .lock{display:flex}
       const always = !c.from && !c.to && !(c.days || []).length && !(c.start && c.end);
       if(always && c.popup && c.popup.enabled) add('info', '“' + c.title + '” popup’ı her gün, tüm gün gösteriliyor', 'Deneme amaçlıysa işiniz bitince kapatmayı unutmayın.', '<button class="btn sm" data-dact="camp-off" data-id="' + esc(c.id) + '">Kapat</button>');
     });
+    state.announcements.forEach(a => {
+      if(Core.announcementState(a, n) === 'expired') add('info', '“' + a.title + '” duyurusunun süresi doldu', 'Artık menüde görünmüyor; isterseniz silebilirsiniz.', '<button class="btn sm" data-dact="tab" data-tab="ann">Duyurulara git</button>');
+    });
+    if(!Object.keys(state.site.social || {}).some(k => !/^show/.test(k))) add('info', 'Sosyal medya hesapları eklenmemiş', 'Instagram vb. hesaplarınızı ekleyince menünün yanında kutucuk olarak görünür.', '<button class="btn sm" data-dact="tab" data-tab="site">Ekle</button>');
     const soon = Core.upcomingEvents(state, n, 7).filter(o => !o.ev.image);
     if(soon.length) add('info', 'Yaklaşan ' + soon.length + ' etkinliğin fotoğrafı yok', 'Fotoğraflı etkinlikler menüde daha dikkat çekici görünür.', '<button class="btn sm" data-dact="tab" data-tab="calendar">Takvime git</button>');
     let def = 0; state.categories.forEach(c => c.items.forEach(i => { if(!i.hidden && Core.isDefaultPhoto(i)) def++; }));
@@ -1440,7 +1633,8 @@ body.locked .lock{display:flex}
       (os ? '<div class="state' + (os.open ? ' open' : '') + '"><i></i>' + (os.open ? 'Şu an açık · Kapanış ' + os.closing : 'Şu an kapalı · Açılış ' + os.opening) + '</div>' : '') +
       '<div class="stats"><div class="stat"><b>' + state.categories.length + '</b>kategori</div><div class="stat"><b>' + items + '</b>ürün</div>' +
         '<div class="stat"><b>' + hidden + '</b>gizli</div><div class="stat"><b>' + state.campaigns.filter(c => c.enabled).length + '</b>açık kampanya</div>' +
-        '<div class="stat"><b>' + Core.upcomingEvents(state, n, 7).length + '</b>etkinlik (7 gün)</div></div>';
+        '<div class="stat"><b>' + Core.upcomingEvents(state, n, 7).length + '</b>etkinlik (7 gün)</div>' +
+        '<div class="stat"><b>' + Core.posterSlides(state, n).length + '</b>açılış afişi</div></div>';
     $('#dash-prices').checked = state.site.showPrices !== false;
     $('#dash-alerts').innerHTML = alerts().map(a => '<div class="alert ' + a.kind + '"><span class="ic">' + (a.kind === 'warn' ? '!' : a.kind === 'ok' ? '✓' : 'i') + '</span>' +
       '<div class="tx">' + esc(a.text) + (a.sub ? '<small>' + esc(a.sub) + '</small>' : '') + '</div>' + (a.btn || '') + '</div>').join('');
@@ -1481,6 +1675,7 @@ body.locked .lock{display:flex}
     if(q === 'campaign'){ showTab('campaigns'); addCampaign('blank'); }
     if(q === 'hh'){ showTab('campaigns'); addCampaign('hh'); }
     if(q === 'calendar') showTab('calendar');
+    if(q === 'ann'){ showTab('ann'); openAnnForm(Core.newAnnouncement(), true); }
     if(q === 'qr') showTab('qr');
   }));
   setInterval(() => { if(state && !$('#tab-home').classList.contains('hide') && $('#ev-modal').classList.contains('hide')) renderDash(); }, 30000);
@@ -1491,6 +1686,7 @@ body.locked .lock{display:flex}
       '<div class="field"><label>' + label + '</label><input data-site="' + k + '" value="' + esc(state.site[k]) + '"></div>'
     ).join('');
     $('#hero-images').value = (state.site.heroImages || []).join('\n');
+    renderSocialFields();
   }
   $('#hero-images').addEventListener('input', e => {
     const list = e.target.value.split('\n').map(s => s.trim()).filter(Boolean);
@@ -1702,7 +1898,8 @@ body.locked .lock{display:flex}
   /* ---------- Sekmeler ---------- */
   function showTab(name){
     document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === name));
-    ['home','menu','calendar','campaigns','site','qr','security'].forEach(n => $('#tab-' + n).classList.toggle('hide', n !== name));
+    ['home','menu','calendar','ann','campaigns','site','qr','security'].forEach(n => $('#tab-' + n).classList.toggle('hide', n !== name));
+    if(state && name === 'ann') renderAnn();
     if(name === 'qr' && !$('#qr-url').value){ $('#qr-url').value = defaultMenuUrl(); if($('#qr-url').value) makeQr(); }
     if(state && name === 'home') renderDash();
     if(state && name === 'calendar') renderCalendar();

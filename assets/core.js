@@ -112,6 +112,7 @@
     data.categories = data.categories || [];
     data.campaigns = data.campaigns || [];
     data.events = data.events || [];
+    data.announcements = data.announcements || [];
     const used = new Set();
     data.categories.forEach(cat => (cat.items || []).forEach(it => { if(it.id) used.add(it.id); }));
     data.categories.forEach(cat => {
@@ -341,6 +342,66 @@
       start: '21:00', end: '', repeat: 'none', until: '', image: '', popup: false, published: true};
   }
 
+  /* ---------- Duyurular (afişler) ---------- */
+  // Duyuru: {id, title, text, image, link, button, from, to, published, popup}
+  function announcementState(a, n){
+    n = n || now();
+    if(a.published === false) return 'off';
+    const f = parseWall(a.from), t = parseWall(a.to);
+    if(t != null && n.wall >= t) return 'expired';
+    if(f != null && n.wall < f) return 'scheduled';
+    return 'live';
+  }
+  function newAnnouncement(){
+    return {id: 'd' + Date.now().toString(36), title: 'Yeni duyuru', text: '', image: '', link: '', button: '',
+      from: '', to: '', published: true, popup: true};
+  }
+  // Açılış popup'ında gösterilecek afişler, sırasıyla: duyurular (panel sırası) → aktif kampanyalar → yaklaşan etkinlikler
+  function posterSlides(data, n){
+    n = n || now();
+    const out = [];
+    (data.announcements || []).forEach(a => {
+      if(a.popup === false || announcementState(a, n) !== 'live') return;
+      out.push({kind:'ann', key:'a:' + a.id, title: a.title, badge: 'DUYURU', text: a.text, image: a.image, link: a.link,
+        button: a.button, endsAt: parseWall(a.to), src: a});
+    });
+    (data.campaigns || []).forEach(c => {
+      const st = campaignState(c, n);
+      if(!st.active || !c.popup || c.popup.enabled === false) return;
+      out.push({kind:'camp', key:'c:' + c.id, title: c.title, badge: discountLabel(c), text: c.text, image: c.popup.image,
+        button: c.popup.button, endsAt: st.endsAt, when: describeSchedule(c), src: c});
+    });
+    upcomingEvents(data, n, 7).forEach(o => {
+      if(!o.ev.popup) return;
+      out.push({kind:'event', key:'e:' + o.ev.id + ':' + o.day, title: o.ev.title, badge: eventType(o.ev).label, text: o.ev.text,
+        image: o.ev.image, day: o.day, start: o.start, live: o.live, src: o.ev});
+    });
+    return out;
+  }
+
+  /* ---------- Sosyal medya ---------- */
+  // Kullanıcı adı veya tam adres yazılabilir; adres üretilir
+  const SOCIALS = [
+    {key:'instagram', label:'Instagram', url: h => 'https://instagram.com/' + h.replace(/^@/, '')},
+    {key:'facebook', label:'Facebook', url: h => 'https://facebook.com/' + h.replace(/^@/, '')},
+    {key:'tiktok', label:'TikTok', url: h => 'https://www.tiktok.com/@' + h.replace(/^@/, '')},
+    {key:'x', label:'X (Twitter)', url: h => 'https://x.com/' + h.replace(/^@/, '')},
+    {key:'youtube', label:'YouTube', url: h => 'https://youtube.com/@' + h.replace(/^@/, '')},
+    {key:'whatsapp', label:'WhatsApp', url: h => 'https://wa.me/' + h.replace(/\D/g, '').replace(/^0/, '90')},
+    {key:'google', label:'Google yorum / işletme', url: h => h}
+  ];
+  function socialLinks(site){
+    const s = site.social || {}, out = [];
+    SOCIALS.forEach(x => {
+      const v = String(s[x.key] || '').trim();
+      if(!v) return;
+      out.push({key: x.key, label: x.label, href: /^https?:\/\//i.test(v) ? v : x.url(v)});
+    });
+    if(site.phone && s.showPhone !== false) out.push({key:'phone', label:'Ara: ' + site.phone, href:'tel:' + String(site.phone).replace(/\s/g, '')});
+    if(site.address && s.showMap !== false) out.push({key:'map', label:'Yol tarifi', href:'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(site.address)});
+    return out;
+  }
+
   /* ---------- Açık / kapalı ---------- */
   function openState(site, n){
     n = n || now();
@@ -356,6 +417,7 @@
     now, setNowOverride, parseWall, parseHM, hm,
     campaignState, describeSchedule, campaignTargets, applyDiscount, discountLabel, priceInfo, formatCountdown, newCampaign,
     campaignOnDay, EVENT_TYPES, eventType, eventDays, eventWindow, upcomingEvents, newEvent,
+    announcementState, newAnnouncement, posterSlides, SOCIALS, socialLinks,
     openState
   };
 })(window);

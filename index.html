@@ -109,7 +109,7 @@ body.no-scroll{overflow:hidden}
 .sec-head h2 em{font-style:italic}
 .countdown{font:500 13px/1.3 var(--sans);letter-spacing:.12em;text-align:right;color:var(--muted)}
 .countdown b{display:block;color:var(--text);font:500 22px/1.2 var(--serif);letter-spacing:.02em}
-.deal-row{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding-bottom:6px;
+.deal-row{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-inline:clamp(16px,4vw,40px);scrollbar-width:none;padding-bottom:6px;
   margin-inline:calc(-1 * clamp(16px,4vw,40px));padding-inline:clamp(16px,4vw,40px)}
 .deal-row::-webkit-scrollbar{display:none}
 .deal-card{flex:0 0 min(260px,68vw);scroll-snap-align:start}
@@ -246,6 +246,98 @@ body.no-scroll{overflow:hidden}
 /* SİPARİŞ: ileride "Sepete ekle" alanı .order-slot içine gelecek */
 .order-slot:empty{display:none}
 
+/* ---------- Duyuru zili ---------- */
+.bell{position:relative}
+.bell .count{position:absolute;top:-4px;right:-4px;min-width:18px;height:18px;border-radius:9px;background:var(--text);color:#0a0a0a;font:600 10px/18px var(--sans);text-align:center;padding:0 4px}
+.bell:not([hidden]) svg{animation:ring 4s ease-in-out 3s infinite;transform-origin:50% 10%}
+@keyframes ring{0%,88%,100%{transform:rotate(0)}90%{transform:rotate(14deg)}93%{transform:rotate(-12deg)}96%{transform:rotate(8deg)}}
+.more-link{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);white-space:nowrap;border-bottom:1px solid var(--line2);padding-bottom:4px}
+.more-link:hover{color:var(--text)}
+
+/* ---------- Duyurular şeridi ---------- */
+.notices{padding-block:70px 10px}
+.notice-card{flex:0 0 min(230px,62vw);scroll-snap-align:start}
+.notice-card button{display:block;width:100%}
+.nthumb{position:relative;aspect-ratio:4/5;overflow:hidden;background:#000;border:1px solid var(--line)}
+.nthumb .blur{position:absolute;inset:-10%;background:center/cover no-repeat;filter:blur(18px) brightness(.4)}
+.nthumb img{position:relative;width:100%;height:100%;object-fit:contain;transition:transform 1.2s var(--ease)}
+.notice-card button:hover .nthumb img{transform:scale(1.05)}
+.notice-card h4{font:500 19px/1.2 var(--serif);margin:12px 0 0}
+.notice-card .tags{margin-top:10px}
+
+/* Metin afişi (fotoğrafsız duyuru/kampanya için otomatik tasarım) */
+.tposter{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:10%;
+  background:radial-gradient(circle at 50% 40%,#1b1b1b,#050505)}
+.tposter::before{content:"";position:absolute;inset:4.5%;border:1px solid rgba(255,255,255,.28);pointer-events:none}
+.tposter::after{content:"";position:absolute;inset:6%;border:1px solid rgba(255,255,255,.1);pointer-events:none}
+.tposter .tb{font:600 .62em/1 var(--sans);letter-spacing:.3em;padding:.8em 1em;background:var(--text);color:#0a0a0a;text-transform:uppercase}
+.tposter .tt{font:400 2.5em/1 var(--serif);margin:.45em 0 .35em;overflow-wrap:anywhere}
+.tposter .tx{font:400 .9em/1.45 var(--sans);color:var(--muted);display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+.tposter .tw{margin-top:1.2em;font:500 .62em/1.4 var(--sans);letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.7)}
+.tposter img.tl{position:absolute;bottom:8.5%;left:50%;transform:translateX(-50%);width:28%;height:auto;object-fit:contain;opacity:.85}
+.nthumb .tposter{font-size:11px}
+
+/* ---------- Afiş galerisi (açılış popup'ı) ---------- */
+.posters{position:fixed;inset:0;z-index:111;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:calc(var(--top) + 10px) 0 calc(env(safe-area-inset-bottom,0px) + 10px);opacity:0;visibility:hidden;transition:opacity .5s,visibility .5s}
+.posters.on{opacity:1;visibility:visible}
+.pst-head{width:min(470px,100%);display:flex;align-items:center;gap:12px;padding:0 16px 12px}
+.pst-head .eyebrow{flex:1;color:var(--text)}
+.pst-head .eyebrow b{color:var(--muted);font-weight:500}
+.pst-track{width:min(470px,100%);display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain}
+.pst-track::-webkit-scrollbar{display:none}
+.pst-slide{flex:0 0 100%;scroll-snap-align:center;padding:0 16px;display:flex;align-items:center}
+.pst-card{width:100%;background:var(--bg);border:1px solid var(--line2);transform:scale(.94);opacity:.5;transition:transform .6s var(--ease),opacity .6s}
+.pst-slide.cur .pst-card{transform:none;opacity:1}
+.pst-art{position:relative;width:100%;aspect-ratio:4/5;max-height:min(58svh,560px);overflow:hidden;background:#000}
+.pst-art .blur{position:absolute;inset:-10%;background:center/cover no-repeat;filter:blur(26px) brightness(.42)}
+.pst-art>img{position:relative;width:100%;height:100%;object-fit:contain}
+.pst-art .tposter{font-size:clamp(13px,3.6vw,17px)}
+.pst-cap{padding:16px 20px 20px;text-align:center}
+.pst-cap h3{font:400 26px/1.1 var(--serif);margin:0 0 6px}
+.pst-cap p{margin:0;color:var(--muted);font-size:14px}
+.pst-cap .timer{margin-top:10px;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
+.pst-cap .timer b{font:500 17px/1 var(--serif);color:var(--text);letter-spacing:.04em;margin-left:6px}
+.pst-cap .cta{opacity:1;animation:none;margin-top:14px;padding:12px 24px;background:var(--text);color:#0a0a0a;border-color:var(--text)}
+.pst-cap .cta::before{background:#0a0a0a}
+.pst-cap .cta:hover{color:var(--text)}
+.pst-foot{display:flex;align-items:center;justify-content:center;gap:14px;padding-top:14px}
+.pst-dots{display:flex;gap:7px}
+.pst-dots button{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.3);transition:all .4s var(--ease)}
+.pst-dots button.cur{background:var(--text);width:22px;border-radius:4px}
+.pst-arrow{width:38px;height:38px;border-radius:50%;border:1px solid var(--line2);display:grid;place-items:center;background:rgba(10,10,10,.6)}
+.pst-arrow:hover{background:var(--text);color:#0a0a0a}
+.pst-arrow svg{width:16px;height:16px}
+.pst-progress{position:absolute;left:0;top:0;height:2px;background:var(--text);width:0;z-index:3}
+.pst-progress.run{width:100%;transition:width 6s linear}
+
+/* ---------- Yan sosyal medya ---------- */
+.social{position:fixed;right:0;top:50%;transform:translateY(-50%);z-index:55;display:flex;flex-direction:column;align-items:flex-end;transition:opacity .4s}
+body.no-scroll .social{opacity:0;pointer-events:none}
+.social-list{display:flex;flex-direction:column;background:rgba(10,10,10,.78);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid var(--line2);border-right:0}
+.social-list a{position:relative;width:46px;height:46px;display:grid;place-items:center;border-top:1px solid var(--line);transition:background .3s,color .3s}
+.social-list a:first-child{border-top:0}
+.social-list a:hover{background:var(--text);color:#0a0a0a}
+.social-list svg{width:19px;height:19px}
+.social-list a::after{content:attr(data-label);position:absolute;right:calc(100% + 10px);top:50%;transform:translate(8px,-50%);opacity:0;pointer-events:none;
+  white-space:nowrap;background:var(--text);color:#0a0a0a;font:500 11px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;padding:8px 10px;transition:all .3s var(--ease)}
+.social-list a:hover::after{opacity:1;transform:translate(0,-50%)}
+.social-toggle{display:none}
+@media(max-width:760px){
+  .social{top:auto;bottom:calc(88px + env(safe-area-inset-bottom,0px));transform:none}
+  .social-toggle{display:grid;place-items:center;width:44px;height:44px;background:var(--text);color:#0a0a0a;box-shadow:0 6px 20px rgba(0,0,0,.4)}
+  .social-toggle svg{width:19px;height:19px}
+  .social-list{position:absolute;right:0;bottom:100%;margin-bottom:6px;transform:translateX(105%);transition:transform .45s var(--ease)}
+  .social.open .social-list{transform:none}
+  .social-list a{width:44px;height:44px}
+  .social-list a::after{opacity:1;transform:translate(0,-50%);font-size:10px;padding:6px 8px;background:rgba(10,10,10,.9);color:var(--text);border:1px solid var(--line2)}
+  .social:not(.open) .social-list a::after{opacity:0}
+}
+.foot-social{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin:0 0 22px}
+.foot-social a{width:42px;height:42px;border:1px solid var(--line2);border-radius:50%;display:grid;place-items:center;transition:all .3s}
+.foot-social a:hover{background:var(--text);color:#0a0a0a}
+.foot-social svg{width:17px;height:17px}
+
 /* ---------- Kampanya popup ---------- */
 .pop{position:fixed;left:50%;top:50%;z-index:111;width:min(440px,calc(100vw - 32px));max-height:88svh;overflow:auto;background:var(--bg);border:1px solid var(--line2);
   transform:translate(-50%,-46%) scale(.96);opacity:0;visibility:hidden;transition:all .6s var(--ease);text-align:center}
@@ -291,6 +383,10 @@ body.no-scroll{overflow:hidden}
     <a href="#top" aria-label="Başa dön"><img class="logo" src="assets/logo.png" alt="Camino Pub & Bistro" id="top-logo"></a>
     <span class="status" id="top-status"></span>
     <span class="spacer"></span>
+    <button class="icon-btn bell" id="posters-open" aria-label="Duyurular" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 16V11a6 6 0 1 1 12 0v5l1.5 2h-15L6 16z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></svg>
+      <span class="count" id="posters-count"></span>
+    </button>
     <button class="icon-btn" id="search-open" aria-label="Menüde ara">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
     </button>
@@ -312,6 +408,14 @@ body.no-scroll{overflow:hidden}
 </section>
 
 <div class="ticker" id="ticker" aria-live="polite"></div>
+
+<section class="notices wrap" id="notices" hidden>
+  <div class="sec-head">
+    <div><div class="eyebrow">Güncel</div><h2 class="serif">Duyurular &amp; <em>kampanyalar</em></h2></div>
+    <button class="more-link" data-posters-all>Tümünü gör →</button>
+  </div>
+  <div class="deal-row" id="notice-row"></div>
+</section>
 
 <section class="deals wrap" id="deals" hidden>
   <div class="sec-head">
@@ -349,15 +453,24 @@ body.no-scroll{overflow:hidden}
 
 <footer class="foot">
   <img src="assets/logo.png" alt="Camino Pub & Bistro" id="foot-logo">
+  <div class="foot-social" id="foot-social"></div>
   <p>Afiyet olsun</p>
 </footer>
+
+<!-- Yan sosyal medya kutucukları -->
+<nav class="social" id="social" aria-label="Sosyal medya" hidden>
+  <button class="social-toggle" id="social-toggle" aria-label="Sosyal medya bağlantıları" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="m8.2 10.8 7.6-4.4M8.2 13.2l7.6 4.4"/></svg>
+  </button>
+  <div class="social-list" id="social-list"></div>
+</nav>
 
 <!-- Ürün paneli -->
 <div class="veil" id="veil"></div>
 <aside class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="Ürün detayı"></aside>
 
-<!-- Kampanya popup -->
-<aside class="pop" id="pop" role="dialog" aria-modal="true" aria-label="Kampanya"></aside>
+<!-- Duyuru / kampanya afişleri (açılış popup'ı) -->
+<aside class="posters" id="posters" role="dialog" aria-modal="true" aria-label="Duyurular ve kampanyalar"></aside>
 
 <!-- Arama -->
 <div class="search" id="search" role="dialog" aria-modal="true" aria-label="Menüde ara">
@@ -444,7 +557,8 @@ body.no-scroll{overflow:hidden}
     setupObservers();
     tick();
     setInterval(tick, 1000);
-    setTimeout(maybePopup, 2600);
+    renderSocial();
+    setTimeout(openingPosters, 2400);
   }
 
   /* ---------- Menü ---------- */
@@ -482,6 +596,7 @@ body.no-scroll{overflow:hidden}
 
     renderDeals(n);
     renderEvents(n);
+    renderNotices(n);
     renderTicker(n);
     observeReveal();
   }
@@ -510,25 +625,157 @@ body.no-scroll{overflow:hidden}
       '</button></article>';
     }).join('');
   }
-  function eventPopupHtml(ev, day, n){
-    const t = C.eventType(ev);
-    const photo = ev.image ? C.sized(ev.image, 900) : C.heroPhotos(DATA.site, 900)[0];
-    const flag = evFlag(Object.assign({day}, C.eventWindow(ev, day), {live: C.eventWindow(ev, day).start <= n.wall}), n);
-    return '<button class="icon-btn" data-close-pop aria-label="Kapat">' + ICON_X + '</button>' +
-      (photo ? '<div class="ph">' + img(photo, ev.title, true) + '</div>' : '') +
-      '<div class="pop-body"><span class="pop-badge">' + t.icon + ' ' + esc(flag || t.label.toLocaleUpperCase('tr-TR')) + '</span>' +
-        '<h3>' + esc(ev.title) + '</h3>' +
-        (ev.text ? '<p>' + esc(ev.text) + '</p>' : '') +
-        '<p style="margin-top:12px;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint)">' +
-          esc(dayName(day, {day:'numeric', month:'long', weekday:'long'})) + ' · ' + esc(evTime(ev)) + '</p>' +
-        '<button class="cta" data-pop-go="menu">Menüye Göz At</button>' +
-      '</div>';
-  }
   function openEvent(id, day){
     const ev = (DATA.events || []).find(e => e.id === id);
     if(!ev) return;
-    $('#pop').innerHTML = eventPopupHtml(ev, +day, C.now());
-    openLayer('pop');
+    const n = C.now(), w = C.eventWindow(ev, +day);
+    openPosters([decorate({kind:'event', key:'e:' + id, title: ev.title, badge: C.eventType(ev).label, text: ev.text, image: ev.image,
+      day: +day, start: w.start, live: w.start <= n.wall, src: ev}, n)], 0);
+  }
+
+  /* ---------- Afişler: duyurular, kampanyalar, etkinlikler ---------- */
+  const SOCIAL_ICONS = {
+    instagram:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".9" fill="currentColor"/></svg>',
+    facebook:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21v-7.5h2.6l.4-3h-3V8.6c0-.9.3-1.5 1.5-1.5h1.6V4.4c-.3 0-1.2-.1-2.3-.1-2.3 0-3.9 1.4-3.9 4v2.2H7.8v3h2.6V21h3.1z"/></svg>',
+    tiktok:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.6 3c.4 2.2 1.7 3.6 3.9 3.8v3.1c-1.4.1-2.7-.3-3.9-1v6.2c0 3.6-2.6 5.9-5.8 5.9A5.6 5.6 0 0 1 5.2 15c0-3.4 2.9-6 6.5-5.5v3.2c-1.6-.4-3.3.6-3.3 2.3 0 1.4 1.1 2.4 2.4 2.4 1.5 0 2.5-1 2.5-2.9V3h3.3z"/></svg>',
+    x:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.8 3h3.1l-6.8 7.8 8 10.2h-6.3l-4.9-6.4L5.3 21H2.2l7.3-8.3L1.9 3h6.4l4.4 5.9L17.8 3zm-1.1 16.2h1.7L7.4 4.7H5.6l11.1 14.5z"/></svg>',
+    youtube:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2.5" y="5.5" width="19" height="13" rx="4"/><path d="M10 9.2v5.6l4.8-2.8z" fill="currentColor"/></svg>',
+    whatsapp:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M20.5 11.8a8.5 8.5 0 0 1-12.6 7.5L3.5 20.5l1.3-4.2a8.5 8.5 0 1 1 15.7-4.5z"/><path d="M9 8.5c0 3.5 3 6.5 6.5 6.5l1-1.6-2-1-1 .9c-1-.4-2.4-1.8-2.8-2.8l.9-1-1-2-1.6 1z" fill="currentColor" stroke="none"/></svg>',
+    google:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="m12 3.5 2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z"/></svg>',
+    phone:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg>',
+    map:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 21s-7-6.2-7-11.3a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.7" r="2.5"/></svg>'
+  };
+  function renderSocial(){
+    const links = C.socialLinks(DATA.site);
+    const html = links.map(l => '<a href="' + esc(l.href) + '"' + (/^https?:/.test(l.href) ? ' target="_blank" rel="noopener"' : '') +
+      ' aria-label="' + esc(l.label) + '" data-label="' + esc(l.label) + '">' + (SOCIAL_ICONS[l.key] || '') + '</a>').join('');
+    $('#social').hidden = !links.length;
+    $('#social-list').innerHTML = html;
+    $('#foot-social').innerHTML = html;
+  }
+  $('#social-toggle').addEventListener('click', () => {
+    const open = $('#social').classList.toggle('open');
+    $('#social-toggle').setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+
+  // Afişe menü içi bilgiler eklenir: kampanyanın ürün fotoğrafı, etkinliğin tarihi vb.
+  function decorate(s, n){
+    if(s.kind === 'camp'){
+      const first = dealItems(n).find(x => x.p.campaign === s.src);
+      if(!s.image){
+        if(first) s.photo = C.itemPhoto(first.it, 900);
+        else if((s.src.categories || [])[0]){ const cat = DATA.categories.find(x => x.id === s.src.categories[0]); if(cat) s.photo = C.coverPhoto(cat, 900); }
+      }
+      s.go = first ? 'deals' : 'menu';
+      s.button = s.button || (first ? 'Kampanyalı Ürünleri Gör' : 'Menüye Göz At');
+    }
+    if(s.kind === 'event'){
+      const flag = evFlag({day: s.day, start: s.start, live: s.live}, n);
+      s.when = (flag ? flag + ' · ' : '') + dayName(s.day, {day:'numeric', month:'long', weekday:'long'}) + ' · ' + evTime(s.src);
+      s.badge = C.eventType(s.src).icon + ' ' + s.badge;
+      s.go = 'events'; s.button = 'Etkinlikleri Gör';
+    }
+    if(s.kind === 'ann'){ s.go = 'menu'; if(s.link) s.button = s.button || 'Detaylar'; }
+    return s;
+  }
+  function allSlides(n, forPopup){
+    // Menüdeki "Duyurular" bölümünde, popup'ta gösterilmesi kapalı olan duyurular da yer alır
+    const data = forPopup ? DATA : Object.assign({}, DATA, {announcements: (DATA.announcements || []).map(a => Object.assign({}, a, {popup: true}))});
+    return C.posterSlides(data, n).map(s => decorate(s, n));
+  }
+  function posterArt(s, w){
+    if(s.image){
+      const u = C.sized(s.image, w);
+      return '<div class="blur" style="background-image:url(\'' + esc(u.replace(/'/g, '%27')) + '\')"></div>' + img(u, s.title, true).replace('onload="this.classList.add(\'ok\')"', '');
+    }
+    if(s.photo){
+      return '<img src="' + esc(s.photo) + '" alt="" style="object-fit:cover;filter:brightness(.55)">' +
+        '<div class="tposter" style="background:linear-gradient(180deg,rgba(0,0,0,.1),rgba(0,0,0,.55))"><span class="tb">' + esc(s.badge) + '</span><div class="tt">' + esc(s.title) + '</div>' +
+          (s.when ? '<div class="tw">' + esc(s.when) + '</div>' : '') + '<img class="tl" src="' + esc(DATA.site.logo || 'assets/logo.png') + '" alt=""></div>';
+    }
+    return '<div class="tposter"><span class="tb">' + esc(s.badge) + '</span><div class="tt">' + esc(s.title) + '</div>' +
+      (s.text ? '<div class="tx">' + esc(s.text) + '</div>' : '') + (s.when ? '<div class="tw">' + esc(s.when) + '</div>' : '') +
+      '<img class="tl" src="' + esc(DATA.site.logo || 'assets/logo.png') + '" alt=""></div>';
+  }
+  let noticeSlides = [];
+  function renderNotices(n){
+    noticeSlides = allSlides(n, false);
+    $('#notices').hidden = !noticeSlides.length;
+    $('#posters-open').hidden = !noticeSlides.length;
+    $('#posters-count').textContent = noticeSlides.length;
+    $('#notice-row').innerHTML = noticeSlides.map((s, i) => '<article class="notice-card rv" style="--i:' + (i % 5) + '"><button data-poster-i="' + i + '">' +
+      '<div class="nthumb">' + posterArt(s, 500) + '</div><div class="tags">' + esc(s.badge) + '</div><h4>' + esc(s.title) + '</h4></button></article>').join('');
+  }
+
+  let pstTimer = null, pstPaused = false;
+  function openPosters(slides, start){
+    if(!slides.length) return;
+    const many = slides.length > 1;
+    const arrow = d => '<button class="pst-arrow" data-pst="' + d + '" aria-label="' + (d < 0 ? 'Önceki' : 'Sonraki') + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="' + (d < 0 ? 'm15 5-7 7 7 7' : 'm9 5 7 7-7 7') + '"/></svg></button>';
+    $('#posters').innerHTML =
+      '<div class="pst-head"><div class="eyebrow">Duyurular' + (many ? ' · <b id="pst-idx"></b>' : '') + '</div>' +
+        '<button class="icon-btn" data-close-pop aria-label="Kapat">' + ICON_X + '</button></div>' +
+      '<div class="pst-track" id="pst-track">' + slides.map((s, i) =>
+        '<div class="pst-slide" data-i="' + i + '"><div class="pst-card">' +
+          '<div class="pst-art">' + (many ? '<span class="pst-progress"></span>' : '') + posterArt(s, 1000) + '</div>' +
+          '<div class="pst-cap">' +
+            (s.image ? '<h3>' + esc(s.title) + '</h3>' + (s.text ? '<p>' + esc(s.text) + '</p>' : '') + (s.when ? '<p style="margin-top:6px;font-size:12px;letter-spacing:.14em;text-transform:uppercase">' + esc(s.when) + '</p>' : '')
+              : (s.photo && s.text ? '<p>' + esc(s.text) + '</p>' : '')) +
+            (s.endsAt ? '<div class="timer">Bitmesine<b data-ends="' + s.endsAt + '"></b></div>' : '') +
+            (s.link ? '<a class="cta" href="' + esc(s.link) + '" target="_blank" rel="noopener">' + esc(s.button || 'Detaylar') + '</a>'
+                    : '<button class="cta" data-pop-go="' + esc(s.go || 'menu') + '">' + esc(s.button || 'Menüye Göz At') + '</button>') +
+          '</div></div></div>').join('') + '</div>' +
+      (many ? '<div class="pst-foot">' + arrow(-1) + '<div class="pst-dots">' + slides.map((s, i) => '<button data-pst-go="' + i + '" aria-label="' + (i + 1) + '. afiş"></button>').join('') + '</div>' + arrow(1) + '</div>' : '');
+    openLayer('posters');
+    pstPaused = false;
+    const track = $('#pst-track');
+    requestAnimationFrame(() => { track.scrollLeft = start * track.clientWidth; setCurrent(start); });
+    let t;
+    track.addEventListener('scroll', () => { clearTimeout(t); t = setTimeout(() => setCurrent(Math.round(track.scrollLeft / track.clientWidth)), 80); }, {passive:true});
+    track.addEventListener('pointerdown', () => { pstPaused = true; clearTimeout(pstTimer); document.querySelectorAll('.pst-progress').forEach(p => p.classList.remove('run')); }, {passive:true});
+    tick();
+  }
+  function setCurrent(i){
+    const slides = document.querySelectorAll('.pst-slide');
+    if(!slides.length) return;
+    i = Math.max(0, Math.min(slides.length - 1, i));
+    slides.forEach((s, k) => s.classList.toggle('cur', k === i));
+    document.querySelectorAll('.pst-dots button').forEach((d, k) => d.classList.toggle('cur', k === i));
+    const idx = $('#pst-idx'); if(idx) idx.textContent = (i + 1) + ' / ' + slides.length;
+    // Otomatik geçiş (6 sn); kullanıcı dokununca durur
+    clearTimeout(pstTimer);
+    document.querySelectorAll('.pst-progress').forEach(p => p.classList.remove('run'));
+    if(slides.length > 1 && !pstPaused){
+      const bar = slides[i].querySelector('.pst-progress');
+      if(bar){ void bar.offsetWidth; bar.classList.add('run'); }
+      pstTimer = setTimeout(() => { if(layer === 'posters' && !pstPaused) goPoster((i + 1) % slides.length); }, 6000);
+    }
+  }
+  function goPoster(i){
+    const track = $('#pst-track');
+    if(track) track.scrollTo({left: i * track.clientWidth, behavior:'smooth'});
+  }
+  $('#posters').addEventListener('click', e => {
+    const d = e.target.closest('[data-pst]'), g = e.target.closest('[data-pst-go]');
+    const cur = [...document.querySelectorAll('.pst-slide')].findIndex(s => s.classList.contains('cur'));
+    const count = document.querySelectorAll('.pst-slide').length;
+    if(d){ pstPaused = true; goPoster((cur + +d.dataset.pst + count) % count); return; }
+    if(g){ pstPaused = true; goPoster(+g.dataset.pstGo); return; }
+    // Afişin dışına dokununca kapanır
+    if(e.target.id === 'posters' || e.target.classList.contains('pst-slide') || e.target.classList.contains('pst-track') || e.target.classList.contains('pst-foot')) closeLayer();
+  });
+  $('#posters-open').addEventListener('click', () => openPosters(noticeSlides, 0));
+
+  // Açılışta bir kez: o an güncel tüm duyuru/kampanya/etkinlik afişleri
+  function openingPosters(){
+    const n = C.now();
+    const slides = allSlides(n, true);
+    if(!slides.length) return;
+    const ver = JSON.stringify(slides.map(s => [s.key, s.title, s.text, s.image]));
+    let h = 0; for(let i = 0; i < ver.length; i++) h = (h * 31 + ver.charCodeAt(i)) | 0;
+    const key = 'cqr-posters-' + h + '-' + Math.floor(n.wall / 86400000);
+    try{ if(sessionStorage.getItem(key)) return; sessionStorage.setItem(key, '1'); }catch(e){}
+    openPosters(slides, 0);
   }
 
   function dishHtml(cat, it, n, feature, i){
@@ -612,47 +859,6 @@ body.no-scroll{overflow:hidden}
     t.innerHTML = '<div class="ticker-track" style="--dur:' + Math.max(24, msgs.length * 9) + 's">' + row + row + '</div>';
   }
 
-  function maybePopup(){
-    const n = C.now();
-    const hit = activeCampaigns(n).find(x => x.st.active && x.c.popup && x.c.popup.enabled);
-    if(!hit){
-      // Kampanya popup'ı yoksa: bugünkü (popup'ı açık) etkinlik
-      const o = C.upcomingEvents(DATA, n, 1).find(x => x.ev.popup && (x.live || x.day === n.dayStart));
-      if(!o) return;
-      const key = 'cqr-ev-' + o.ev.id + '-' + o.day + '-' + (o.ev.title + o.ev.text + o.ev.start).length;
-      try{ if(sessionStorage.getItem(key)) return; sessionStorage.setItem(key, '1'); }catch(e){}
-      $('#pop').innerHTML = eventPopupHtml(o.ev, o.day, n);
-      openLayer('pop');
-      return;
-    }
-    // Aynı oturumda aynı gün bir kez gösterilir; kampanya düzenlenirse (içerik değişirse) yeniden gösterilir
-    const ver = JSON.stringify([hit.c.title, hit.c.text, hit.c.badge, hit.c.popup, hit.c.discount, hit.c.start, hit.c.end, hit.c.from, hit.c.to]);
-    let h = 0; for(let i = 0; i < ver.length; i++) h = (h * 31 + ver.charCodeAt(i)) | 0;
-    const key = 'cqr-pop-' + hit.c.id + '-' + h + '-' + Math.floor(n.wall / 86400000);
-    try{ if(sessionStorage.getItem(key)) return; sessionStorage.setItem(key, '1'); }catch(e){}
-    const c = hit.c;
-    let photo = c.popup.image || '';
-    if(!photo){
-      const first = dealItems(n)[0];
-      if(first) photo = C.itemPhoto(first.it, 900);
-      else if((c.categories || [])[0]){ const cat = DATA.categories.find(x => x.id === c.categories[0]); if(cat) photo = C.coverPhoto(cat, 900); }
-      if(!photo) photo = C.heroPhotos(DATA.site, 900)[0] || '';
-    }
-    const hasDeals = dealItems(n).length > 0;
-    $('#pop').innerHTML =
-      '<button class="icon-btn" data-close-pop aria-label="Kapat">' + ICON_X + '</button>' +
-      (photo ? '<div class="ph">' + img(photo, c.title, true) + '</div>' : '') +
-      '<div class="pop-body"><span class="pop-badge">' + esc(C.discountLabel(c)) + '</span>' +
-        '<h3>' + esc(c.title || '') + '</h3>' +
-        (c.text ? '<p>' + esc(c.text) + '</p>' : '') +
-        '<p style="margin-top:10px;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint)">' + esc(C.describeSchedule(c)) + '</p>' +
-        (hit.st.endsAt ? '<div class="timer">Bitmesine <b data-ends="' + hit.st.endsAt + '"></b></div><br>' : '') +
-        '<button class="cta" data-pop-go>' + esc(c.popup.button || (hasDeals ? 'Kampanyalı Ürünleri Gör' : 'Menüye Göz At')) + '</button>' +
-      '</div>';
-    openLayer('pop');
-    tick();
-  }
-
   /* ---------- Ürün paneli ---------- */
   function openSheet(id){
     const f = C.findItem(DATA, id);
@@ -720,8 +926,13 @@ body.no-scroll{overflow:hidden}
     const go = e.target.closest('[data-pop-go]');
     if(go){
       closeLayer();
-      setTimeout(() => { const t = (go.dataset.popGo === 'menu' || $('#deals').hidden) ? $('#menu') : $('#deals'); t.scrollIntoView({behavior:'smooth'}); }, 80);
+      const target = {deals: '#deals', events: '#events'}[go.dataset.popGo];
+      setTimeout(() => { const t = (target && !$(target).hidden) ? $(target) : $('#menu'); t.scrollIntoView({behavior:'smooth'}); }, 80);
+      return;
     }
+    const pi = e.target.closest('[data-poster-i]');
+    if(pi){ openPosters(noticeSlides, +pi.dataset.posterI); return; }
+    if(e.target.closest('[data-posters-all]')) openPosters(noticeSlides, 0);
   });
 
   // Paneli aşağı sürükleyerek kapatma (telefon)

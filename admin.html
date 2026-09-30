@@ -90,6 +90,39 @@ h1,h2,h3{font-family:'Playfair Display',serif;margin:0}
 .toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:#1c1a18;color:#fff;padding:11px 18px;border-radius:12px;box-shadow:var(--shadow);z-index:100;max-width:92vw;font-weight:600}
 .toast.err{background:var(--danger)}
 
+/* Fotoğraflar */
+.photo-row{display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap;margin-top:10px}
+.thumb{width:110px;height:110px;border-radius:12px;background:#eee center/cover no-repeat;flex:none;position:relative;overflow:hidden;border:1px solid var(--line)}
+.thumb.wide{width:180px;height:100px}
+.thumb small{position:absolute;left:0;right:0;bottom:0;background:rgba(0,0,0,.6);color:#fff;font-size:10px;padding:3px 6px;text-align:center}
+.photo-row .field{flex:1 1 220px}
+.item-row .mini{width:34px;height:34px;border-radius:8px;background:#eee center/cover no-repeat;flex:none}
+
+/* Kampanyalar */
+.camp{background:#fff;border-radius:16px;box-shadow:var(--shadow);margin-bottom:10px}
+.camp-head{display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:14px}
+.camp-title{flex:1 1 180px;font-weight:800;font-size:16px;cursor:pointer;min-width:0}
+.pill{display:inline-block;font-size:11px;font-weight:700;padding:4px 9px;border-radius:999px;background:#eee;color:#555;margin-top:4px}
+.pill.on{background:#e3f4e4;color:var(--ok)}
+.pill.soon{background:#fff3dd;color:#8a5a00}
+.pill.off{background:#f3f0ea;color:var(--muted)}
+.camp-body{border-top:1px solid var(--line);padding:14px}
+.camp-body h3{font-family:'DM Sans',sans-serif;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:18px 0 8px}
+.camp-body h3:first-child{margin-top:0}
+.chips-sel{display:flex;flex-wrap:wrap;gap:6px}
+.chips-sel label{display:inline-flex;gap:5px;align-items:center;font-size:12.5px;background:#fff;border:1px solid var(--line);padding:6px 10px;border-radius:999px;cursor:pointer;user-select:none}
+.chips-sel label:has(input:checked){background:var(--accent);border-color:var(--accent);color:#fff}
+.chips-sel input{margin:0}
+.sel-items{margin-top:8px}
+.sel-item{display:flex;gap:8px;align-items:center;padding:6px 0;border-top:1px solid var(--line);flex-wrap:wrap}
+.sel-item span{flex:1 1 180px;font-weight:600}
+.sel-item input{width:150px;padding:6px 8px;border:1px solid var(--line);border-radius:8px}
+.pick{position:relative}
+.pick-results{position:absolute;z-index:5;left:0;right:0;top:100%;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow);max-height:260px;overflow:auto}
+.pick-results button{display:block;width:100%;text-align:left;border:0;background:none;padding:8px 12px;cursor:pointer}
+.pick-results button:hover{background:var(--accent-soft)}
+.preview-box{margin-top:10px;padding:10px 12px;background:#faf8f4;border-radius:10px;font-size:13px}
+
 /* Giriş ekranı */
 body.locked .topbar,body.locked .tabs,body.locked .page{display:none!important}
 .lock{display:none;min-height:100vh;align-items:center;justify-content:center;padding:24px 16px}
@@ -148,6 +181,7 @@ body.locked .lock{display:flex}
 
 <div class="tabs">
   <button class="tab active" data-tab="menu">Menü</button>
+  <button class="tab" data-tab="campaigns">Kampanyalar</button>
   <button class="tab" data-tab="site">İşletme Bilgileri</button>
   <button class="tab" data-tab="qr">QR Kod</button>
   <button class="tab" data-tab="security">Güvenlik</button>
@@ -169,11 +203,28 @@ body.locked .lock{display:flex}
   <div id="cats"><div class="empty">Menü yükleniyor…</div></div>
 </div>
 
+<!-- KAMPANYALAR -->
+<div class="page hide" id="tab-campaigns">
+  <div class="panel">
+    <h2>Kampanyalar ve Happy Hour</h2>
+    <p class="hint">Happy hour saatleri, belirli tarihler arasında geçerli indirimler ve menü açılınca çıkan popup duyuruları buradan yönetilir.
+      Kampanya bitince fiyatlar <b>otomatik olarak normale döner</b>. Saatler Türkiye saatine göre işler. Listede üstte olan kampanya önceliklidir.</p>
+    <div class="row-actions">
+      <button class="btn primary" id="camp-add">+ Yeni kampanya</button>
+      <button class="btn" id="camp-add-hh">+ Hazır şablon: Happy Hour</button>
+      <button class="btn" id="camp-add-popup">+ Hazır şablon: Sadece duyuru (popup)</button>
+    </div>
+  </div>
+  <div id="camp-list"></div>
+</div>
+
 <!-- İŞLETME -->
 <div class="page hide" id="tab-site">
   <div class="panel">
     <h2>İşletme Bilgileri</h2>
     <div class="grid" id="site-fields"></div>
+    <div class="field" style="margin-top:12px"><label>Açılış ekranı fotoğrafları (her satıra bir adres; boş bırakılırsa hazır fotoğraflar kullanılır)</label><textarea id="hero-images" rows="4" placeholder="https://…"></textarea></div>
+    <div class="row-actions"><label class="btn sm">Fotoğraf yükle ve ekle<input type="file" accept="image/*" id="hero-upload" hidden></label></div>
   </div>
   <div class="panel">
     <h2>Yedekleme</h2>
@@ -242,12 +293,15 @@ body.locked .lock{display:flex}
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.2/Sortable.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="assets/core.js"></script>
 <script>
 (function(){
-  const ALLERGENS = [{"key": "gluten", "label": "Gluten içeren tahıllar"}, {"key": "crustaceans", "label": "Kabuklular"}, {"key": "egg", "label": "Yumurta"}, {"key": "fish", "label": "Balık"}, {"key": "peanut", "label": "Yerfıstığı"}, {"key": "soy", "label": "Soya"}, {"key": "milk", "label": "Süt (laktoz dahil)"}, {"key": "nuts", "label": "Sert kabuklu meyveler"}, {"key": "celery", "label": "Kereviz"}, {"key": "mustard", "label": "Hardal"}, {"key": "sesame", "label": "Susam"}, {"key": "sulfites", "label": "Kükürt dioksit ve sülfitler"}, {"key": "lupin", "label": "Acı bakla"}, {"key": "molluscs", "label": "Yumuşakçalar"}];
+  const Core = window.CaminoCore;
+  const ALLERGENS = Core.ALLERGENS;
   const SITE_FIELDS = [
-    ['name','İşletme adı'],['tagline','Slogan'],['address','Adres'],['phone','Telefon'],
-    ['email','E-posta'],['opening','Açılış saati'],['closing','Kapanış saati'],['hero','Kapak görseli URL']
+    ['name','İşletme adı'],['tagline','Slogan (açılış ekranında)'],['city','Açılış ekranı üst yazı (ör. Hoş geldiniz · Denizli)'],
+    ['address','Adres'],['phone','Telefon'],['email','E-posta'],['opening','Açılış saati (ör. 09:00)'],['closing','Kapanış saati (ör. 01:00)'],
+    ['logo','Logo adresi (boş: assets/logo.png)']
   ];
   const CFG_KEY = 'cqr-admin-github';
 
@@ -397,11 +451,51 @@ body.locked .lock{display:flex}
     }
   }
   function afterLoad(msg){
-    state.site = state.site || {};
-    state.categories = state.categories || [];
+    Core.prepare(state);   // ürünlere kalıcı kimlik verir, kampanya listesini hazırlar
     setDirty(false);
     renderAll();
     if(msg) toast(msg);
+  }
+
+  /* ---------- Fotoğraf yükleme ---------- */
+  // Seçilen fotoğraf telefonda/bilgisayarda küçültülür (en fazla 1600 px, JPEG) ve repodaki images/ klasörüne yüklenir.
+  const localPreview = new Map();   // yayına yansıyana kadar panelde görünmesi için geçici önizleme
+  function resizeImage(file, max){
+    return new Promise((resolve, reject) => {
+      const url = URL.createObjectURL(file);
+      const im = new Image();
+      im.onload = () => {
+        const k = Math.min(1, max / Math.max(im.width, im.height));
+        const cv = document.createElement('canvas');
+        cv.width = Math.round(im.width * k); cv.height = Math.round(im.height * k);
+        cv.getContext('2d').drawImage(im, 0, 0, cv.width, cv.height);
+        URL.revokeObjectURL(url);
+        resolve(cv.toDataURL('image/jpeg', 0.84));
+      };
+      im.onerror = () => { URL.revokeObjectURL(url); reject(new Error('Fotoğraf okunamadı')); };
+      im.src = url;
+    });
+  }
+  async function uploadPhoto(file, baseName){
+    if(!file) return null;
+    toast('Fotoğraf hazırlanıyor…', false, 20000);
+    const dataUrl = await resizeImage(file, 1600);
+    const path = 'images/' + (Core.slugify(baseName) || 'foto') + '-' + Date.now().toString(36) + '.jpg';
+    toast('Fotoğraf yükleniyor…', false, 20000);
+    await gh(session, 'PUT', {message: 'Fotoğraf yüklendi: ' + path, content: dataUrl.split(',')[1], branch: session.branch}, path);
+    localPreview.set(path, dataUrl);
+    toast('Fotoğraf yüklendi. Yayına almak için “Kaydet ve Yayınla”ya basın.', false, 6000);
+    return path;
+  }
+  function previewUrl(url){ return localPreview.get(url) || url; }
+  function pickAndUpload(baseName, done){
+    const inp = document.createElement('input');
+    inp.type = 'file'; inp.accept = 'image/*';
+    inp.onchange = async () => {
+      try{ const p = await uploadPhoto(inp.files[0], baseName); if(p){ done(p); setDirty(true); } }
+      catch(e){ toast(e.status ? ghErrorText(e) : e.message, true, 7000); }
+    };
+    inp.click();
   }
 
   async function save(){
@@ -436,6 +530,7 @@ body.locked .lock{display:flex}
   /* ---------- Menü düzenleyici ---------- */
   function renderAll(){
     renderMenu();
+    renderCampaigns();
     renderSite();
   }
 
@@ -486,18 +581,26 @@ body.locked .lock{display:flex}
   }
 
   function catBodyHtml(cat, ci){
-    const collage = cat.collage || [];
+    const cover = Core.coverPhoto(cat, 600);
+    const auto = Core.layoutFor(Object.assign({}, cat, {layout: ''}));
     return '<div class="cat-body">' +
       '<div class="grid">' +
         '<div class="field"><label>Kategori adı</label><input data-f="title" value="' + esc(cat.title) + '"></div>' +
         '<div class="field"><label>Alt başlık</label><input data-f="subtitle" value="' + esc(cat.subtitle) + '"></div>' +
-        '<div class="field"><label>Bağlantı kimliği (id)</label><input data-f="id" value="' + esc(cat.id) + '"></div>' +
+        '<div class="field"><label>Menüde görünüm</label><select data-f="layout">' +
+          '<option value=""' + (!cat.layout ? ' selected' : '') + '>Otomatik (' + (auto === 'cards' ? 'fotoğraflı kart' : 'liste') + ')</option>' +
+          '<option value="cards"' + (cat.layout === 'cards' ? ' selected' : '') + '>Fotoğraflı kartlar</option>' +
+          '<option value="list"' + (cat.layout === 'list' ? ' selected' : '') + '>Şık liste (fotoğrafsız)</option>' +
+        '</select></div>' +
       '</div>' +
-      '<div class="grid" style="margin-top:10px">' +
-        [0,1,2].map(k => '<div class="field"><label>Görsel ' + (k+1) + ' URL</label><input data-f="collage" data-k="' + k + '" value="' + esc(collage[k]) + '"></div>').join('') +
-      '</div>' +
-      '<div class="row-actions">' +
-        '<label class="switch small"><input type="checkbox" data-f="hideCollage" data-neg="1"' + (cat.hideCollage ? '' : ' checked') + '> Görselleri göster</label>' +
+      '<div class="photo-row">' +
+        '<div class="thumb wide" style="background-image:url(\'' + esc(previewUrl(cover)) + '\')">' + (cat.cover ? '' : '<small>Hazır fotoğraf</small>') + '</div>' +
+        '<div class="field"><label>Kategori kapak fotoğrafı</label><input data-f="cover" value="' + esc(cat.cover) + '" placeholder="Boş: hazır fotoğraf kullanılır">' +
+          '<div class="row-actions" style="margin-top:6px">' +
+            '<button class="btn sm" data-act="cat-cover-up">Fotoğraf yükle</button>' +
+            (cat.cover ? '<button class="btn sm" data-act="cat-cover-reset">Hazır fotoğrafa dön</button>' : '') +
+            '<label class="switch small"><input type="checkbox" data-f="hideCollage" data-neg="1"' + (cat.hideCollage ? '' : ' checked') + '> Kapağı göster</label>' +
+          '</div></div>' +
       '</div>' +
       '<div class="items" data-c="' + ci + '">' +
         (cat.items.length ? cat.items.map((it, ii) => itemHtml(it, ci, ii)).join('') : '<div class="empty">Bu kategoride ürün yok.</div>') +
@@ -516,6 +619,7 @@ body.locked .lock{display:flex}
     return '<div class="item' + (it.hidden ? ' is-hidden' : '') + (priceOff ? ' no-price' : '') + '" data-c="' + ci + '" data-i="' + ii + '">' +
       '<div class="item-row">' +
         '<span class="handle" title="Sürükle">⋮⋮</span>' +
+        '<span class="mini" style="background-image:url(\'' + esc(previewUrl(Core.itemPhoto(it, 120))) + '\')"></span>' +
         '<input class="in name" data-f="name" value="' + esc(it.name) + '" placeholder="Ürün adı">' +
         '<input class="in price" data-f="price" value="' + esc(it.price) + '" placeholder="Fiyat">' +
         '<label class="switch small" title="Ürünü menüde göster"><input type="checkbox" data-f="hidden" data-neg="1"' + (it.hidden ? '' : ' checked') + '> Görünür</label>' +
@@ -530,7 +634,18 @@ body.locked .lock{display:flex}
 
   function itemDetailHtml(it, ci){
     const al = Array.isArray(it.allergens) ? it.allergens : [];
+    const photo = Core.itemPhoto(it, 400);
     return '<div class="item-detail">' +
+      '<div class="photo-row" style="margin:0 0 12px">' +
+        '<div class="thumb" style="background-image:url(\'' + esc(previewUrl(photo)) + '\')">' + (!photo ? '<small>Fotoğraf yok</small>' : (Core.isDefaultPhoto(it) ? '<small>Hazır fotoğraf</small>' : '')) + '</div>' +
+        '<div class="field"><label>Ürün fotoğrafı</label><input data-f="image" value="' + esc(it.image) + '" placeholder="Boş: hazır fotoğraf (varsa) kullanılır">' +
+          '<div class="row-actions" style="margin-top:6px">' +
+            '<button class="btn sm primary" data-act="item-photo-up">📷 Fotoğraf yükle</button>' +
+            (it.image ? '<button class="btn sm" data-act="item-photo-reset">Fotoğrafı kaldır</button>' : '') +
+          '</div>' +
+          '<p class="hint">Telefonla çektiğiniz fotoğrafı doğrudan seçebilirsiniz; otomatik küçültülür. Kare veya dikey kadraj en iyi sonucu verir.</p>' +
+        '</div>' +
+      '</div>' +
       '<div class="grid">' +
         '<div class="field" style="grid-column:1/-1"><label>Açıklama / içerik</label><textarea data-f="description">' + esc(it.description) + '</textarea></div>' +
         '<div class="field"><label>Kalori (kcal)</label><input data-f="calories" value="' + esc(it.calories) + '"></div>' +
@@ -570,10 +685,9 @@ body.locked .lock{display:flex}
     if(!f || el.type === 'checkbox') return;
     const {cat, item} = ctx(el);
     const target = item || cat;
-    if(f === 'collage'){
-      cat.collage = cat.collage || [];
-      cat.collage[+el.dataset.k] = el.value.trim();
-      cat.collage = cat.collage.map(x => x || '');
+    if(el.tagName === 'SELECT') return;
+    if(f === 'image' || f === 'cover'){
+      if(el.value.trim()) target[f] = el.value.trim(); else delete target[f];
     }else{
       target[f] = el.value;
       if(!item && f === 'title') el.closest('.cat').querySelector('.cat-name').textContent = el.value;
@@ -584,6 +698,11 @@ body.locked .lock{display:flex}
   cats.addEventListener('change', e => {
     const el = e.target, f = el.dataset.f;
     const {cat, item, ci, ii} = ctx(el);
+    if(el.tagName === 'SELECT' && f){
+      if(el.value) cat[f] = el.value; else delete cat[f];
+      setDirty(true); renderMenu(); return;
+    }
+    if(f === 'image' || f === 'cover'){ renderMenu(); return; }   // önizlemeyi yenile
     if(el.dataset.actChange === 'item-move'){
       const to = +el.value;
       if(to !== ci){
@@ -632,7 +751,7 @@ body.locked .lock{display:flex}
         changed = true; break;
       case 'item-add': {
         const it = {name:'Yeni ürün', price:'', description:'', calories:'', calorieEstimated:true, allergens:[], traceWarning:''};
-        cat.items.push(it); openItems.add(it); changed = true; break;
+        cat.items.push(it); openItems.add(it); Core.prepare(state); changed = true; break;
       }
       case 'item-up': changed = move(cat.items, ii, ii - 1); break;
       case 'item-down': changed = move(cat.items, ii, ii + 1); break;
@@ -642,8 +761,19 @@ body.locked .lock{display:flex}
       case 'item-dup': {
         const copy = JSON.parse(JSON.stringify(item));
         copy.name += ' (kopya)';
-        cat.items.splice(ii + 1, 0, copy); openItems.add(copy); changed = true; break;
+        delete copy.id;
+        cat.items.splice(ii + 1, 0, copy); openItems.add(copy); Core.prepare(state); changed = true; break;
       }
+      case 'item-photo-up':
+        pickAndUpload(item.name, p => { item.image = p; renderMenu(); });
+        return;
+      case 'item-photo-reset':
+        delete item.image; changed = true; break;
+      case 'cat-cover-up':
+        pickAndUpload('kapak-' + cat.id, p => { cat.cover = p; renderMenu(); });
+        return;
+      case 'cat-cover-reset':
+        delete cat.cover; changed = true; break;
       case 'item-del':
         if(!confirm('“' + item.name + '” silinsin mi?')) return;
         cat.items.splice(ii, 1); changed = true; break;
@@ -700,12 +830,271 @@ body.locked .lock{display:flex}
     });
   }
 
+  /* ---------- Kampanyalar ---------- */
+  const campList = $('#camp-list');
+  const openCamps = new WeakSet();
+  const DAY_MS = 86400000;
+
+  function wallHM(w){ const d = new Date(w); return Core.hm(d.getUTCHours() * 60 + d.getUTCMinutes()); }
+  function wallDate(w){ return new Date(w).toLocaleDateString('tr-TR', {day:'numeric', month:'long', timeZone:'UTC'}); }
+  function campStatus(c){
+    if(!c.enabled) return ['off', 'Kapalı (menüde görünmez)'];
+    const n = Core.now(), st = Core.campaignState(c, n);
+    if(st.active) return ['on', '● Şu an aktif' + (st.endsAt ? ' · ' + Core.formatCountdown(st.endsAt - n.wall) + ' kaldı' : '')];
+    if(st.expired) return ['off', 'Süresi doldu'];
+    if(st.startsAt) return ['soon', (st.startsAt >= n.dayStart + DAY_MS ? 'Yarın ' : 'Bugün ') + wallHM(st.startsAt) + '’de başlar'];
+    if(st.upcoming) return ['soon', wallDate(Core.parseWall(c.from)) + ' tarihinde başlar'];
+    return ['off', 'Açık, ama şu an saat/gün aralığı dışında'];
+  }
+  function affected(c){
+    const out = [];
+    state.categories.forEach(cat => cat.items.forEach(it => {
+      const t = Core.campaignTargets(c, it, cat);
+      if(!t.hit) return;
+      out.push({cat, it, np: t.price || Core.applyDiscount(it.price, c.discount)});
+    }));
+    return out;
+  }
+  // Kampanyanın aktif olduğu en yakın zamanı bulur (menüde önizleme bağlantısı için)
+  function previewTime(c){
+    const probe = Object.assign({}, c, {enabled: true});
+    const n0 = Core.now();
+    if(Core.campaignState(probe, n0).active) return null;
+    const s = Core.parseHM(c.start);
+    for(let k = 0; k < 60; k++){
+      const dayStart = n0.dayStart + k * DAY_MS;
+      const cands = [s != null ? dayStart + s * 60000 + 60000 : dayStart + 12 * 3600000];
+      const f = Core.parseWall(c.from);
+      if(f != null && f >= dayStart && f < dayStart + DAY_MS) cands.push(f + 60000);
+      for(const w of cands){
+        if(w < n0.wall) continue;
+        const d = new Date(w);
+        const n = {wall: w, dow: d.getUTCDay(), min: d.getUTCHours() * 60 + d.getUTCMinutes(), dayStart};
+        if(Core.campaignState(probe, n).active) return d.toISOString().slice(0, 16);
+      }
+    }
+    return null;
+  }
+  function metaHtml(c){
+    const [cls, txt] = campStatus(c);
+    const list = affected(c);
+    const ex = list.filter(x => x.np).slice(0, 4).map(x => esc(x.it.name) + ': <s>' + esc(x.it.price) + '</s> → <b>' + esc(x.np) + '</b>').join('<br>');
+    const pt = previewTime(c);
+    return '<span class="pill ' + cls + '">' + esc(txt) + '</span>' +
+      '<div class="preview-box">' + esc(Core.describeSchedule(c)) + ' · <b>' + list.length + '</b> ürün kapsamda' +
+        (ex ? '<br>' + ex : (c.discount && c.discount.type !== 'none' && list.length ? '<br><i>Fiyat metni sayı içermediği için bazı ürünlerde indirim hesaplanamadı.</i>' : '')) +
+        '<br><a href="index.html' + (pt ? '?now=' + pt : '') + '" target="_blank" rel="noopener" style="color:var(--accent);font-weight:700">Menüde önizle ↗</a>' +
+        (pt ? ' <span class="hint">(kampanyanın aktif olacağı ' + esc(pt.replace('T', ' ')) + ' anına göre)</span>' : '') +
+      '</div>';
+  }
+
+  function renderCampaigns(){
+    const list = state.campaigns;
+    if(!list.length){ campList.innerHTML = '<div class="panel empty">Henüz kampanya yok. Yukarıdaki düğmelerle ekleyebilirsiniz.</div>'; return; }
+    campList.innerHTML = list.map(campHtml).join('');
+  }
+  function campHtml(c, i){
+    const open = openCamps.has(c);
+    const d = c.discount || (c.discount = {type:'percent', value:0, round:5});
+    const p = c.popup || (c.popup = {enabled:false, image:'', button:''});
+    const days = c.days || (c.days = []);
+    const chk = v => v ? ' checked' : '';
+    const [cls, txt] = campStatus(c);
+    return '<div class="camp" data-ci="' + i + '">' +
+      '<div class="camp-head">' +
+        '<label class="switch" title="Kampanyayı aç/kapat"><input type="checkbox" data-cf="enabled"' + chk(c.enabled) + '></label>' +
+        '<div class="camp-title" data-cact="toggle">' + (open ? '▾ ' : '▸ ') + esc(c.title || 'İsimsiz kampanya') +
+          '<div class="camp-pill"><span class="pill ' + cls + '">' + esc(txt) + '</span></div></div>' +
+        '<button class="btn sm" data-cact="up" title="Önceliği artır">▲</button>' +
+        '<button class="btn sm" data-cact="down" title="Önceliği azalt">▼</button>' +
+      '</div>' +
+      (!open ? '' : '<div class="camp-body">' +
+        '<h3>Genel</h3>' +
+        '<div class="grid">' +
+          '<div class="field"><label>Kampanya başlığı</label><input data-cf="title" value="' + esc(c.title) + '"></div>' +
+          '<div class="field"><label>Rozet yazısı (ör. HAPPY HOUR, %20)</label><input data-cf="badge" value="' + esc(c.badge) + '" maxlength="24"></div>' +
+          '<div class="field" style="grid-column:1/-1"><label>Açıklama (popup’ta görünür)</label><textarea data-cf="text">' + esc(c.text) + '</textarea></div>' +
+        '</div>' +
+        '<h3>Ne zaman?</h3>' +
+        '<div class="chips-sel">' + Core.DAYS.map(x => '<label><input type="checkbox" data-day="' + x.d + '"' + chk(days.includes(x.d)) + '>' + x.s + '</label>').join('') + '</div>' +
+        '<p class="hint">Hiç gün seçilmezse her gün geçerlidir.</p>' +
+        '<div class="grid" style="margin-top:8px">' +
+          '<div class="field"><label>Saat başlangıç</label><input type="time" data-cf="start" value="' + esc(c.start) + '"></div>' +
+          '<div class="field"><label>Saat bitiş</label><input type="time" data-cf="end" value="' + esc(c.end) + '"></div>' +
+          '<div class="field"><label>Başlangıç tarihi (isteğe bağlı)</label><input type="datetime-local" data-cf="from" value="' + esc(c.from) + '"></div>' +
+          '<div class="field"><label>Bitiş tarihi (isteğe bağlı)</label><input type="datetime-local" data-cf="to" value="' + esc(c.to) + '"></div>' +
+        '</div>' +
+        '<p class="hint">Saatler boşsa tüm gün geçerlidir. Gece yarısını geçen aralıklar (ör. 22:00–02:00) desteklenir. Bitiş tarihinden sonra fiyatlar kendiliğinden normale döner.</p>' +
+        '<h3>İndirim</h3>' +
+        '<div class="grid">' +
+          '<div class="field"><label>İndirim türü</label><select data-cf="discount.type">' +
+            '<option value="percent"' + (d.type === 'percent' ? ' selected' : '') + '>Yüzde (%)</option>' +
+            '<option value="amount"' + (d.type === 'amount' ? ' selected' : '') + '>Tutar (TL)</option>' +
+            '<option value="none"' + (d.type === 'none' ? ' selected' : '') + '>Fiyat değişmesin (sadece duyuru / özel fiyatlar)</option>' +
+          '</select></div>' +
+          (d.type === 'none' ? '' :
+          '<div class="field"><label>' + (d.type === 'percent' ? 'İndirim yüzdesi' : 'İndirim tutarı (TL)') + '</label><input type="number" min="0" step="1" data-cf="discount.value" value="' + esc(d.value) + '"></div>' +
+          '<div class="field"><label>Yuvarlama</label><select data-cf="discount.round">' +
+            [1, 5, 10].map(r => '<option value="' + r + '"' + ((+d.round || 5) === r ? ' selected' : '') + '>' + (r === 1 ? 'Tam sayı' : r + ' TL’ye yuvarla') + '</option>').join('') +
+          '</select></div>') +
+        '</div>' +
+        '<h3>Hangi ürünler?</h3>' +
+        '<label class="switch small"><input type="checkbox" data-cf="all"' + chk(c.all) + '> Tüm menü</label>' +
+        (c.all ? '' :
+          '<p class="hint" style="margin-top:10px">Kategoriler:</p>' +
+          '<div class="chips-sel">' + state.categories.map(cat => '<label><input type="checkbox" data-cat="' + esc(cat.id) + '"' + chk((c.categories || []).includes(cat.id)) + '>' + esc(cat.title) + '</label>').join('') + '</div>' +
+          '<p class="hint" style="margin-top:12px">Tek tek ürün ekleyin (isterseniz her ürüne özel kampanya fiyatı yazabilirsiniz):</p>' +
+          '<div class="pick field"><input data-pick placeholder="Ürün ara ve ekle…" autocomplete="off"><div class="pick-results hide"></div></div>' +
+          '<div class="sel-items">' + (c.items || []).map((x, k) => {
+            const f = Core.findItem(state, x.id);
+            return '<div class="sel-item"><span>' + (f ? esc(f.item.name) + ' <small class="hint">(' + esc(f.cat.title) + ' · ' + esc(f.item.price) + ')</small>' : '<i>Silinmiş ürün</i>') + '</span>' +
+              '<input data-ip="' + k + '" value="' + esc(x.price) + '" placeholder="Özel fiyat (boş: indirim)">' +
+              '<button class="btn sm danger" data-cact="item-rm" data-k="' + k + '">Kaldır</button></div>';
+          }).join('') + '</div>') +
+        '<div class="camp-meta">' + metaHtml(c) + '</div>' +
+        '<h3>Popup duyurusu</h3>' +
+        '<label class="switch small"><input type="checkbox" data-cf="popup.enabled"' + chk(p.enabled) + '> Kampanya aktifken menü açılınca popup göster</label>' +
+        (!p.enabled ? '' :
+          '<div class="photo-row">' +
+            (p.image ? '<div class="thumb wide" style="background-image:url(\'' + esc(previewUrl(p.image)) + '\')"></div>' : '') +
+            '<div class="field"><label>Popup fotoğrafı (boş: kampanyadaki ilk ürünün fotoğrafı)</label><input data-cf="popup.image" value="' + esc(p.image) + '">' +
+              '<div class="row-actions" style="margin-top:6px"><button class="btn sm" data-cact="popup-up">Fotoğraf yükle</button></div></div>' +
+            '<div class="field"><label>Buton yazısı</label><input data-cf="popup.button" value="' + esc(p.button) + '" placeholder="Kampanyalı Ürünleri Gör"></div>' +
+          '</div>') +
+        '<div class="row-actions" style="margin-top:16px">' +
+          '<button class="btn sm" data-cact="dup">Kopyala</button>' +
+          '<button class="btn sm danger" data-cact="del">Kampanyayı sil</button>' +
+        '</div>' +
+      '</div>') +
+    '</div>';
+  }
+  function campCtx(el){
+    const box = el.closest('.camp');
+    return box ? {box, i: +box.dataset.ci, c: state.campaigns[+box.dataset.ci]} : {};
+  }
+  function setPath(o, path, v){
+    const ks = path.split('.');
+    for(let i = 0; i < ks.length - 1; i++) o = o[ks[i]] = o[ks[i]] || {};
+    o[ks[ks.length - 1]] = v;
+  }
+  function refreshMeta(box, c){
+    const m = box.querySelector('.camp-meta');
+    if(m) m.innerHTML = metaHtml(c);
+    const [cls, txt] = campStatus(c);
+    box.querySelector('.camp-pill').innerHTML = '<span class="pill ' + cls + '">' + esc(txt) + '</span>';
+  }
+
+  // Metin alanları: yeniden çizmeden güncelle (odak kaybolmasın)
+  campList.addEventListener('input', e => {
+    const el = e.target;
+    const {box, c} = campCtx(el);
+    if(!c) return;
+    if(el.dataset.pick !== undefined) return showPick(el, c);
+    if(el.dataset.ip !== undefined){ c.items[+el.dataset.ip].price = el.value; }
+    else if(el.dataset.cf && el.type !== 'checkbox' && el.tagName !== 'SELECT'){
+      setPath(c, el.dataset.cf, el.type === 'number' ? (+el.value || 0) : el.value);
+    }else return;
+    setDirty(true);
+    refreshMeta(box, c);
+  });
+  campList.addEventListener('change', e => {
+    const el = e.target;
+    const {c} = campCtx(el);
+    if(!c) return;
+    if(el.dataset.day !== undefined){
+      const d = +el.dataset.day, set = new Set(c.days || []);
+      el.checked ? set.add(d) : set.delete(d);
+      c.days = Core.DAYS.map(x => x.d).filter(x => set.has(x));
+    }else if(el.dataset.cat !== undefined){
+      const set = new Set(c.categories || []);
+      el.checked ? set.add(el.dataset.cat) : set.delete(el.dataset.cat);
+      c.categories = state.categories.map(x => x.id).filter(x => set.has(x));
+    }else if(el.dataset.cf && (el.type === 'checkbox' || el.tagName === 'SELECT')){
+      setPath(c, el.dataset.cf, el.type === 'checkbox' ? el.checked : (el.dataset.cf === 'discount.round' ? +el.value : el.value));
+      if(el.dataset.cf === 'enabled' && el.checked) toast('Kampanya açıldı. Yayına almak için “Kaydet ve Yayınla”ya basın.');
+    }else return;
+    setDirty(true);
+    renderCampaigns();
+  });
+  function showPick(input, c){
+    const res = input.parentNode.querySelector('.pick-results');
+    const q = input.value.trim().toLocaleLowerCase('tr-TR');
+    if(!q){ res.classList.add('hide'); return; }
+    const taken = new Set((c.items || []).map(x => x.id));
+    const hits = [];
+    state.categories.forEach(cat => cat.items.forEach(it => {
+      if(hits.length < 12 && !taken.has(it.id) && (it.name || '').toLocaleLowerCase('tr-TR').includes(q)) hits.push({cat, it});
+    }));
+    res.innerHTML = hits.length ? hits.map(h => '<button type="button" data-cact="item-add" data-id="' + esc(h.it.id) + '">' + esc(h.it.name) + ' <small class="hint">' + esc(h.cat.title) + ' · ' + esc(h.it.price) + '</small></button>').join('') : '<div class="hint" style="padding:8px 12px">Ürün bulunamadı</div>';
+    res.classList.remove('hide');
+  }
+  campList.addEventListener('click', e => {
+    const btn = e.target.closest('[data-cact]');
+    if(!btn) return;
+    const {i, c} = campCtx(btn);
+    if(!c) return;
+    const L = state.campaigns;
+    switch(btn.dataset.cact){
+      case 'toggle': openCamps.has(c) ? openCamps.delete(c) : openCamps.add(c); renderCampaigns(); return;
+      case 'up': if(!move(L, i, i - 1)) return; break;
+      case 'down': if(!move(L, i, i + 1)) return; break;
+      case 'del': if(!confirm('“' + (c.title || 'Kampanya') + '” silinsin mi?')) return; L.splice(i, 1); break;
+      case 'dup': {
+        const copy = JSON.parse(JSON.stringify(c));
+        copy.id = 'k' + Date.now().toString(36); copy.title += ' (kopya)'; copy.enabled = false;
+        L.splice(i + 1, 0, copy); openCamps.add(copy); break;
+      }
+      case 'item-add': (c.items = c.items || []).push({id: btn.dataset.id, price: ''}); break;
+      case 'item-rm': c.items.splice(+btn.dataset.k, 1); break;
+      case 'popup-up': pickAndUpload('popup-' + (c.title || 'kampanya'), p => { c.popup.image = p; renderCampaigns(); }); return;
+    }
+    setDirty(true);
+    renderCampaigns();
+  });
+  function addCampaign(kind){
+    const c = Core.newCampaign();
+    if(kind === 'blank'){ Object.assign(c, {title:'Yeni kampanya', badge:'', text:'', start:'', end:''}); }
+    if(kind === 'hh'){ if(state.categories.some(x => x.id === 'ficilar')) c.categories = ['ficilar']; }
+    if(kind === 'popup'){ Object.assign(c, {title:'Duyuru', badge:'DUYURU', text:'Bu akşam canlı müzik!', start:'', end:'', discount:{type:'none', value:0, round:5}}); c.popup.button = 'Menüye Göz At'; }
+    state.campaigns.unshift(c);
+    openCamps.add(c);
+    setDirty(true);
+    renderCampaigns();
+    toast('Kampanya eklendi (kapalı). Ayarlayıp açtıktan sonra “Kaydet ve Yayınla”ya basın.', false, 5000);
+  }
+  $('#camp-add').addEventListener('click', () => addCampaign('blank'));
+  $('#camp-add-hh').addEventListener('click', () => addCampaign('hh'));
+  $('#camp-add-popup').addEventListener('click', () => addCampaign('popup'));
+  // Durum etiketlerini (kalan süre vb.) canlı tut
+  setInterval(() => {
+    if(!state || $('#tab-campaigns').classList.contains('hide')) return;
+    campList.querySelectorAll('.camp').forEach(box => {
+      const c = state.campaigns[+box.dataset.ci];
+      if(!c) return;
+      const [cls, txt] = campStatus(c);
+      box.querySelector('.camp-pill').innerHTML = '<span class="pill ' + cls + '">' + esc(txt) + '</span>';
+    });
+  }, 30000);
+
   /* ---------- İşletme bilgileri ---------- */
   function renderSite(){
     $('#site-fields').innerHTML = SITE_FIELDS.map(([k, label]) =>
       '<div class="field"><label>' + label + '</label><input data-site="' + k + '" value="' + esc(state.site[k]) + '"></div>'
     ).join('');
+    $('#hero-images').value = (state.site.heroImages || []).join('\n');
   }
+  $('#hero-images').addEventListener('input', e => {
+    const list = e.target.value.split('\n').map(s => s.trim()).filter(Boolean);
+    if(list.length) state.site.heroImages = list; else delete state.site.heroImages;
+    setDirty(true);
+  });
+  $('#hero-upload').addEventListener('change', async e => {
+    try{
+      const p = await uploadPhoto(e.target.files[0], 'kapak');
+      if(p){ state.site.heroImages = (state.site.heroImages || []).concat(p); renderSite(); setDirty(true); }
+    }catch(err){ toast(err.status ? ghErrorText(err) : err.message, true, 7000); }
+    e.target.value = '';
+  });
   $('#site-fields').addEventListener('input', e => {
     const k = e.target.dataset.site;
     if(!k) return;
@@ -904,7 +1293,7 @@ body.locked .lock{display:flex}
   /* ---------- Sekmeler ---------- */
   function showTab(name){
     document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === name));
-    ['menu','site','qr','security'].forEach(n => $('#tab-' + n).classList.toggle('hide', n !== name));
+    ['menu','campaigns','site','qr','security'].forEach(n => $('#tab-' + n).classList.toggle('hide', n !== name));
     if(name === 'qr' && !$('#qr-url').value){ $('#qr-url').value = defaultMenuUrl(); if($('#qr-url').value) makeQr(); }
   }
   document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => showTab(t.dataset.tab)));

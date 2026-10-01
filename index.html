@@ -105,7 +105,7 @@ body.no-scroll{overflow:hidden}
 /* ---------- Kampanyada ---------- */
 .deals{padding-block:70px 20px}
 .sec-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:26px}
-.sec-head h2{font:400 clamp(34px,5vw,56px)/1 var(--serif);margin:10px 0 0}
+.sec-head h2{font:400 clamp(34px,5vw,56px)/1.08 var(--serif);margin:16px 0 0}
 .sec-head h2 em{font-style:italic}
 .countdown{font:500 13px/1.3 var(--sans);letter-spacing:.12em;text-align:right;color:var(--muted)}
 .countdown b{display:block;color:var(--text);font:500 22px/1.2 var(--serif);letter-spacing:.02em}
@@ -139,7 +139,7 @@ body.no-scroll{overflow:hidden}
 
 /* ---------- Menü ---------- */
 .intro-block{padding-block:90px 30px;text-align:center}
-.intro-block h2{font:400 clamp(40px,7vw,84px)/.95 var(--serif);margin:16px 0 18px;letter-spacing:-.01em}
+.intro-block h2{font:400 clamp(40px,7vw,84px)/1.02 var(--serif);margin:24px 0 20px;letter-spacing:-.01em}
 .intro-block h2 em{font-style:italic}
 .intro-block p{color:var(--muted);max-width:520px;margin:0 auto}
 .rule{display:flex;align-items:center;gap:14px;justify-content:center;margin:28px auto 0;color:var(--faint);font-size:11px;letter-spacing:.3em}
@@ -169,8 +169,8 @@ body.no-scroll{overflow:hidden}
 .ph img.ok{opacity:1}
 .dish button:hover .ph img,.deal-card button:hover .ph img{transform:scale(1.1)}
 .dish.feature .ph{aspect-ratio:16/10}
-@media(min-width:760px){.dish.feature{grid-column:span 2}.dish.feature .ph{aspect-ratio:auto;height:100%;min-height:100%}
-  .dish.feature button{height:100%;display:flex;flex-direction:column}.dish.feature .ph{flex:1}}
+/* Geniş ekranda öne çıkan kart iki sütun kaplar; fotoğraf sabit oranlı kalır, yazılar her zaman altında durur */
+@media(min-width:760px){.dish.feature{grid-column:span 2}.dish.feature .ph{aspect-ratio:16/10}}
 .ph::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(10,10,10,.55));pointer-events:none}
 .mono{position:absolute;inset:0;display:grid;place-items:center;background:
   repeating-linear-gradient(45deg,transparent 0 14px,rgba(255,255,255,.025) 14px 15px),var(--bg3)}
@@ -340,8 +340,8 @@ body.no-scroll .social{opacity:0;pointer-events:none}
   .social{top:auto;bottom:calc(88px + env(safe-area-inset-bottom,0px));transform:none}
   .social-toggle{display:grid;place-items:center;width:44px;height:44px;background:var(--text);color:#0a0a0a;box-shadow:0 6px 20px rgba(0,0,0,.4)}
   .social-toggle svg{width:19px;height:19px}
-  .social-list{position:absolute;right:0;bottom:100%;margin-bottom:6px;transform:translateX(105%);transition:transform .45s var(--ease)}
-  .social.open .social-list{transform:none}
+  .social-list{position:absolute;right:0;bottom:100%;margin-bottom:6px;transform:translateX(105%);visibility:hidden;transition:transform .45s var(--ease),visibility 0s linear .45s}
+  .social.open .social-list{transform:none;visibility:visible;transition:transform .45s var(--ease)}
   .social-list a{width:44px;height:44px}
   .social-list a::after{opacity:1;transform:translate(0,-50%);font-size:10px;padding:6px 8px;background:rgba(10,10,10,.9);color:var(--text);border:1px solid var(--line2)}
   .social:not(.open) .social-list a::after{opacity:0}

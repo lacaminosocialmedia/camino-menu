@@ -1064,7 +1064,7 @@
         {
           "name": "Fesleğen Kavun",
           "price": "650 TL",
-          "description": "Beefeater, Cardinal Melon, Fesleğen 😋",
+          "description": "Beefeater, Cardinal Melon, Fesleğen",
           "calories": "165",
           "calorieEstimated": true,
           "allergens": [],
@@ -1074,7 +1074,7 @@
         {
           "name": "İsli Viski Mango",
           "price": "650 TL",
-          "description": "J.W Black Label, Safari, Mango Püre 😋",
+          "description": "J.W Black Label, Safari, Mango Püre",
           "calories": "210",
           "calorieEstimated": true,
           "allergens": [],
@@ -1084,7 +1084,7 @@
         {
           "name": "Sorrel Kiss",
           "price": "650 TL",
-          "description": "Gordon's London Dry Gin, St.Germain, Kuzukulağı mix, Çöven 😖",
+          "description": "Gordon's London Dry Gin, St.Germain, Kuzukulağı mix, Çöven",
           "calories": "190",
           "allergens": [],
           "traceWarning": "",
@@ -1094,7 +1094,7 @@
         {
           "name": "Scarlet Dream",
           "price": "650 TL",
-          "description": "Gordon's London Dry Gin, Safari, Nar Suyu, Çöven 😖",
+          "description": "Gordon's London Dry Gin, Safari, Nar Suyu, Çöven",
           "calories": "215",
           "allergens": [],
           "traceWarning": "",
@@ -1104,7 +1104,7 @@
         {
           "name": "Morange",
           "price": "650 TL",
-          "description": "Jack Daniel's Tennessee Honey, Captain Morgan White Rum, Cointreau, Tarçınlı Portakal Mix, Passion Fruit, Çöven 😋",
+          "description": "Jack Daniel's Tennessee Honey, Captain Morgan White Rum, Cointreau, Tarçınlı Portakal Mix, Passion Fruit, Çöven",
           "calories": "210",
           "allergens": [],
           "traceWarning": "",
@@ -1114,7 +1114,7 @@
         {
           "name": "Bella",
           "price": "650 TL",
-          "description": "Smirnoff Votka, Jägermeister, Tarçınlı Mandalina Mix, Citrus, Çöven 😖",
+          "description": "Smirnoff Votka, Jägermeister, Tarçınlı Mandalina Mix, Citrus, Çöven",
           "calories": "195",
           "allergens": [],
           "traceWarning": "",
@@ -1124,7 +1124,7 @@
         {
           "name": "AAS",
           "price": "650TL",
-          "description": "Captain Morgan White Rum, Ananas Suyu, Citrus, Çöven 😋",
+          "description": "Captain Morgan White Rum, Ananas Suyu, Citrus, Çöven",
           "calories": "165",
           "allergens": [],
           "traceWarning": "",
@@ -1134,7 +1134,7 @@
         {
           "name": "Lime Ekstra",
           "price": "650 TL",
-          "description": "Gordon's London Dry Gin, Cool lime mix, Soda 😋",
+          "description": "Gordon's London Dry Gin, Cool lime mix, Soda",
           "calories": "140",
           "allergens": [],
           "traceWarning": "",
@@ -1144,7 +1144,7 @@
         {
           "name": "Peach Fire",
           "price": "650 TL",
-          "description": "Jack Daniel's Tennessee Fire, Limon suyu, Şeftali Şurubu, Chili Biber, Çöven 🥵",
+          "description": "Jack Daniel's Tennessee Fire, Limon suyu, Şeftali Şurubu, Chili Biber, Çöven",
           "calories": "155",
           "allergens": [],
           "traceWarning": "",
@@ -1154,7 +1154,7 @@
         {
           "name": "Priapos",
           "price": "650 TL",
-          "description": "Smirnoff North, Malibu, Chambord, Limon suyu, Çöven 😋",
+          "description": "Smirnoff North, Malibu, Chambord, Limon suyu, Çöven",
           "calories": "210",
           "allergens": [],
           "traceWarning": "",

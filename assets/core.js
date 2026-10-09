@@ -106,6 +106,19 @@
   }
 
   /* ---------- Veri hazırlama ---------- */
+  // Metinlerdeki emojileri ve süs simgelerini temizler (menüde hiçbir yerde emoji görünmez)
+  // Emojiler + oklar, yıldızlar, geometrik ve dekoratif süs işaretleri (≈ gibi matematik işaretlerine dokunmaz)
+  const EMOJI_RE = new RegExp('(?:\\p{Extended_Pictographic}|[\\u{1F1E6}-\\u{1F1FF}\\u{1F3FB}-\\u{1F3FF}\\u{FE0F}\\u{200D}\\u{20E3}' +
+    '\\u{2190}-\\u{21FF}\\u{25A0}-\\u{25FF}\\u{2600}-\\u{27BF}\\u{2B00}-\\u{2BFF}\\u{22EE}])', 'gu');
+  function stripEmoji(s){
+    if(typeof s !== 'string') return s;
+    const out = s.replace(EMOJI_RE, '');
+    return out === s ? s : out.replace(/[ \t]{2,}/g, ' ').replace(/\s+([,.;:!?])/g, '$1').trim();
+  }
+  function cleanFields(o, keys){
+    if(!o) return;
+    keys.forEach(k => { if(typeof o[k] === 'string') o[k] = stripEmoji(o[k]); });
+  }
   // Her ürüne kalıcı bir kimlik verir (kampanyalar ve ileride sipariş sistemi bu kimliği kullanır).
   function prepare(data){
     data.site = data.site || {};
@@ -113,6 +126,14 @@
     data.campaigns = data.campaigns || [];
     data.events = data.events || [];
     data.announcements = data.announcements || [];
+    cleanFields(data.site, ['name', 'tagline', 'city']);
+    data.categories.forEach(cat => {
+      cleanFields(cat, ['title', 'subtitle']);
+      (cat.items || []).forEach(it => cleanFields(it, ['name', 'description', 'traceWarning']));
+    });
+    data.campaigns.forEach(c => { cleanFields(c, ['title', 'badge', 'text']); cleanFields(c.popup, ['button']); });
+    data.events.forEach(ev => cleanFields(ev, ['title', 'text']));
+    data.announcements.forEach(a => cleanFields(a, ['title', 'text', 'button']));
     const used = new Set();
     data.categories.forEach(cat => (cat.items || []).forEach(it => { if(it.id) used.add(it.id); }));
     data.categories.forEach(cat => {
@@ -296,10 +317,10 @@
   /* ---------- Etkinlikler / duyurular ---------- */
   // Etkinlik: {id, type, title, text, date:'YYYY-MM-DD', start, end, repeat:'none'|'weekly', until, image, popup, published}
   const EVENT_TYPES = [
-    {key:'music', label:'Canlı Müzik', icon:'♪'}, {key:'match', label:'Maç Yayını', icon:'◉'},
-    {key:'party', label:'DJ / Parti', icon:'✦'}, {key:'quiz', label:'Quiz Gecesi', icon:'?'},
-    {key:'special', label:'Özel Gün', icon:'★'}, {key:'announce', label:'Duyuru', icon:'!'},
-    {key:'closed', label:'Kapalıyız / Özel saat', icon:'—'}
+    {key:'music', label:'Canlı Müzik'}, {key:'match', label:'Maç Yayını'},
+    {key:'party', label:'DJ / Parti'}, {key:'quiz', label:'Quiz Gecesi'},
+    {key:'special', label:'Özel Gün'}, {key:'announce', label:'Duyuru'},
+    {key:'closed', label:'Kapalıyız / Özel saat'}
   ];
   const EVENT_TYPE = Object.fromEntries(EVENT_TYPES.map(t => [t.key, t]));
   function eventType(ev){ return EVENT_TYPE[ev.type] || EVENT_TYPE.announce; }
@@ -364,7 +385,7 @@
       place: String(o.place || '').trim(), directions: !!(o.directions && place),
       mapUrl: place ? 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(place) : ''};
   }
-  // Açılış popup'ında gösterilecek afişler, sırasıyla: duyurular (panel sırası) → aktif kampanyalar → yaklaşan etkinlikler
+  // Açılış popup'ında gösterilecek afişler, sırasıyla: önce duyurular (panel sırası), sonra aktif kampanyalar, sonra yaklaşan etkinlikler
   function posterSlides(data, n){
     n = n || now();
     const out = [];
@@ -420,7 +441,7 @@
   }
 
   global.CaminoCore = {
-    ALLERGENS, ALLERGEN_LABELS, DAYS, slugify, prepare, findItem,
+    ALLERGENS, ALLERGEN_LABELS, DAYS, slugify, prepare, findItem, stripEmoji,
     itemPhoto, isDefaultPhoto, coverPhoto, heroPhotos, layoutFor, sized,
     now, setNowOverride, parseWall, parseHM, hm,
     campaignState, describeSchedule, campaignTargets, applyDiscount, discountLabel, priceInfo, formatCountdown, newCampaign,

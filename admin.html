@@ -213,6 +213,14 @@ h1,h2,h3{font-family:'Playfair Display',serif;margin:0}
 .modal{background:#fff;border-radius:18px;box-shadow:0 20px 60px rgba(0,0,0,.25);padding:20px;width:min(640px,100%)}
 .modal h2{font-size:24px;margin-bottom:12px}
 
+/* Ok ve tutamaç (simge yerine ince çizgiler) */
+.chev{display:inline-block;width:7px;height:7px;border:solid currentColor;border-width:0 2px 2px 0;vertical-align:middle}
+.chev.up{transform:rotate(-135deg);margin-top:3px}
+.chev.down{transform:rotate(45deg);margin-top:-3px}
+.chev.right{transform:rotate(-45deg)}
+.handle:empty,.cat-handle:empty{display:inline-block;width:14px;height:11px;padding:0;margin:0 4px;flex:none;
+  background:linear-gradient(currentColor 0 0) top/100% 2px no-repeat,linear-gradient(currentColor 0 0) center/100% 2px no-repeat,linear-gradient(currentColor 0 0) bottom/100% 2px no-repeat}
+
 /* Hazır şablonlar */
 .tpl-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px;margin-top:8px}
 .tpl{border:1px dashed #d4c7b4;border-radius:12px;padding:10px 12px;background:#faf8f4;text-align:left;cursor:pointer;font:inherit;transition:border-color .2s,background .2s}
@@ -299,7 +307,7 @@ body.locked .lock{display:flex}
         <button class="btn" data-quick="hh">+ Happy Hour</button>
         <button class="btn" data-quick="ann">+ Duyuru afişi</button>
         <button class="btn" data-quick="calendar">Takvimi aç</button>
-        <a class="btn" href="index.html" target="_blank" rel="noopener">Menüyü aç ↗</a>
+        <a class="btn" href="index.html" target="_blank" rel="noopener">Menüyü aç</a>
         <button class="btn" data-quick="qr">QR kod</button>
       </div>
       <label class="switch" style="margin-top:14px"><input type="checkbox" id="dash-prices"> Menüde fiyatları göster</label>
@@ -335,7 +343,7 @@ body.locked .lock{display:flex}
   <div class="panel">
     <h2>Duyurular ve afişler</h2>
     <p class="hint">Afiş (görsel) ve duyurular menü açılınca <b>kaydırmalı bir popup</b>ta ve menüdeki “Duyurular” bölümünde sırayla gösterilir.
-      Sıralamayı ⋮⋮ tutamacıyla sürükleyerek veya ▲ ▼ ile değiştirin. Tarih verirseniz o tarihte kendiliğinden yayına girer ve biter.
+      Sıralamayı soldaki tutamaçtan sürükleyerek veya yukarı / aşağı düğmeleriyle değiştirin. Tarih verirseniz o tarihte kendiliğinden yayına girer ve biter.
       Instagram gönderisi boyutu (4:5 dikey veya kare) en iyi sonucu verir.</p>
     <div class="row-actions">
       <button class="btn primary" id="ann-add">+ Yeni duyuru / afiş</button>
@@ -358,7 +366,7 @@ body.locked .lock{display:flex}
     <div class="photo-row" style="margin-top:0">
       <div class="thumb poster" id="annf-thumb"></div>
       <div class="field"><label>Afiş görseli (isteğe bağlı)</label><input id="annf-image" placeholder="Boş bırakılırsa şık bir yazı afişi otomatik oluşturulur">
-        <div class="row-actions" style="margin-top:6px"><button type="button" class="btn sm primary" id="annf-upload">📷 Afiş yükle</button></div>
+        <div class="row-actions" style="margin-top:6px"><button type="button" class="btn sm primary" id="annf-upload">Afiş yükle</button></div>
         <p class="hint">Canva vb. ile hazırladığınız afişi doğrudan yükleyebilirsiniz; görsel kırpılmadan tam gösterilir.</p></div>
     </div>
     <div class="grid" style="margin-top:12px">
@@ -428,7 +436,7 @@ body.locked .lock{display:flex}
       <button class="btn sm" id="collapse-all">Tümünü kapat</button>
       <button class="btn sm" id="add-cat">+ Kategori ekle</button>
     </div>
-    <p class="hint">Sıralamayı değiştirmek için ⋮⋮ tutamacından sürükleyin veya ▲ ▼ düğmelerini kullanın. Değişiklikler <b>Kaydet ve Yayınla</b> düğmesine basınca yayına girer.</p>
+    <p class="hint">Sıralamayı değiştirmek için soldaki tutamaçtan sürükleyin veya yukarı / aşağı düğmelerini kullanın. Değişiklikler <b>Kaydet ve Yayınla</b> düğmesine basınca yayına girer.</p>
   </div>
   <div id="cats"><div class="empty">Menü yükleniyor…</div></div>
 </div>
@@ -812,13 +820,13 @@ body.locked .lock{display:flex}
     const open = openCats.has(cat);
     return '<div class="cat' + (cat.hidden ? ' is-hidden' : '') + '" data-c="' + ci + '">' +
       '<div class="cat-head">' +
-        '<span class="cat-handle" title="Sürükle">⋮⋮</span>' +
-        '<div class="cat-title" data-act="cat-toggle">' + (open ? '▾ ' : '▸ ') + '<span class="cat-name">' + esc(cat.title) + '</span>' +
+        '<span class="cat-handle" title="Sürükle"></span>' +
+        '<div class="cat-title" data-act="cat-toggle">' + (open ? '<i class="chev down"></i> ' : '<i class="chev right"></i> ') + '<span class="cat-name">' + esc(cat.title) + '</span>' +
           '<small>' + items.length + ' ürün' + (hiddenCount ? ' · ' + hiddenCount + ' gizli' : '') + (cat.hidePrices ? ' · fiyatlar gizli' : '') + '</small></div>' +
         '<label class="switch small" title="Kategoriyi menüde göster"><input type="checkbox" data-f="hidden" data-neg="1"' + (cat.hidden ? '' : ' checked') + '> Görünür</label>' +
         '<label class="switch small" title="Bu kategorideki fiyatları göster"><input type="checkbox" data-f="hidePrices" data-neg="1"' + (cat.hidePrices ? '' : ' checked') + '> Fiyatlar</label>' +
-        '<button class="btn sm" data-act="cat-up" title="Yukarı taşı">▲</button>' +
-        '<button class="btn sm" data-act="cat-down" title="Aşağı taşı">▼</button>' +
+        '<button class="btn sm" data-act="cat-up" title="Yukarı taşı"><i class="chev up"></i></button>' +
+        '<button class="btn sm" data-act="cat-down" title="Aşağı taşı"><i class="chev down"></i></button>' +
       '</div>' +
       (open ? catBodyHtml(cat, ci) : '') +
     '</div>';
@@ -862,14 +870,14 @@ body.locked .lock{display:flex}
     const priceOff = it.hidePrice || state.categories[ci].hidePrices || state.site.showPrices === false;
     return '<div class="item' + (it.hidden ? ' is-hidden' : '') + (priceOff ? ' no-price' : '') + '" data-c="' + ci + '" data-i="' + ii + '">' +
       '<div class="item-row">' +
-        '<span class="handle" title="Sürükle">⋮⋮</span>' +
+        '<span class="handle" title="Sürükle"></span>' +
         '<span class="mini" style="background-image:url(\'' + esc(previewUrl(Core.itemPhoto(it, 120))) + '\')"></span>' +
         '<input class="in name" data-f="name" value="' + esc(it.name) + '" placeholder="Ürün adı">' +
         '<input class="in price" data-f="price" value="' + esc(it.price) + '" placeholder="Fiyat">' +
         '<label class="switch small" title="Ürünü menüde göster"><input type="checkbox" data-f="hidden" data-neg="1"' + (it.hidden ? '' : ' checked') + '> Görünür</label>' +
         '<label class="switch small" title="Ürünün fiyatını göster"><input type="checkbox" data-f="hidePrice" data-neg="1"' + (it.hidePrice ? '' : ' checked') + '> Fiyat</label>' +
-        '<button class="btn sm" data-act="item-up" title="Yukarı">▲</button>' +
-        '<button class="btn sm" data-act="item-down" title="Aşağı">▼</button>' +
+        '<button class="btn sm" data-act="item-up" title="Yukarı"><i class="chev up"></i></button>' +
+        '<button class="btn sm" data-act="item-down" title="Aşağı"><i class="chev down"></i></button>' +
         '<button class="btn sm" data-act="item-toggle">' + (open ? 'Kapat' : 'Detay') + '</button>' +
       '</div>' +
       (open ? itemDetailHtml(it, ci) : '') +
@@ -884,7 +892,7 @@ body.locked .lock{display:flex}
         '<div class="thumb" style="background-image:url(\'' + esc(previewUrl(photo)) + '\')">' + (!photo ? '<small>Fotoğraf yok</small>' : (Core.isDefaultPhoto(it) ? '<small>Hazır fotoğraf</small>' : '')) + '</div>' +
         '<div class="field"><label>Ürün fotoğrafı</label><input data-f="image" value="' + esc(it.image) + '" placeholder="Boş: hazır fotoğraf (varsa) kullanılır">' +
           '<div class="row-actions" style="margin-top:6px">' +
-            '<button class="btn sm primary" data-act="item-photo-up">📷 Fotoğraf yükle</button>' +
+            '<button class="btn sm primary" data-act="item-photo-up">Fotoğraf yükle</button>' +
             (it.image ? '<button class="btn sm" data-act="item-photo-reset">Fotoğrafı kaldır</button>' : '') +
           '</div>' +
           '<p class="hint">Telefonla çektiğiniz fotoğrafı doğrudan seçebilirsiniz; otomatik küçültülür. Kare veya dikey kadraj en iyi sonucu verir.</p>' +
@@ -1084,7 +1092,7 @@ body.locked .lock{display:flex}
   function campStatus(c){
     if(!c.enabled) return ['off', 'Kapalı (menüde görünmez)'];
     const n = Core.now(), st = Core.campaignState(c, n);
-    if(st.active) return ['on', '● Şu an aktif' + (st.endsAt ? ' · ' + Core.formatCountdown(st.endsAt - n.wall) + ' kaldı' : '')];
+    if(st.active) return ['on', 'Şu an aktif' + (st.endsAt ? ' · ' + Core.formatCountdown(st.endsAt - n.wall) + ' kaldı' : '')];
     if(st.expired) return ['off', 'Süresi doldu'];
     if(st.startsAt) return ['soon', (st.startsAt >= n.dayStart + DAY_MS ? 'Yarın ' : 'Bugün ') + wallHM(st.startsAt) + '’de başlar'];
     if(st.upcoming) return ['soon', wallDate(Core.parseWall(c.from)) + ' tarihinde başlar'];
@@ -1122,12 +1130,12 @@ body.locked .lock{display:flex}
   function metaHtml(c){
     const [cls, txt] = campStatus(c);
     const list = affected(c);
-    const ex = list.filter(x => x.np).slice(0, 4).map(x => esc(x.it.name) + ': <s>' + esc(x.it.price) + '</s> → <b>' + esc(x.np) + '</b>').join('<br>');
+    const ex = list.filter(x => x.np).slice(0, 4).map(x => esc(x.it.name) + ': <s>' + esc(x.it.price) + '</s> &nbsp;<b>' + esc(x.np) + '</b>').join('<br>');
     const pt = previewTime(c);
     return '<span class="pill ' + cls + '">' + esc(txt) + '</span>' +
       '<div class="preview-box">' + esc(Core.describeSchedule(c)) + ' · <b>' + list.length + '</b> ürün kapsamda' +
         (ex ? '<br>' + ex : (c.discount && c.discount.type !== 'none' && list.length ? '<br><i>Fiyat metni sayı içermediği için bazı ürünlerde indirim hesaplanamadı.</i>' : '')) +
-        '<br><a href="index.html' + (pt ? '?now=' + pt : '') + '" target="_blank" rel="noopener" style="color:var(--accent);font-weight:700">Menüde önizle ↗</a>' +
+        '<br><a href="index.html' + (pt ? '?now=' + pt : '') + '" target="_blank" rel="noopener" style="color:var(--accent);font-weight:700">Menüde önizle</a>' +
         (pt ? ' <span class="hint">(kampanyanın aktif olacağı ' + esc(pt.replace('T', ' ')) + ' anına göre)</span>' : '') +
       '</div>';
   }
@@ -1147,10 +1155,10 @@ body.locked .lock{display:flex}
     return '<div class="camp" data-ci="' + i + '">' +
       '<div class="camp-head">' +
         '<label class="switch" title="Kampanyayı aç/kapat"><input type="checkbox" data-cf="enabled"' + chk(c.enabled) + '></label>' +
-        '<div class="camp-title" data-cact="toggle">' + (open ? '▾ ' : '▸ ') + esc(c.title || 'İsimsiz kampanya') +
+        '<div class="camp-title" data-cact="toggle">' + (open ? '<i class="chev down"></i> ' : '<i class="chev right"></i> ') + esc(c.title || 'İsimsiz kampanya') +
           '<div class="camp-pill"><span class="pill ' + cls + '">' + esc(txt) + '</span></div></div>' +
-        '<button class="btn sm" data-cact="up" title="Önceliği artır">▲</button>' +
-        '<button class="btn sm" data-cact="down" title="Önceliği azalt">▼</button>' +
+        '<button class="btn sm" data-cact="up" title="Önceliği artır"><i class="chev up"></i></button>' +
+        '<button class="btn sm" data-cact="down" title="Önceliği azalt"><i class="chev down"></i></button>' +
       '</div>' +
       (!open ? '' : '<div class="camp-body">' +
         '<h3>Genel</h3>' +
@@ -1353,7 +1361,7 @@ body.locked .lock{display:flex}
     if(day >= Core.now().dayStart) state.campaigns.forEach(c => { const info = Core.campaignOnDay(c, day); if(info) camps.push({c, info}); });
     return {evs, camps};
   }
-  function evLine(ev){ const t = Core.eventType(ev); return t.icon + ' ' + (ev.start ? ev.start + ' ' : '') + ev.title; }
+  function evLine(ev){ const t = Core.eventType(ev); return (ev.start ? ev.start + ' ' : '') + ev.title; }
 
   /* ---------- Duyuru / etkinlik detayları (ücret, rezervasyon, konum) ---------- */
   document.querySelectorAll('[data-details]').forEach(box => {
@@ -1388,7 +1396,7 @@ body.locked .lock{display:flex}
 
   /* ---------- Etkinlikler ---------- */
   let editing = null;   // {ev, isNew}
-  $('#evf-type').innerHTML = Core.EVENT_TYPES.map(t => '<option value="' + t.key + '">' + t.icon + ' ' + t.label + '</option>').join('');
+  $('#evf-type').innerHTML = Core.EVENT_TYPES.map(t => '<option value="' + t.key + '">' + t.label + '</option>').join('');
   function openEventForm(ev, isNew){
     editing = {ev, isNew};
     $('#ev-form-title').textContent = isNew ? 'Yeni etkinlik / duyuru' : 'Etkinliği düzenle';
@@ -1485,7 +1493,7 @@ body.locked .lock{display:flex}
     $('#cal-day').innerHTML = '<div class="cal-head" style="margin:0"><h2 style="margin:0;text-align:left">' + esc(title) + '</h2><span style="flex:1"></span>' +
         '<button class="btn primary sm" data-dact="add">+ Bu güne etkinlik ekle</button></div>' +
       (!evs.length && !camps.length ? '<p class="hint">Bu gün için planlanmış etkinlik veya kampanya yok.</p>' : '') +
-      evs.map(ev => { const t = Core.eventType(ev); return '<div class="day-item"><span class="lg ' + (ev.published === false ? 'off' : 'ev') + '"></span><div class="tx"><b>' + t.icon + ' ' + esc(ev.title) + '</b>' +
+      evs.map(ev => { const t = Core.eventType(ev); return '<div class="day-item"><span class="lg ' + (ev.published === false ? 'off' : 'ev') + '"></span><div class="tx"><b>' + esc(ev.title) + '</b>' +
         '<small>' + esc(t.label) + ' · ' + esc(ev.start ? ev.start + (ev.end ? '–' + ev.end : '') : 'Tüm gün') + (ev.repeat === 'weekly' ? ' · her hafta' : '') + (ev.popup ? ' · popup' : '') + (ev.published === false ? ' · yayında değil' : '') + '</small></div>' +
         '<button class="btn sm" data-dact="edit" data-id="' + esc(ev.id) + '">Düzenle</button></div>'; }).join('') +
       camps.map(x => '<div class="day-item"><span class="lg camp"></span><div class="tx"><b>% ' + esc(x.c.title) + '</b><small>Kampanya · ' + esc(Core.describeSchedule(x.c)) + '</small></div>' +
@@ -1504,7 +1512,7 @@ body.locked .lock{display:flex}
       const past = ev.repeat === 'weekly' ? (u != null && u < n.dayStart) : (d != null && d < n.dayStart);
       return '<div class="ev-row' + (past ? ' past' : '') + '"><div class="dt">' + (d != null ? esc(fmtDay(d, {day:'numeric', month:'short'})) : '—') +
           '<small>' + (ev.repeat === 'weekly' ? 'Her ' + esc(fmtDay(d, {weekday:'long'})) : (d != null ? esc(fmtDay(d, {weekday:'long'})) : '')) + '</small></div>' +
-        '<div class="tx"><b>' + t.icon + ' ' + esc(ev.title) + '</b><small>' + esc(t.label) + ' · ' + esc(ev.start || 'Tüm gün') + (past ? ' · geçti' : '') + (ev.published === false ? ' · yayında değil' : '') + (ev.popup ? ' · popup' : '') + '</small></div>' +
+        '<div class="tx"><b>' + esc(ev.title) + '</b><small>' + esc(t.label) + ' · ' + esc(ev.start || 'Tüm gün') + (past ? ' · geçti' : '') + (ev.published === false ? ' · yayında değil' : '') + (ev.popup ? ' · popup' : '') + '</small></div>' +
         '<label class="switch small" title="Menüde göster"><input type="checkbox" data-evpub="' + esc(ev.id) + '"' + (ev.published !== false ? ' checked' : '') + '> Yayında</label>' +
         '<button class="btn sm" data-dact="edit" data-id="' + esc(ev.id) + '">Düzenle</button></div>';
     }).join('');
@@ -1569,12 +1577,12 @@ body.locked .lock{display:flex}
     if(!list.length){ $('#ann-list').innerHTML = '<div class="panel empty">Henüz duyuru yok. “+ Yeni duyuru / afiş” ile ekleyin.</div>'; return; }
     $('#ann-list').innerHTML = list.map((a, i) => {
       const [cls, txt] = ANN_STATE[Core.announcementState(a, n)];
-      return '<div class="ann' + (cls === 'off' ? ' off' : '') + '" data-ai="' + i + '"><span class="handle" title="Sürükle">⋮⋮</span>' +
+      return '<div class="ann' + (cls === 'off' ? ' off' : '') + '" data-ai="' + i + '"><span class="handle" title="Sürükle"></span>' +
         '<div class="thumb" style="' + (a.image ? 'background-image:url(\'' + esc(previewUrl(a.image)) + '\')' : '') + '"></div>' +
         '<div class="tx"><b>' + esc(a.title) + '</b><small>' + esc(annWhen(a)) + (a.popup !== false ? ' · açılış popup’ında' : '') + (a.link ? ' · bağlantılı' : '') + '</small>' +
           '<span class="pill ' + cls + '">' + txt + '</span></div>' +
         '<label class="switch small"><input type="checkbox" data-annpub="' + i + '"' + (a.published !== false ? ' checked' : '') + '> Yayında</label>' +
-        '<button class="btn sm" data-annact="up">▲</button><button class="btn sm" data-annact="down">▼</button>' +
+        '<button class="btn sm" data-annact="up"><i class="chev up"></i></button><button class="btn sm" data-annact="down"><i class="chev down"></i></button>' +
         '<button class="btn sm" data-annact="edit">Düzenle</button></div>';
     }).join('');
     annSortable = Sortable.create($('#ann-list'), {handle:'.handle', draggable:'.ann', animation:150,
@@ -1717,7 +1725,7 @@ body.locked .lock{display:flex}
     const soon = Core.upcomingEvents(state, n, 7).filter(o => !o.ev.image);
     if(soon.length) add('info', 'Yaklaşan ' + soon.length + ' etkinliğin fotoğrafı yok', 'Fotoğraflı etkinlikler menüde daha dikkat çekici görünür.', '<button class="btn sm" data-dact="tab" data-tab="calendar">Takvime git</button>');
     let def = 0; state.categories.forEach(c => c.items.forEach(i => { if(!i.hidden && Core.isDefaultPhoto(i)) def++; }));
-    if(def) add('info', def + ' ürün hâlâ hazır (örnek) fotoğraf kullanıyor', 'Kendi fotoğraflarınızı Menü → ürün → Detay → Fotoğraf yükle ile ekleyebilirsiniz.', '');
+    if(def) add('info', def + ' ürün hâlâ hazır (örnek) fotoğraf kullanıyor', 'Kendi fotoğraflarınızı Menü sekmesinde ürünün Detay bölümündeki “Fotoğraf yükle” düğmesiyle ekleyebilirsiniz.', '');
     if(!out.length) add('ok', 'Her şey yolunda', 'Uyarı gerektiren bir durum yok.', '');
     return out;
   }
@@ -1734,7 +1742,7 @@ body.locked .lock{display:flex}
         '<div class="stat"><b>' + Core.upcomingEvents(state, n, 7).length + '</b>etkinlik (7 gün)</div>' +
         '<div class="stat"><b>' + Core.posterSlides(state, n).length + '</b>açılış afişi</div></div>';
     $('#dash-prices').checked = state.site.showPrices !== false;
-    $('#dash-alerts').innerHTML = alerts().map(a => '<div class="alert ' + a.kind + '"><span class="ic">' + (a.kind === 'warn' ? '!' : a.kind === 'ok' ? '✓' : 'i') + '</span>' +
+    $('#dash-alerts').innerHTML = alerts().map(a => '<div class="alert ' + a.kind + '"><span class="ic">' + (a.kind === 'warn' ? '!' : a.kind === 'ok' ? '' : 'i') + '</span>' +
       '<div class="tx">' + esc(a.text) + (a.sub ? '<small>' + esc(a.sub) + '</small>' : '') + '</div>' + (a.btn || '') + '</div>').join('');
     // Şu an menüde görünenler
     const live = [];
@@ -1746,7 +1754,7 @@ body.locked .lock{display:flex}
         '<button class="btn sm" data-dact="camp" data-id="' + esc(c.id) + '">Düzenle</button></div>');
     });
     Core.upcomingEvents(state, n, 1).filter(o => o.live || o.day === n.dayStart).forEach(o => {
-      live.push('<div class="live-row"><div class="tx"><b>' + Core.eventType(o.ev).icon + ' ' + esc(o.ev.title) + '</b><small>' + (o.live ? 'Şu an' : 'Bugün') + ' · ' + esc(o.ev.start || 'tüm gün') + (o.ev.popup ? ' · popup açık' : '') + '</small></div>' +
+      live.push('<div class="live-row"><div class="tx"><b>' + esc(o.ev.title) + '</b><small>' + (o.live ? 'Şu an' : 'Bugün') + ' · ' + esc(o.ev.start || 'tüm gün') + (o.ev.popup ? ' · popup açık' : '') + '</small></div>' +
         '<button class="btn sm" data-dact="edit" data-id="' + esc(o.ev.id) + '">Düzenle</button></div>');
     });
     $('#dash-live').innerHTML = live.length ? live.join('') : '<p class="hint">Şu an aktif kampanya veya bugün etkinlik yok.</p>';
@@ -1926,7 +1934,7 @@ body.locked .lock{display:flex}
       setMsg('#setup-msg', 'Şifreleniyor ve kaydediliyor…');
       const auth = await encryptCfg(cfg, pw);
       await putFile(cfg, AUTH_PATH, JSON.stringify(auth, null, 2) + '\n', 'Yönetici şifresi ayarlandı');
-      setMsg('#setup-msg', '✓ Kurulum tamamlandı.', 'ok');
+      setMsg('#setup-msg', 'Kurulum tamamlandı.', 'ok');
       $('#setup-form').reset();
       unlock(cfg);
     }catch(err){
@@ -1954,7 +1962,7 @@ body.locked .lock{display:flex}
       const auth = await encryptCfg(session, pw);
       await putFile(session, AUTH_PATH, JSON.stringify(auth, null, 2) + '\n', 'Yönetici şifresi değiştirildi');
       $('#pw-form').reset();
-      setMsg('#pw-msg', '✓ Şifre değiştirildi. Diğer cihazlarda yeni şifreyle giriş yapın.', 'ok');
+      setMsg('#pw-msg', 'Şifre değiştirildi. Diğer cihazlarda yeni şifreyle giriş yapın.', 'ok');
     }catch(err){
       setMsg('#pw-msg', err.status ? ghErrorText(err) : 'Hata: ' + err.message, 'err');
     }
@@ -1971,7 +1979,7 @@ body.locked .lock{display:flex}
       await putFile(cfg, AUTH_PATH, JSON.stringify(auth, null, 2) + '\n', 'GitHub token yenilendi');
       session = cfg;
       $('#token-form').reset();
-      setMsg('#tk-msg', '✓ Token güncellendi.', 'ok');
+      setMsg('#tk-msg', 'Token güncellendi.', 'ok');
     }catch(err){
       setMsg('#tk-msg', err.status ? 'Yeni token çalışmıyor: ' + ghErrorText(err) : 'Hata: ' + err.message, 'err');
     }

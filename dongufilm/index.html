@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<script>
+  // "/dongufilm" (sonda / olmadan) açılsa bile göreli yollar doğru çalışsın
+  (function(){
+    var p = location.pathname;
+    if (!/\/$/.test(p) && !/\.html?$/i.test(p)) {
+      document.write('<base href="' + p + '/">');
+    }
+  })();
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0a0a0a">
+<title>Camino | Kampanya Döngüsü</title>
+<link rel="icon" type="image/png" href="../assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400;1,6..96,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0a0a;
+  --text:#f4f1ec;
+  --muted:rgba(244,241,236,.62);
+  --faint:rgba(244,241,236,.28);
+  --gold:#d9b46c;
+  --serif:'Bodoni Moda','Didot','Bodoni 72',Georgia,serif;
+  --sans:'Jost','Helvetica Neue',Arial,sans-serif;
+  --ease:cubic-bezier(.2,.7,.1,1);
+  --fade:1.4s;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#000;overflow:hidden}
+body{color:var(--text);font-family:var(--sans);-webkit-font-smoothing:antialiased;user-select:none}
+body.idle{cursor:none}
+
+/* 1920x1080 sabit sahne; her ekrana 16:9 olarak ölçeklenir */
+.stage{position:absolute;left:50%;top:50%;width:1920px;height:1080px;
+  transform:translate(-50%,-50%) scale(var(--s,1));transform-origin:50% 50%;
+  overflow:hidden;background:var(--bg)}
+
+/* ---------- Video katmanı ---------- */
+video{position:absolute;top:0;height:100%;object-fit:cover;opacity:0;
+  transition:opacity var(--fade) ease;will-change:opacity;background:var(--bg)}
+video.full{left:0;width:1920px}
+video.split{left:560px;width:1360px}
+video.on{opacity:1}
+
+/* Sol panel arkası + kenar geçişi */
+.shade{position:absolute;inset:0;pointer-events:none;transition:opacity 1.2s ease;
+  background:
+    linear-gradient(90deg,var(--bg) 0,var(--bg) 560px,rgba(10,10,10,.88) 640px,rgba(10,10,10,.35) 800px,rgba(10,10,10,0) 960px),
+    linear-gradient(0deg,rgba(10,10,10,.55) 0,rgba(10,10,10,0) 220px)}
+.glow{position:absolute;left:-200px;top:140px;width:900px;height:900px;border-radius:50%;pointer-events:none;
+  background:radial-gradient(closest-side,rgba(217,180,108,.10),rgba(217,180,108,0));transition:opacity 1.2s ease}
+.vignette{position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse at 60% 50%,rgba(0,0,0,0) 55%,rgba(0,0,0,.45) 100%)}
+.brand-shade{position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity 1.2s ease;
+  background:radial-gradient(ellipse at center,rgba(10,10,10,.55) 0,rgba(10,10,10,.82) 70%)}
+body[data-mode="full"] .shade,body[data-mode="full"] .glow{opacity:0}
+body[data-mode="full"] .brand-shade{opacity:1}
+
+
+/* ---------- Giriş animasyonları ---------- */
+.a{opacity:0;transform:translateY(26px);
+  transition:opacity .55s ease,transform .55s var(--ease)}
+.show .a{opacity:1;transform:none;
+  transition:opacity 1s ease calc(var(--d,0) * 110ms + 150ms),transform 1.2s var(--ease) calc(var(--d,0) * 110ms + 150ms)}
+
+/* ---------- Kampanya paneli ---------- */
+.panel{position:absolute;left:0;top:0;width:760px;height:1080px;padding:96px 0 88px 104px;
+  display:flex;flex-direction:column;justify-content:space-between}
+.logo{width:210px;height:auto}
+.mid{display:flex;flex-direction:column;align-items:flex-start}
+.eyebrow{display:flex;align-items:center;gap:22px;font:500 20px/1 var(--sans);letter-spacing:.42em;text-transform:uppercase;color:var(--gold)}
+.eyebrow::after{content:"";width:90px;height:1px;background:currentColor;opacity:.6}
+.badge{margin-top:34px;font:500 54px/1 var(--sans);color:var(--bg);background:var(--gold);
+  padding:16px 34px 18px;border-radius:999px;letter-spacing:.06em}
+.title{margin:30px 0 0;font:400 136px/.96 var(--serif);letter-spacing:-.02em}
+.title span{display:block;white-space:nowrap}
+.title span + span{font-style:italic;padding-left:.32em}
+.tag{margin-top:26px;font:italic 400 34px/1.2 var(--serif);color:var(--muted)}
+.items{margin:44px 0 0;padding:0;list-style:none;font:400 27px/1 var(--sans);letter-spacing:.2em;text-transform:uppercase}
+.items li{display:flex;align-items:center;gap:20px;padding:11px 0}
+.items li .sep{width:26px;font:300 30px/1 var(--sans);color:var(--gold);letter-spacing:0;text-align:center}
+.items li:first-child .sep{display:none}
+.price{margin-top:40px;display:flex;align-items:flex-start;gap:14px;color:var(--gold)}
+.price b{font:400 176px/.82 var(--serif);letter-spacing:-.03em}
+.price small{margin-top:14px;font:500 34px/1 var(--sans);letter-spacing:.12em}
+.rows{margin-top:52px;width:580px}
+.row{display:flex;align-items:baseline;gap:18px;padding:22px 0;border-top:1px solid rgba(244,241,236,.14)}
+.row:last-child{border-bottom:1px solid rgba(244,241,236,.14)}
+.row span{font:400 30px/1.1 var(--sans);letter-spacing:.16em;text-transform:uppercase;white-space:nowrap}
+.row i{flex:1}
+.row b{font:400 88px/.9 var(--serif);color:var(--gold);letter-spacing:-.02em}
+.row small{font:500 22px/1 var(--sans);letter-spacing:.12em;color:var(--gold);margin-left:8px}
+
+.foot{display:flex;flex-direction:column;gap:22px}
+.prog{display:flex;gap:12px;width:440px}
+.prog .seg{flex:1;height:3px;background:var(--faint);overflow:hidden;border-radius:2px}
+.prog .seg i{display:block;height:100%;background:var(--text);transform:scaleX(0);transform-origin:left center}
+.foot .name{font:400 16px/1 var(--sans);letter-spacing:.42em;text-transform:uppercase;color:var(--muted)}
+.foot .name em{font-style:normal;color:var(--text)}
+
+/* ---------- Açılış (marka) kartı ---------- */
+.brand{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;pointer-events:none}
+.brand .logo{width:560px}
+.brand .eyebrow{margin-top:56px;font-size:24px}
+.brand .eyebrow::before{content:"";width:90px;height:1px;background:currentColor;opacity:.6}
+.brand h2{margin:30px 0 0;font:italic 400 92px/1 var(--serif)}
+.brand .count{margin-top:34px;font:400 22px/1 var(--sans);letter-spacing:.4em;text-transform:uppercase;color:var(--muted)}
+
+/* ---------- Kontroller (fare hareketinde görünür) ---------- */
+.ui{position:fixed;right:24px;bottom:24px;display:flex;gap:10px;z-index:10;opacity:0;transform:translateY(8px);
+  transition:opacity .4s ease,transform .4s ease;pointer-events:none}
+body:not(.idle) .ui{opacity:1;transform:none;pointer-events:auto}
+.ui button{font:500 13px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--text);
+  background:rgba(10,10,10,.85);border:1px solid rgba(244,241,236,.25);padding:13px 18px;border-radius:999px;cursor:pointer}
+.ui button:hover{background:rgba(244,241,236,.12)}
+.ui .hint{align-self:center;margin-right:8px;font:400 12px/1 var(--sans);letter-spacing:.1em;color:var(--muted)}
+</style>
+</head>
+<body data-mode="full" class="idle">
+
+<div class="stage" id="stage">
+  <video id="vA" muted playsinline preload="auto" disablepictureinpicture disableremoteplayback></video>
+  <video id="vB" muted playsinline preload="auto" disablepictureinpicture disableremoteplayback></video>
+  <div class="vignette"></div>
+  <div class="shade"></div>
+  <div class="glow"></div>
+  <div class="brand-shade"></div>
+
+  <section class="brand" id="brand">
+    <img class="logo a" style="--d:0" src="../assets/logo.png" alt="Camino Pub & Bistro">
+    <div class="eyebrow a" style="--d:2">Camino Pub &amp; Bistro</div>
+    <h2 class="a" style="--d:3">Günün Kampanyaları</h2>
+    <div class="count a" style="--d:4" id="brandCount"></div>
+  </section>
+
+  <section class="panel" id="panel">
+    <img class="logo a" style="--d:0" src="../assets/logo.png" alt="Camino Pub & Bistro">
+    <div class="mid" id="mid"></div>
+    <div class="foot a" style="--d:8">
+      <div class="prog" id="prog"></div>
+      <div class="name"><em>Camino</em> &nbsp;Pub &amp; Bistro</div>
+    </div>
+  </section>
+</div>
+
+<div class="ui">
+  <span class="hint">F: tam ekran &nbsp;·&nbsp; ← →: kampanya</span>
+  <button id="fsBtn" type="button">Tam ekran</button>
+</div>
+
+<script>
+/* =====================================================================
+   KAMPANYALAR — metin, fiyat ve videoları buradan düzenleyebilirsiniz.
+   clips: video/ klasöründeki dosya adı (uzantısız).
+   pos:   videonun yatay odak noktası (0% = sol, 50% = orta, 100% = sağ).
+   ===================================================================== */
+var INTRO = { src: 'acilis' };   // her turun başındaki logo kartı (istemezseniz null yapın)
+
+var KAMPANYALAR = [
+  {
+    title: ['Pizza', '& Penne'],
+    tag: 'Vinis Şarap eşliğinde',
+    items: ['Pizza', 'Penne Arabiata', 'Vinis Şarap'], sep: '+',
+    price: 1750,
+    clips: [ { src: 'k1-penne' }, { src: 'k1-masa', pos: '42%' } ]
+  },
+  {
+    title: ['Pizza', '& Şarap'],
+    tag: 'Klasik ikili',
+    items: ['Pizza', 'Vinis Şarap'], sep: '+',
+    price: 1600,
+    clips: [ { src: 'k2-pizza-paket', pos: '58%' }, { src: 'k2-pizza-sarap', pos: '18%' } ]
+  },
+  {
+    title: ['Burger'],
+    tag: 'Ateşten yeni çıktı',
+    rows: [ { name: 'Camino Burger', price: 390 }, { name: 'Tavuk Burger', price: 320 } ],
+    clips: [ { src: 'k3-camino-burger' }, { src: 'k3-tavuk-burger' }, { src: 'k3-ikili' } ]
+  },
+  {
+    title: ['Efes'],
+    tag: 'Buz gibi soğuk',
+    items: ['Pilsen', 'Malt'], sep: '/',
+    price: 175,
+    clips: [ { src: 'k4-efes-yakin' }, { src: 'k4-efes-tezgah', pos: '30%' } ]
+  },
+  {
+    badge: '1+1',
+    title: ['Kokteyl'],
+    tag: 'Biri sana, biri ona',
+    items: ['Lime Ekstra', 'Morange'], sep: '&',
+    price: 800,
+    clips: [ { src: 'k5-lime' }, { src: 'k5-morange' }, { src: 'k5-ikili' } ]
+  }
+];
+
+/* ===================================================================== */
+(function () {
+  var FADE = 1.4;            // video geçiş süresi (sn)
+  var TEXT_OUT = 600;        // yazıların çıkış süresi (ms)
+
+  // ---- Oynatma listesi ----
+  var PL = [];
+  if (INTRO) PL.push({ src: INTRO.src, mode: 'full', ci: -1 });
+  KAMPANYALAR.forEach(function (k, ci) {
+    k.clips.forEach(function (c, j) {
+      PL.push({ src: c.src, pos: c.pos || '50%', mode: 'split', ci: ci, j: j, n: k.clips.length });
+    });
+  });
+
+  var $ = function (id) { return document.getElementById(id); };
+  var stage = $('stage'), panel = $('panel'), brand = $('brand'), mid = $('mid'), prog = $('prog');
+  var els = [$('vA'), $('vB')];
+  var cur = 0, idx = 0, switching = false, shownCi = null;
+
+  // ---- 16:9 ölçekleme ----
+  function fit() {
+    var s = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+    stage.style.setProperty('--s', s);
+  }
+  window.addEventListener('resize', fit); fit();
+
+  // ---- Yardımcılar ----
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function fmt(n) { return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.'); }
+  function no(i) { return (i < 9 ? '0' : '') + (i + 1); }
+
+  prog.innerHTML = KAMPANYALAR.map(function () { return '<div class="seg"><i></i></div>'; }).join('');
+  var segs = Array.prototype.slice.call(prog.querySelectorAll('i'));
+  $('brandCount').textContent = KAMPANYALAR.length + ' özel fırsat';
+
+  function renderCampaign(ci) {
+    var k = KAMPANYALAR[ci], d = 1, h = '';
+    h += '<div class="eyebrow a" style="--d:' + (d++) + '">Kampanya ' + no(ci) + '</div>';
+    if (k.badge) h += '<div class="badge a" style="--d:' + (d++) + '">' + esc(k.badge) + '</div>';
+    h += '<h1 class="title a" style="--d:' + (d++) + '">' + k.title.map(function (t) { return '<span>' + esc(t) + '</span>'; }).join('') + '</h1>';
+    if (k.tag) h += '<div class="tag a" style="--d:' + (d++) + '">' + esc(k.tag) + '</div>';
+    if (k.rows) {
+      h += '<div class="rows">' + k.rows.map(function (r) {
+        return '<div class="row a" style="--d:' + (d++) + '"><span>' + esc(r.name) + '</span><i></i><b>' + fmt(r.price) + '</b><small>TL</small></div>';
+      }).join('') + '</div>';
+    } else {
+      h += '<ul class="items">' + k.items.map(function (it) {
+        return '<li class="a" style="--d:' + (d++) + '"><span class="sep">' + esc(k.sep || '+') + '</span>' + esc(it) + '</li>';
+      }).join('') + '</ul>';
+      if (k.price != null) h += '<div class="price a" style="--d:' + (d++) + '"><b>' + fmt(k.price) + '</b><small>TL</small></div>';
+    }
+    mid.innerHTML = h;
+    segs.forEach(function (s, i) { s.style.transform = 'scaleX(' + (i < ci ? 1 : 0) + ')'; });
+  }
+
+  // Panel/marka kartı geçişi
+  function showFor(item, instant) {
+    if (item.ci === shownCi) return;
+    var prevCi = shownCi; shownCi = item.ci;
+    var swap = function () {
+      document.body.dataset.mode = item.mode;
+      if (item.ci >= 0) {
+        renderCampaign(item.ci);
+        void panel.offsetWidth;
+        panel.classList.add('show');
+      } else {
+        brand.classList.add('show');
+      }
+    };
+    panel.classList.remove('show');
+    brand.classList.remove('show');
+    setTimeout(swap, instant ? 80 : TEXT_OUT);
+  }
+
+  // ---- Videoları belleğe al (ağ/disk kaynaklı takılmayı önler) ----
+  var cache = {};
+  function url(src) { return cache[src] || ('video/' + src + '.mp4'); }
+  function preloadAll(startIdx) {
+    if (!window.fetch || !window.URL || location.protocol === 'file:') return;
+    if (navigator.deviceMemory && navigator.deviceMemory < 2) return;   // çok düşük bellekli cihazda atla
+    var order = [], seen = {};
+    for (var n = 0; n < PL.length; n++) {
+      var s = PL[(startIdx + 1 + n) % PL.length].src;
+      if (!seen[s]) { seen[s] = 1; order.push(s); }
+    }
+    (function next() {
+      var s = order.shift();
+      if (!s) return;
+      fetch('video/' + s + '.mp4').then(function (r) {
+        if (!r.ok) throw 0;
+        return r.blob();
+      }).then(function (b) {
+        cache[s] = URL.createObjectURL(b);
+      }).catch(function () {}).then(next);
+    })();
+  }
+
+  // ---- Video atama ----
+  function assign(el, i) {
+    var it = PL[i];
+    el.className = it.mode;
+    el.style.objectPosition = it.pos ? it.pos + ' 50%' : '50% 50%';
+    el.dataset.i = i;
+    el.poster = 'video/' + it.src + '.jpg';
+    el.src = url(it.src);
+    el.load();
+  }
+
+  function play(el) {
+    el.muted = true;
+    var p = el.play();
+    if (p && p.catch) p.catch(function () {});   // engellenirse takılma koruması tekrar dener
+  }
+
+  // İlk kare gerçekten ekrana geldiğinde çalıştır (donuk kareyle geçiş yapmasın)
+  function onFirstFrame(el, cb) {
+    var done = false;
+    function go() { if (!done) { done = true; cb(); } }
+    if (el.requestVideoFrameCallback) el.requestVideoFrameCallback(go);
+    else el.addEventListener('playing', go, { once: true });
+    setTimeout(go, 700);
+  }
+
+  function advance(target) {
+    if (switching) return;
+    switching = true;
+    var nIdx = target != null ? target : (idx + 1) % PL.length;
+    var oldEl = els[cur], nx = els[1 - cur];
+    if (+nx.dataset.i !== nIdx || nx.error) assign(nx, nIdx);
+    try { if (nx.currentTime) nx.currentTime = 0; } catch (e) {}
+    play(nx);
+    onFirstFrame(nx, function () {
+      cur = 1 - cur; idx = nIdx; lastT = -1; stall = 0;
+      nx.classList.add('on');
+      oldEl.classList.remove('on');
+      showFor(PL[nIdx]);
+      setTimeout(function () {
+        oldEl.pause();
+        assign(oldEl, (idx + 1) % PL.length);   // bir sonrakini arkada hazırla
+        switching = false;
+      }, FADE * 1000 + 150);
+    });
+  }
+
+  // ---- Ana döngü: bitişe yaklaşınca geçiş + ilerleme çubuğu ----
+  var LEAD = FADE + 0.6;   // geçişe biraz erken başla, sonraki video ısınsın
+  function tick() {
+    var v = els[cur];
+    if (!switching && v.duration && v.currentTime >= v.duration - LEAD) advance();
+    var it = PL[idx];
+    if (it.ci >= 0 && v.duration) {
+      var p = (it.j + Math.min(1, v.currentTime / v.duration)) / it.n;
+      segs[it.ci].style.transform = 'scaleX(' + p.toFixed(4) + ')';
+    }
+    requestAnimationFrame(tick);
+  }
+
+  els.forEach(function (el) {
+    el.muted = true; el.defaultMuted = true;
+    el.addEventListener('ended', function () { if (el === els[cur] && !switching) advance(); });
+    el.addEventListener('error', function () { if (el === els[cur] && !switching) advance(); });
+    // Herhangi bir sebeple duraklarsa hemen devam ettir
+    el.addEventListener('pause', function () {
+      if (el === els[cur] && !switching && !el.ended && !document.hidden) setTimeout(function () { play(el); }, 50);
+    });
+  });
+
+  // Takılma koruması: durmuşsa oynat; 2 sn ilerlemezse dürt, 4 sn ilerlemezse sonrakine geç
+  var lastT = -1, stall = 0;
+  setInterval(function () {
+    var v = els[cur];
+    if (switching || document.hidden) { stall = 0; return; }
+    if (v.paused && !v.ended) play(v);
+    if (v.currentTime === lastT) {
+      stall++;
+      if (stall === 2) { try { v.currentTime = v.currentTime + 0.1; } catch (e) {} play(v); }
+      else if (stall >= 4) { stall = 0; advance(); }
+    }
+    else { stall = 0; lastT = v.currentTime; }
+  }, 1000);
+
+  function firstOf(ci) { for (var i = 0; i < PL.length; i++) if (PL[i].ci === ci) return i; return 0; }
+  function jump(dir) {
+    if (switching) return;
+    var ci = PL[idx].ci + dir, min = INTRO ? -1 : 0;
+    if (ci >= KAMPANYALAR.length) ci = min;
+    if (ci < min) ci = KAMPANYALAR.length - 1;
+    advance(firstOf(ci));
+  }
+
+  // ---- Tam ekran ----
+  function isFs() { return document.fullscreenElement || document.webkitFullscreenElement; }
+  function toggleFs() {
+    var d = document.documentElement;
+    var r = isFs() ? (document.exitFullscreen || document.webkitExitFullscreen).call(document)
+                   : (d.requestFullscreen || d.webkitRequestFullscreen).call(d);
+    if (r && r.catch) r.catch(function () {});
+  }
+  function fsLabel() { $('fsBtn').textContent = isFs() ? 'Tam ekrandan çık' : 'Tam ekran'; play(els[cur]); }
+  document.addEventListener('fullscreenchange', fsLabel);
+  document.addEventListener('webkitfullscreenchange', fsLabel);
+  $('fsBtn').addEventListener('click', function (e) { e.stopPropagation(); toggleFs(); });
+  stage.addEventListener('dblclick', toggleFs);
+
+  document.addEventListener('keydown', function (e) {
+    var k = e.key;
+    play(els[cur]); keepAwake();
+    if (k === 'f' || k === 'F' || k === 'Enter') { e.preventDefault(); toggleFs(); }
+    else if (k === 'ArrowRight' || k === 'MediaTrackNext') { e.preventDefault(); jump(1); }
+    else if (k === 'ArrowLeft' || k === 'MediaTrackPrevious') { e.preventDefault(); jump(-1); }
+    else if (k === ' ') e.preventDefault();   // boşluk tuşu duraklatmasın
+  });
+  document.addEventListener('click', function () { play(els[cur]); keepAwake(); });
+
+  // ---- İmleç gizleme ----
+  var idleT;
+  function wake() {
+    document.body.classList.remove('idle');
+    clearTimeout(idleT);
+    idleT = setTimeout(function () { document.body.classList.add('idle'); }, 2500);
+  }
+  document.addEventListener('mousemove', wake);
+  document.addEventListener('touchstart', wake, { passive: true });
+
+  // ---- Ekranın uykuya geçmesini engelle ----
+  function keepAwake() {
+    if (!('wakeLock' in navigator) || document.hidden) return;
+    navigator.wakeLock.request('screen').catch(function () {});
+  }
+  document.addEventListener('visibilitychange', function () {
+    if (!document.hidden) { keepAwake(); play(els[cur]); }
+  });
+
+  // ---- Başlat (?k=3 → 3. kampanyadan başlar) ----
+  var k0 = parseInt(new URLSearchParams(location.search).get('k'), 10);
+  idx = k0 >= 1 && k0 <= KAMPANYALAR.length ? firstOf(k0 - 1) : 0;
+  assign(els[0], idx);
+  els[0].classList.add('on');
+  showFor(PL[idx], true);
+  play(els[0]);
+  assign(els[1], (idx + 1) % PL.length);
+  keepAwake();
+  requestAnimationFrame(tick);
+  // İlk video oynamaya başlayınca diğerlerini sırayla belleğe al
+  onFirstFrame(els[0], function () { setTimeout(function () { preloadAll(idx); }, 500); });
+})();
+</script>
+</body>
+</html>

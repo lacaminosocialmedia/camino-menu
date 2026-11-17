@@ -83,11 +83,14 @@ body[data-mode="full"] .brand-shade{opacity:1}
 .title span{display:block;white-space:nowrap}
 .title span + span{font-style:italic;padding-left:.32em}
 .tag{margin-top:26px;font:italic 400 34px/1.2 var(--serif);color:var(--muted)}
-.items{margin:44px 0 0;padding:0;list-style:none;font:400 27px/1 var(--sans);letter-spacing:.2em;text-transform:uppercase}
-.items li{display:flex;align-items:center;gap:20px;padding:11px 0}
+.items{margin:36px 0 0;padding:0;list-style:none;font:400 27px/1 var(--sans);letter-spacing:.2em;text-transform:uppercase}
+.items li{display:flex;align-items:flex-start;gap:20px;padding:10px 0}
+.items li .it small{display:block;margin-top:9px;font:italic 400 25px/1.15 var(--serif);letter-spacing:0;text-transform:none;color:var(--muted)}
+.rows-note{margin-top:22px;font:italic 400 27px/1.2 var(--serif);color:var(--muted)}
+.rows-note::before{content:"+ ";font:300 28px/1 var(--sans);color:var(--gold)}
 .items li .sep{width:26px;font:300 30px/1 var(--sans);color:var(--gold);letter-spacing:0;text-align:center}
 .items li:first-child .sep{display:none}
-.price{margin-top:40px;display:flex;align-items:flex-start;gap:14px;color:var(--gold)}
+.price{margin-top:32px;display:flex;align-items:flex-start;gap:14px;color:var(--gold)}
 .price b{font:400 176px/.82 var(--serif);letter-spacing:-.03em}
 .price small{margin-top:14px;font:500 34px/1 var(--sans);letter-spacing:.12em}
 .rows{margin-top:52px;width:580px}
@@ -166,15 +169,18 @@ var INTRO = { src: 'acilis' };   // her turun başındaki logo kartı (istemezse
 var KAMPANYALAR = [
   {
     title: ['Pizza', '& Penne'],
-    tag: 'Vinis Şarap eşliğinde',
-    items: ['Pizza', 'Penne Arabiata', 'Vinis Şarap'], sep: '+',
+    items: [
+      'Pizza',
+      { name: 'Penne Arabiata', note: 'Kremalı veya domates soslu' },
+      { name: 'Vinis Şarap', note: '75 cl · Kırmızı veya beyaz' }
+    ], sep: '+',
     price: 1750,
     clips: [ { src: 'k1-penne' }, { src: 'k1-masa', pos: '42%' } ]
   },
   {
     title: ['Pizza', '& Şarap'],
     tag: 'Klasik ikili',
-    items: ['Pizza', 'Vinis Şarap'], sep: '+',
+    items: ['Pizza', { name: 'Vinis Şarap', note: '75 cl · Kırmızı veya beyaz' }], sep: '+',
     price: 1600,
     clips: [ { src: 'k2-pizza-paket', pos: '58%' }, { src: 'k2-pizza-sarap', pos: '18%' } ]
   },
@@ -182,6 +188,7 @@ var KAMPANYALAR = [
     title: ['Burger'],
     tag: 'Ateşten yeni çıktı',
     rows: [ { name: 'Camino Burger', price: 390 }, { name: 'Tavuk Burger', price: 300 } ],
+    note: '110 gr patates kızartması ile',
     clips: [ { src: 'k3-camino-burger-2', pos: '68%' }, { src: 'k3-tavuk-burger-2' }, { src: 'k3-ikili-2' } ]
   },
   {
@@ -246,9 +253,12 @@ var KAMPANYALAR = [
       h += '<div class="rows">' + k.rows.map(function (r) {
         return '<div class="row a" style="--d:' + (d++) + '"><span>' + esc(r.name) + '</span><i></i><b>' + fmt(r.price) + '</b><small>TL</small></div>';
       }).join('') + '</div>';
+      if (k.note) h += '<div class="rows-note a" style="--d:' + (d++) + '">' + esc(k.note) + '</div>';
     } else {
       h += '<ul class="items">' + k.items.map(function (it) {
-        return '<li class="a" style="--d:' + (d++) + '"><span class="sep">' + esc(k.sep || '+') + '</span>' + esc(it) + '</li>';
+        var name = typeof it === 'string' ? it : it.name;
+        var note = typeof it === 'string' ? '' : '<small>' + esc(it.note) + '</small>';
+        return '<li class="a" style="--d:' + (d++) + '"><span class="sep">' + esc(k.sep || '+') + '</span><span class="it">' + esc(name) + note + '</span></li>';
       }).join('') + '</ul>';
       if (k.price != null) h += '<div class="price a" style="--d:' + (d++) + '"><b>' + fmt(k.price) + '</b><small>TL</small></div>';
     }

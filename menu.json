@@ -2194,32 +2194,8 @@
         "image": "",
         "button": "Kampanyalı Ürünleri Gör"
       }
-    },
-    {
-      "id": "kmuo3czbn",
-      "enabled": true,
-      "title": "Duyuru",
-      "badge": "DUYURU",
-      "text": "Bu akşam canlı müzik!",
-      "from": "",
-      "to": "",
-      "days": [],
-      "start": "",
-      "end": "",
-      "discount": {
-        "type": "none",
-        "value": 0,
-        "round": 5
-      },
-      "all": false,
-      "categories": [],
-      "items": [],
-      "popup": {
-        "enabled": true,
-        "image": "",
-        "button": "Menüye Göz At"
-      }
     }
   ],
-  "events": []
+  "events": [],
+  "announcements": []
 }

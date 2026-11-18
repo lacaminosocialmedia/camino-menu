@@ -216,6 +216,37 @@ body.no-scroll{overflow:hidden}
 .info a{border-bottom:1px solid var(--line2);transition:border-color .3s}
 .info a:hover{border-color:var(--text)}
 .notice{margin-top:44px;padding:18px 20px;border:1px solid var(--line);font-size:13px;color:var(--muted);line-height:1.6}
+/* ---------- Google yorumları ---------- */
+.review{padding-block:80px 80px;border-top:1px solid var(--line);text-align:center}
+.review h2{font:400 clamp(34px,5vw,56px)/1.08 var(--serif);margin:16px 0 14px}
+.review h2 em{font-style:italic}
+.review p{margin:0 auto;max-width:520px;color:var(--muted)}
+.review .cta{opacity:1;animation:none}
+.review .cta svg{width:16px;height:16px}
+.rv-stars{display:flex;justify-content:center;gap:6px;margin:26px 0 4px}
+.rv-stars a{color:var(--text);transition:transform .25s var(--ease),color .25s}
+.rv-stars svg{width:36px;height:36px;display:block}
+.rv-stars a:hover~a{color:var(--line2)}
+.rv-stars a:hover{transform:scale(1.15)}
+.rv-sum{display:inline-flex;align-items:center;gap:12px;margin:4px 0 0;font-size:13px;letter-spacing:.06em;color:var(--muted)}
+.rv-sum b{font:400 34px/1 var(--serif);color:var(--text);letter-spacing:0}
+.rv-sum .st{color:var(--text);letter-spacing:2px;font-size:15px}
+.rv-wall{position:relative;margin:34px 0 10px}
+.rv-track{display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding:0 2px;padding:4px 2px 14px;scrollbar-width:none;text-align:left}
+.rv-track::-webkit-scrollbar{display:none}
+.rv-card{flex:0 0 min(340px,84%);scroll-snap-align:start;border:1px solid var(--line2);background:linear-gradient(160deg,rgba(244,241,236,.05),transparent 60%);padding:24px 24px 20px;display:flex;flex-direction:column;gap:14px}
+.rv-card .st{color:var(--text);letter-spacing:3px;font-size:14px}
+.rv-card q{font:italic 400 18px/1.5 var(--serif);color:var(--text);quotes:"“" "”";display:-webkit-box;-webkit-line-clamp:7;line-clamp:7;-webkit-box-orient:vertical;overflow:hidden}
+.rv-card footer{margin-top:auto;display:flex;align-items:center;gap:10px;font-size:12px;color:var(--muted)}
+.rv-card footer b{display:block;color:var(--text);font-weight:500;font-size:13px}
+.rv-card .av{width:34px;height:34px;border-radius:50%;flex:none;display:grid;place-items:center;border:1px solid var(--line2);color:var(--text);font:400 16px var(--serif)}
+.rv-card .g{margin-left:auto;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--faint)}
+.rv-nav{display:flex;justify-content:center;gap:10px;margin-top:6px}
+.rv-nav button{width:42px;height:42px;border-radius:50%;border:1px solid var(--line2);display:grid;place-items:center;transition:background .3s,color .3s}
+.rv-nav button svg{width:16px;height:16px}
+.rv-nav button:hover{background:var(--text);color:#0a0a0a}
+.rv-ask{margin-top:56px;padding-top:48px;border-top:1px solid var(--line)}
+.review .rv-ask h2{font-size:clamp(26px,3.6vw,38px);margin-top:0}
 .foot{padding:60px 0 calc(40px + env(safe-area-inset-bottom,0px));text-align:center;border-top:1px solid var(--line)}
 .foot img{width:170px;margin:0 auto 18px;opacity:.9}
 .foot p{margin:0;color:var(--faint);font-size:12px;letter-spacing:.2em;text-transform:uppercase}
@@ -469,6 +500,25 @@ body.no-scroll .social{opacity:0;pointer-events:none}
   <div class="notice"><b style="color:var(--text)">Alerjen ve besin bilgisi:</b> Ürün detaylarında alerjen bilgilerini görebilirsiniz. ≈ işaretli kalori değerleri standart reçete / üretici verilerine göre yaklaşıktır. Ciddi bir gıda alerjiniz varsa sipariş vermeden önce lütfen personelimize bildiriniz.</div>
 </section>
 
+<!-- Google yorumları: yönetim paneli → İşletme Bilgileri → Google yorumları ve Sosyal medya → Google bağlantısı -->
+<section class="review wrap" id="review" hidden>
+  <div class="eyebrow">Misafir defteri</div>
+  <div id="rv-wall-box" hidden>
+    <h2>Misafirlerimiz <em>ne diyor?</em></h2>
+    <a class="rv-sum" id="rv-sum" target="_blank" rel="noopener"></a>
+    <div class="rv-wall">
+      <div class="rv-track" id="rv-track"></div>
+      <div class="rv-nav" id="rv-nav"><button type="button" data-rvnav="-1" aria-label="Önceki yorum"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M15 5 8 12l7 7"/></svg></button><button type="button" data-rvnav="1" aria-label="Sonraki yorum"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="m9 5 7 7-7 7"/></svg></button></div>
+    </div>
+  </div>
+  <div id="rv-ask">
+    <h2>Akşamınızı <em>nasıl buldunuz?</em></h2>
+    <p>Birkaç kelimelik yorumunuz bizim için çok değerli. Google'da değerlendirmeniz bir dakikanızı alır.</p>
+    <div class="rv-stars" id="rv-stars" role="group" aria-label="Google'da puan verin"></div>
+    <a class="cta" id="rv-go" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="m12 3.5 2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z"/></svg>Google'da Yorum Yaz</a>
+  </div>
+</section>
+
 <footer class="foot">
   <img src="assets/logo.png" alt="Camino Pub & Bistro" id="foot-logo">
   <div class="foot-social" id="foot-social"></div>
@@ -529,7 +579,7 @@ body.no-scroll .social{opacity:0;pointer-events:none}
   const introStart = Date.now();
   fetch('menu.json?v=' + Date.now(), {cache:'no-store'})
     .then(r => { if(!r.ok) throw new Error(r.status); return r.json(); })
-    .then(d => { DATA = C.prepare(d); renderAll(); })
+    .then(d => { DATA = C.prepare(d); renderAll(); document.dispatchEvent(new CustomEvent('camino:data', {detail: DATA})); })
     .catch(() => { $('#sections').innerHTML = '<div class="loading">Menü yüklenemedi. Lütfen sayfayı yenileyin.</div>'; })
     .finally(() => setTimeout(() => { $('#intro').classList.add('done'); document.body.classList.remove('no-scroll'); }, Math.max(0, 1500 - (Date.now() - introStart))));
 
@@ -576,8 +626,46 @@ body.no-scroll .social{opacity:0;pointer-events:none}
     tick();
     setInterval(tick, 1000);
     renderSocial();
+    renderReview();
     setTimeout(openingPosters, 2400);
   }
+
+  /* ---------- Google yorumları ---------- */
+  // İşletme Bilgileri > Google yorumları doluysa kayan kartlar; Sosyal medya > Google bağlantısı varsa "Yorum yaz" alanı
+  function renderReview(){
+    const g = C.socialLinks(DATA.site).find(l => l.key === 'google');
+    const r = DATA.site.reviews || {}, list = (r.list || []).filter(x => x && String(x.text || '').trim()).slice(0, 10);
+    $('#review').hidden = !g && !list.length;
+    $('#rv-wall-box').hidden = !list.length;
+    $('#rv-ask').hidden = !g;
+    $('#rv-ask').classList.toggle('rv-ask', !!list.length);
+    if(list.length){
+      const stars = n => '★'.repeat(Math.max(1, Math.min(5, +n || 5)));
+      const sum = $('#rv-sum');
+      sum.innerHTML = r.rating ? '<b>' + esc(r.rating) + '</b><span class="st">★★★★★</span><span>Google' + (r.count ? ' · ' + esc(r.count) + ' yorum' : '') + '</span>' : '';
+      sum.hidden = !r.rating;
+      if(g) sum.href = g.href; else sum.removeAttribute('href');
+      $('#rv-track').innerHTML = list.map(x => {
+        const name = String(x.name || '').trim() || 'Misafirimiz';
+        return '<article class="rv-card"><span class="st" aria-label="' + (+x.stars || 5) + ' yıldız">' + stars(x.stars) + '</span><q>' + esc(String(x.text).trim()) + '</q>' +
+          '<footer><span class="av">' + esc(name.charAt(0).toLocaleUpperCase('tr')) + '</span><span><b>' + esc(name) + '</b>' + esc(x.date || '') + '</span><span class="g">Google</span></footer></article>';
+      }).join('');
+      $('#rv-nav').hidden = list.length < 2;
+    }
+    if(!g) return;
+    const star = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 3.5 2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z"/></svg>';
+    $('#rv-stars').innerHTML = [1, 2, 3, 4, 5].map(n => '<a href="' + esc(g.href) + '" target="_blank" rel="noopener" aria-label="' + n + ' yıldız">' + star + '</a>').join('');
+    $('#rv-go').href = g.href;
+  }
+  $('#rv-nav').addEventListener('click', e => {
+    const b = e.target.closest('[data-rvnav]'), t = $('#rv-track'), card = t.querySelector('.rv-card');
+    if(!b || !card) return;
+    const step = card.offsetWidth + 18, end = t.scrollWidth - t.clientWidth - 4, dir = +b.dataset.rvnav;
+    // Sonda ileri / başta geri basınca başa / sona sarar
+    if(dir > 0 && t.scrollLeft >= end) t.scrollTo({left: 0, behavior: 'smooth'});
+    else if(dir < 0 && t.scrollLeft <= 4) t.scrollTo({left: t.scrollWidth, behavior: 'smooth'});
+    else t.scrollBy({left: dir * step, behavior: 'smooth'});
+  });
 
   /* ---------- Menü ---------- */
   function priceHtml(cat, it, n, compact){
@@ -807,6 +895,7 @@ body.no-scroll .social{opacity:0;pointer-events:none}
 
   // Açılışta bir kez: o an güncel tüm duyuru/kampanya/etkinlik afişleri
   function openingPosters(){
+    if(document.documentElement.classList.contains('heat')) return;   // panelin ısı haritası önizlemesi
     const n = C.now();
     const slides = allSlides(n, true);
     if(!slides.length) return;
@@ -1068,6 +1157,175 @@ body.no-scroll .social{opacity:0;pointer-events:none}
       }
     }
   }
+})();
+</script>
+
+<!-- Ziyaret istatistikleri: ziyaret, kaynak, tıklanan yerler ve kaydırma derinliği istatistik sunucusuna (/t) gider; yönetim paneli → İstatistikler.
+     Sunucu adresi panelden (Güvenlik → İstatistik sunucusu) menu.json'a yazılır; yoksa hiçbir şey gönderilmez.
+     Çerez yok, cihazda bir şey saklanmaz. Yönetim panelini açmış tarayıcı, "Do Not Track" açık olanlar ve ?notrack=1 sayılmaz.
+     ?heat=1: panelin ısı haritası için sayfa açılır pencereler olmadan, sayılmadan açılır. -->
+<style>.heat #intro,.heat .social,.heat #sd-badge,.heat #sd-pop,.heat #posters{display:none!important}</style>
+<script>
+(() => {
+  const q = new URLSearchParams(location.search);
+  if(q.get('heat') === '1') document.documentElement.classList.add('heat');
+  let off = q.get('notrack') === '1' || q.get('heat') === '1' || navigator.doNotTrack === '1' || navigator.webdriver;
+  try{ off = off || localStorage.getItem('camino-notrack') === '1'; }catch(e){}
+  if(off || !navigator.sendBeacon || !window.crypto) return;
+  document.addEventListener('camino:data', e => {
+    const base = String(((e.detail || {}).site || {}).statsUrl || '').trim().replace(/\/+$/, '');
+    if(!/^https:\/\//.test(base)) return;
+    start(base + '/t');
+  }, {once: true});
+
+  function start(URL_T){
+    const sid = Array.from(crypto.getRandomValues(new Uint8Array(12)), b => 'abcdefghijklmnopqrstuvwxyz0123456789'[b % 36]).join('');
+    let queue = [], depth = 0, active = 0, shownAt = document.hidden ? 0 : Date.now();
+    const send = body => { try{ navigator.sendBeacon(URL_T, JSON.stringify(Object.assign({sid}, body))); }catch(e){} };
+    send({pv: {src: q.get('src') || q.get('utm_source') || '', ref: document.referrer, w: innerWidth, lang: navigator.language}});
+
+    // Tıklanan yerin adı: ürün, kategori, telefon, sosyal medya…; adı olmayan tıklamalar yalnızca ısı haritasına girer
+    const NAMES = [['[data-open]', el => 'urun:' + el.dataset.open], ['a.chip[data-cat]', el => 'kategori:' + el.dataset.cat],
+      ['#rv-go, #rv-stars a, #rv-sum', () => 'google-yorum'], ['.rv-card, [data-rvnav]', () => 'yorum-kartlari'],
+      ['#social-list a, #foot-social a', el => 'sosyal:' + (el.dataset.label || '')], ['#i-phone, .sd-ok.fill', () => 'telefon'], ['#i-address', () => 'yol-tarifi'],
+      ['#i-email', () => 'e-posta'], ['[data-poster-i], #posters-open', () => 'duyurular'], ['[data-pop-go], [data-pst-go]', () => 'duyuru-dugmesi'],
+      ['#search-open', () => 'arama'], ['[data-ev]', () => 'etkinlik'], ['#sd-badge', () => 'ozel-gun'], ['#social-toggle', () => 'sosyal-menu']];
+    document.addEventListener('click', e => {
+      let a = '';
+      for(const [sel, fn] of NAMES){ const el = e.target.closest(sel); if(el){ a = fn(el); break; } }
+      if(!a && e.target.closest('a, button')) a = 'diger';
+      // Açılır pencerelerdeki tıklamalar sayfa konumuna bağlı olmadığı için ısı haritasına girmez
+      const layer = e.target.closest('#sd-pop, .search, .sheet, .posters, [role="dialog"]');
+      const c = {a, x: layer ? 0 : e.clientX / innerWidth, y: layer ? 0 : Math.round(e.pageY), w: layer ? 0 : innerWidth};
+      // Ekran genişliğine göre bölümler farklı yükseklikte olur; tıklama en yakın kimlikli bölüme göre de kaydedilir
+      // (s: bölüm, f: bölümün yüzde kaçında); ısı haritası onu kendi ekranında aynı bölüme yerleştirir
+      for(let el = layer ? null : e.target; el && el !== document.body; el = el.parentElement){
+        if(!el.id || el.offsetHeight < 30) continue;
+        const r = el.getBoundingClientRect();
+        c.s = el.id.slice(0, 40); c.f = Math.round(Math.max(0, Math.min(1, (e.clientY - r.top) / r.height)) * 1000) / 1000;
+        break;
+      }
+      queue.push(c);
+      if(queue.length >= 20) flush();
+    }, true);
+    let st;
+    document.addEventListener('input', e => {
+      if(e.target.id !== 'search-input') return;
+      clearTimeout(st);
+      const v = e.target.value.trim().toLocaleLowerCase('tr').slice(0, 30);
+      if(v.length >= 2) st = setTimeout(() => queue.push({a: 'ara:' + v}), 1500);
+    });
+    addEventListener('scroll', () => {
+      const h = document.documentElement.scrollHeight;
+      if(h) depth = Math.max(depth, Math.min(100, Math.round((scrollY + innerHeight) / h * 100)));
+    }, {passive: true});
+    function flush(end){
+      if(shownAt){ active += Date.now() - shownAt; shownAt = document.hidden ? 0 : Date.now(); }
+      if(!queue.length && !end) return;
+      send({ev: queue, end: {dur: active / 1000, depth}});
+      queue = [];
+    }
+    setInterval(() => { if(!document.hidden) flush(); }, 15000);
+    document.addEventListener('visibilitychange', () => { if(document.hidden) flush(true); else shownAt = Date.now(); });
+    addEventListener('pagehide', () => flush(true));
+  }
+})();
+</script>
+
+<!-- Özel günler (bayramlar, anma günleri, anneler günü…): takvim assets/core.js → SPECIAL_DAYS; yalnızca o gün (Türkiye saati) gösterilir.
+     Önizleme: ?gun=11-10 (ay-gün) ya da ?gun=2027-03-09. Yönetim paneli → Özel Günler sekmesinden kapatılabilir. -->
+<style>
+#sd-pop{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(5,5,5,.8);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);opacity:0;transition:opacity .4s var(--ease)}
+#sd-pop.in{opacity:1}
+#sd-pop .sd-card{position:relative;width:min(420px,100%);max-height:calc(100dvh - 32px);overflow:auto;background:var(--bg2);border:1px solid var(--line2);text-align:center;box-shadow:0 30px 80px rgba(0,0,0,.6);transform:translateY(14px) scale(.98);transition:transform .5s var(--ease)}
+#sd-pop.in .sd-card{transform:none}
+#sd-pop .sd-flag{display:block;width:100%;height:auto;aspect-ratio:2/1}
+#sd-pop .sd-band{position:relative;aspect-ratio:2/1;display:grid;place-items:center;overflow:hidden}
+#sd-pop .sd-band.mourn{background:radial-gradient(120% 90% at 50% 0%,#2a2724 0%,#0d0c0b 60%,#050505 100%)}
+#sd-pop .sd-band.mourn span{font:300 64px/1 var(--serif);letter-spacing:.06em;color:rgba(255,255,255,.12);margin-top:-30px}
+#sd-pop .sd-band.mourn::after{content:"";position:absolute;left:50%;top:0;bottom:0;width:1px;background:linear-gradient(transparent,rgba(255,255,255,.18),transparent)}
+#sd-pop .sd-band.warm{aspect-ratio:auto;padding:38px 20px 30px;background:radial-gradient(90% 120% at 50% 0%,rgba(244,241,236,.12),transparent 70%),linear-gradient(180deg,#1b1a18,var(--bg2))}
+#sd-pop .sd-band.warm span{font:italic 400 44px/1.05 var(--serif);color:var(--text)}
+#sd-pop .sd-band.warm::after{content:"";position:absolute;left:50%;bottom:0;width:60px;height:1px;margin-left:-30px;background:var(--line2)}
+#sd-pop .sd-photo{width:150px;height:190px;margin:-60px auto 0;overflow:hidden;border:3px solid var(--bg2);box-shadow:0 0 0 1px var(--line2),0 14px 34px rgba(0,0,0,.6);position:relative}
+#sd-pop .sd-photo img{width:100%;height:100%;object-fit:cover;object-position:50% 12%;filter:grayscale(1) contrast(1.05)}
+#sd-pop .sd-body{padding:18px 24px 26px}
+#sd-pop .sd-eyebrow{font:500 11px/1.3 var(--sans);letter-spacing:.24em;text-transform:uppercase;color:#e30a17}
+#sd-pop .k-mourn .sd-eyebrow,#sd-pop .k-warm .sd-eyebrow{color:var(--muted)}
+#sd-pop h2{font:400 34px/1.1 var(--serif);margin:10px 0 8px;color:var(--text)}
+#sd-pop h2 em{font-style:italic}
+#sd-pop p{font:300 14px/1.65 var(--sans);color:var(--muted);margin:0 0 6px}
+#sd-pop blockquote{margin:14px 0 4px;font:italic 400 19px/1.4 var(--serif);color:var(--text)}
+#sd-pop cite{display:block;font:500 11px/1 var(--sans);letter-spacing:.18em;text-transform:uppercase;color:var(--faint);font-style:normal}
+#sd-pop .sd-sign{margin-top:16px;font:400 12px/1 var(--sans);letter-spacing:.24em;text-transform:uppercase;color:var(--text)}
+#sd-pop .sd-x{position:absolute;top:10px;right:10px;width:36px;height:36px;border-radius:50%;background:rgba(0,0,0,.5);color:#fff;display:grid;place-items:center;z-index:1}
+#sd-pop .sd-x svg{width:18px;height:18px}
+#sd-pop .sd-btns{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin-top:20px}
+#sd-pop .sd-ok{padding:12px 24px;border:1px solid var(--line2);border-radius:999px;color:var(--text);font:500 11px/1 var(--sans);letter-spacing:.22em;text-transform:uppercase;transition:background .3s,color .3s}
+#sd-pop .sd-ok:hover,#sd-pop .sd-ok.fill{background:var(--text);color:#0a0a0a;border-color:var(--text)}
+#sd-badge{position:fixed;left:14px;bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:9000;display:flex;align-items:center;gap:10px;padding:6px 14px 6px 6px;border:1px solid var(--line2);border-radius:999px;background:rgba(10,10,10,.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);color:var(--text);box-shadow:0 10px 30px rgba(0,0,0,.45);font:500 11px/1.25 var(--sans);letter-spacing:.08em;text-align:left;animation:sdIn .6s var(--ease) both}
+#sd-badge img,#sd-badge i{width:46px;height:46px;border-radius:50%;object-fit:cover;object-position:50% 10%;filter:grayscale(1);border:2px solid #e30a17;flex:none}
+#sd-badge.mourn img{border-color:#111;box-shadow:0 0 0 1px rgba(255,255,255,.35)}
+#sd-badge i{display:grid;place-items:center;font:italic 400 20px/1 var(--serif);filter:none;border:1px solid var(--line2);background:#161514;color:var(--text)}
+#sd-badge b{display:block;font:500 16px/1.1 var(--serif);letter-spacing:0}
+@keyframes sdIn{from{opacity:0;transform:translateY(20px)}}
+@media (max-width:420px){#sd-pop h2{font-size:29px}#sd-badge{padding-right:12px}#sd-badge img,#sd-badge i{width:40px;height:40px}}
+</style>
+<script>
+(() => {
+  const C = window.CaminoCore;
+  const q = new URLSearchParams(location.search), preview = q.get('gun') || '';
+  if(q.get('heat') === '1') return;
+  let date = C.todayStr();
+  if(preview) date = /^\d{2}-\d{2}$/.test(preview) ? date.slice(0, 4) + '-' + preview : preview;
+  const IMG = 'assets/ataturk.jpg';
+  const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'})[c]);
+  const FLAG = '<svg class="sd-flag" viewBox="0 0 1200 600" aria-hidden="true"><rect width="1200" height="600" fill="#e30a17"/>' +
+    '<g transform="translate(-200 -100)"><circle cx="425" cy="400" r="200" fill="#fff"/><circle cx="475" cy="400" r="160" fill="#e30a17"/>' +
+    '<polygon fill="#fff" points="583.334,400 764.235,458.779 652.431,304.894 652.431,495.106 764.235,341.221"/></g></svg>';
+  const X = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 6l12 12M18 6 6 18"/></svg>';
+
+  function open(d, site){
+    if(document.getElementById('sd-pop')) return;
+    const head = d.kind === 'flag' ? FLAG : d.kind === 'mourn' ? '<div class="sd-band mourn"><span>09.05</span></div>' : '<div class="sd-band warm"><span>' + esc(d.badge[0]) + '</span></div>';
+    // Rezervasyon günlerinde (Sevgililer Günü, Anneler Günü…) telefonla rezervasyon düğmesi
+    const phone = String(site.phone || '').replace(/\s/g, '');
+    const el = document.createElement('div');
+    el.id = 'sd-pop'; el.setAttribute('role', 'dialog'); el.setAttribute('aria-modal', 'true'); el.setAttribute('aria-label', d.name);
+    el.innerHTML = '<div class="sd-card k-' + d.kind + '"><button class="sd-x" aria-label="Kapat">' + X + '</button>' + head +
+      (d.ata ? '<div class="sd-photo"><img src="' + IMG + '" alt="Mustafa Kemal Atatürk"></div>' : '') +
+      '<div class="sd-body">' + (d.kind === 'warm' && d.eyebrow === d.badge[0] ? '' : '<div class="sd-eyebrow">' + esc(d.eyebrow) + '</div>') +
+      '<h2>' + d.title + '</h2><p>' + esc(d.text) + '</p>' +
+      (d.quote ? '<blockquote>“' + esc(d.quote) + '”</blockquote>' + (d.ata ? '<cite>Mustafa Kemal Atatürk</cite>' : '') : '') +
+      '<div class="sd-sign">' + esc((site.name || 'Camino') + ' ailesi') + '</div><div class="sd-btns">' +
+      (d.reserve && phone ? '<a class="sd-ok fill" href="tel:' + esc(phone) + '">Rezervasyon için arayın</a>' : '') +
+      '<button class="sd-ok">' + esc(d.button || 'Menüye geç') + '</button></div></div></div>';
+    document.body.appendChild(el);
+    const prev = document.documentElement.style.overflow;
+    document.documentElement.style.overflow = 'hidden';
+    requestAnimationFrame(() => el.classList.add('in'));
+    const close = () => { el.classList.remove('in'); document.documentElement.style.overflow = prev; setTimeout(() => el.remove(), 400); document.removeEventListener('keydown', onKey); };
+    const onKey = e => { if(e.key === 'Escape') close(); };
+    document.addEventListener('keydown', onKey);
+    el.addEventListener('click', e => { if(e.target === el || e.target.closest('.sd-x, button.sd-ok')) close(); });
+  }
+
+  // Menü verisi gelince (panelden kapatılmış günler için site ayarları gerekir) çalışır
+  document.addEventListener('camino:data', e => {
+    const site = (e.detail && e.detail.site) || {};
+    const d = C.specialDay(preview ? {} : site, date);
+    if(!d || document.getElementById('sd-badge')) return;
+    const b = document.createElement('button');
+    b.id = 'sd-badge'; b.className = d.kind; b.setAttribute('aria-label', d.name + ' mesajı');
+    b.innerHTML = (d.ata ? '<img src="' + IMG + '" alt="">' : '<i aria-hidden="true">' + (+d.date.slice(8)) + '</i>') + '<span><b>' + esc(d.badge[0]) + '</b>' + esc(d.badge[1]) + '</span>';
+    b.addEventListener('click', () => open(d, site));
+    document.body.appendChild(b);
+    let seen = false;
+    const key = 'camino-ozelgun-' + d.key + '-' + date;
+    try{ seen = !preview && sessionStorage.getItem(key); sessionStorage.setItem(key, '1'); }catch(err){}
+    // Açılış ekranı (logo) kapandıktan sonra açılır
+    if(!seen) setTimeout(() => open(d, site), 1900);
+  });
 })();
 </script>
 </body>

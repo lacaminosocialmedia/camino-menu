@@ -8,7 +8,7 @@
 <meta name="robots" content="noindex, nofollow">
 <title>Menü Yönetim Paneli</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:wght@600;700&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,600;1,6..96,500&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#f7f4ee; --card:#fff; --text:#1c1a18; --muted:#7b746b; --accent:#9c6a3d;
@@ -261,6 +261,171 @@ body.locked .lock{display:flex}
   .item-row .in.price{flex:1 1 100px}
   .item-detail{margin-left:0}
 }
+/* ---- Yirmi panelinden aktarılan: istatistik, özel günler, yorumlar, menü teklifi ---- */
+.cchip.sd{background:#e30a17;color:#fff}
+.cchip.sd.mourn{background:#111;color:#fff}
+.cchip.sd.warm{background:#f4eee5;color:#6f4c2d;border:1px solid #e0cdb4}
+.cchip.sd.dim{opacity:.45}
+.lg.sd{background:#e30a17}
+a.btn{text-decoration:none;color:inherit}
+a.btn.primary{color:#fff}
+.sd-dot{display:inline-block;width:14px;height:14px;border-radius:50%;vertical-align:middle}
+.sd-dot.warm{background:#c9a27a}
+.sd-dot.mourn{background:#111;box-shadow:0 0 0 2px #fff,0 0 0 3px #111}
+.sd-rows{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr));gap:8px}
+.sd-row{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:12px;padding:8px 10px;background:#fff;cursor:pointer;min-width:0}
+.sd-row.dim{opacity:.5}
+.sd-row input{width:18px;height:18px;flex:none;margin:0}
+.sd-row .sd-ic{font-size:20px;width:26px;text-align:center;flex:none}
+.sd-row .sd-tx{flex:1;min-width:0}
+.sd-row .sd-tx b{display:block;font-size:13.5px}
+.sd-row .sd-tx small{color:var(--muted);font-size:12px}
+.sd-row .sd-tx .sd-today{display:inline;color:var(--ok);font-size:12px}
+.rv-row{border:1px solid var(--line);border-radius:12px;padding:10px;margin-bottom:10px;display:grid;grid-template-columns:minmax(0,1fr) 110px minmax(0,1fr);gap:8px;align-items:start}
+.rv-row textarea{grid-column:1/-1;min-height:70px}
+.rv-row .row-actions{grid-column:1/-1;margin:0;justify-content:flex-end}
+@media(max-width:560px){.rv-row{grid-template-columns:minmax(0,1fr) 100px}.rv-row [data-rv="date"]{grid-column:1/-1}}
+.res-bar{padding:14px}
+.res-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.st-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.st-head h2{margin:0}
+.st-live{font-size:12px;font-weight:700;color:var(--ok)}
+.st-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px;min-width:0}
+.st-card h3{margin:0 0 10px;font-size:15px}
+.st-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,330px),1fr));gap:12px}
+.st-grid .st-card{margin-bottom:0}
+.st-grid+.st-grid,.st-grid+.st-card{margin-top:12px}
+.st-bars{display:flex;flex-direction:column;gap:6px}
+.st-bar{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr) auto;gap:8px;align-items:center;font-size:13px}
+.st-bar .l{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.st-bar .b{height:10px;background:#f1ece4;border-radius:5px;overflow:hidden}
+.st-bar .b i{display:block;height:100%;background:var(--accent);border-radius:0 5px 5px 0}
+.st-bar .v{font-weight:800;text-align:right;white-space:nowrap}
+.st-bar .v small{font-weight:600;color:var(--muted)}
+.st-foot{margin:10px 0 0;font-size:12px}
+.st-svg{width:100%;height:auto;display:block}
+.st-svg .st-b{fill:var(--accent)}
+.st-svg g:hover .st-b{fill:#6f4c2d}
+.st-svg .gr{stroke:#ece6dc;stroke-width:1}
+.st-svg .ax{font-size:11px;fill:var(--muted)}
+.st-wk{display:grid;gap:3px;overflow-x:auto;font-size:11px}
+.st-wk .hh{text-align:center;color:var(--muted)}
+.st-wk .dd{color:var(--muted);font-weight:700;align-self:center}
+.st-wk .cell{height:24px;border-radius:4px;background:rgba(156,106,61,var(--a));box-shadow:inset 0 0 0 1px #f0eadf}
+.st-heat-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.st-heat-head h3{margin:0}
+.st-heat{max-height:78vh;overflow:auto;border:1px solid var(--line);border-radius:10px;background:#0a0a0a;margin-top:8px}
+.st-heat .hint{color:#bdb6aa}
+.st-heat-in{position:relative;overflow:hidden;margin:0 auto}
+.st-heat-sc{position:absolute;left:0;top:0;transform-origin:0 0}
+.st-heat-sc iframe{border:0;display:block;pointer-events:none}
+.st-heat-sc canvas{position:absolute;left:0;top:0;pointer-events:none}
+.st-tip{position:fixed;z-index:200;background:#1c1a18;color:#fff;font-size:12px;font-weight:600;padding:6px 9px;border-radius:7px;pointer-events:none;max-width:280px;box-shadow:0 6px 18px rgba(0,0,0,.25)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:3px;background:#faf8f4;gap:2px}
+.seg button{border:0;background:transparent;padding:8px 16px;border-radius:999px;font-weight:700;cursor:pointer;color:var(--muted)}
+.seg button.on{background:#1c1a18;color:#f4f1ec}
+.res-foot{text-align:center;margin:0 0 20px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:14px}
+.kpi{background:#fff;border-radius:16px;box-shadow:var(--shadow);padding:14px}
+.kpi small{display:block;font-size:12px;font-weight:700;color:var(--muted)}
+.kpi b{display:block;font:600 30px/1.1 'Bodoni Moda',Georgia,serif;margin-top:4px;color:var(--text)}
+.kpi em{display:block;font-style:normal;font-size:12px;font-weight:700;color:var(--muted);margin-top:2px}
+.kpi.main{background:#1c1a18}
+.kpi.main small,.kpi.main em{color:#c9c2b6}
+.kpi.main b{color:#f4f1ec}
+.kpi .neg{color:var(--danger)}
+.res-empty{color:var(--muted);padding:10px 0}
+h3.sub{font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:20px 0 8px}
+.of-wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:14px;align-items:start}
+.of-prev{position:sticky;top:76px;max-height:calc(100vh - 90px);overflow:auto;border-radius:12px}
+.of-form .panel h2{font-size:21px!important}
+.of-form .grid{grid-template-columns:repeat(auto-fit,minmax(170px,1fr))}
+.of-form .field.full{grid-column:1/-1}
+.of-chips{display:flex;flex-wrap:wrap;gap:6px}
+.of-chips label{display:inline-flex;gap:5px;align-items:center;font-size:12px;font-weight:600;background:#fff;border:1px solid var(--line);padding:5px 10px;border-radius:999px;cursor:pointer}
+.of-chips label:has(input:checked){background:var(--accent-soft);border-color:var(--accent)}
+.of-chips input{margin:0}
+.of-course{display:flex;gap:6px;align-items:center;margin-top:6px}
+.of-course input{padding:7px 9px;border:1px solid var(--line);border-radius:8px;min-width:0}
+.of-course .l{flex:0 0 120px;font-weight:700}
+.of-course .t{flex:1}
+.of-total{margin-top:10px;padding:10px 12px;border-radius:10px;background:var(--accent-soft);font-weight:700}
+.of-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:9px 0;border-top:1px solid var(--line)}
+.of-row .who{flex:1 1 200px;min-width:0}
+.of-row .who small{display:block;color:var(--muted);font-weight:500}
+.of-form details summary{cursor:pointer;font-weight:700}
+.ofd{background:#fff;color:#1c1a18;font:12.5px/1.55 'DM Sans',system-ui,sans-serif;border-radius:6px;box-shadow:0 10px 30px rgba(40,24,8,.14);overflow:hidden;max-width:794px;margin:0 auto}
+.ofd *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.ofd-head{background:#0a0a0a;color:#f4f1ec;display:flex;align-items:center;gap:18px;padding:20px 28px;border-bottom:3px solid #9c6a3d}
+.ofd-head img{height:66px;width:auto;filter:none}
+.ofd-head .script{font:400 58px/1 'Bodoni Moda',Georgia,serif;color:#f4f1ec}
+.ofd-ttl{flex:1;min-width:0}
+.ofd-ttl small{display:block;font-size:10px;letter-spacing:.32em;color:#9c6a3d;font-weight:700}
+.ofd-ttl b{display:block;font:600 25px/1.15 'Bodoni Moda',Georgia,serif;color:#f4f1ec}
+.ofd-meta{text-align:right;font-size:11px;color:#b9b2a6;line-height:1.6}
+.ofd-meta b{color:#f4f1ec}
+.ofd-body{padding:20px 28px 26px}
+.ofd h4{font:700 10.5px 'DM Sans',sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#9c6a3d;margin:20px 0 8px;display:flex;align-items:center;gap:10px;break-after:avoid}
+.ofd h4::after{content:"";flex:1;height:1px;background:#e6dfd4}
+.ofd-intro{margin:0;font:italic 500 15px/1.5 'Bodoni Moda',Georgia,serif;color:#3a352f}
+.ofd-parties{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.ofd-party{background:#f8f5f0;border-radius:8px;padding:11px 14px;border-left:3px solid #9c6a3d}
+.ofd-party small,.ofd-kv small{display:block;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:#7b746b;font-weight:700}
+.ofd-party b{display:block;font-size:14px;margin:2px 0}
+.ofd-kv{display:grid;grid-template-columns:repeat(3,1fr);gap:10px 16px}
+.ofd-kv div{font-weight:600}
+.ofd-menu{border:1px solid #e6dfd4;border-radius:8px;padding:4px 16px;break-inside:avoid}
+.ofd-course{display:flex;gap:14px;padding:9px 0;border-bottom:1px dashed #e6dfd4}
+.ofd-course:last-child{border-bottom:0}
+.ofd-course .l{flex:0 0 118px;font:600 16px/1.25 'Bodoni Moda',Georgia,serif;color:#9c6a3d}
+.ofd-course .t{flex:1;white-space:pre-line}
+.ofd-incl{margin-top:10px}
+.ofd-incl span{display:inline-block;background:#f4eee5;border-radius:999px;padding:3px 11px;margin:0 6px 6px 0;font-weight:600;font-size:12px}
+.ofd-chef{margin:6px 0 0;font:italic 500 13.5px 'Bodoni Moda',Georgia,serif;color:#7b746b}
+.ofd table{width:100%;border-collapse:collapse;break-inside:avoid}
+.ofd th{font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:#7b746b;text-align:left;padding:6px 8px;border-bottom:1px solid #e6dfd4}
+.ofd td{padding:8px;border-bottom:1px solid #eee8de;font-weight:600}
+.ofd th:last-child,.ofd td:last-child{text-align:right}
+.ofd-grand{display:flex;justify-content:space-between;align-items:center;gap:10px;background:#0a0a0a;color:#f4f1ec;border-radius:8px;padding:11px 16px;margin-top:10px;break-inside:avoid}
+.ofd-grand b{font:600 24px 'Bodoni Moda',Georgia,serif;color:#f4f1ec}
+.ofd-note{margin:8px 0 0}
+.ofd ol{padding-left:18px;margin:0}
+.ofd li{margin-bottom:4px}
+.ofd-valid{margin-top:14px;padding:9px 12px;border:1px dashed #9c6a3d;border-radius:8px;text-align:center;font-weight:600}
+.ofd-sign{display:grid;grid-template-columns:1fr 1fr;gap:30px;margin-top:28px;break-inside:avoid}
+.ofd-sign div{border-top:1px solid #1c1a18;padding-top:6px;margin-top:58px;font-size:11.5px}
+.ofd-sign b{display:block;font-size:12.5px}
+.ofd-foot{text-align:center;font-size:10.5px;color:#7b746b;border-top:1px solid #e6dfd4;padding:10px 28px;background:#f8f5f0}
+.of-secs .of-chips label:not(:has(input:checked)){color:var(--muted);text-decoration:line-through;background:#f6f3ee}
+.of-course .of-n{flex:0 0 22px;text-align:right;color:var(--muted);font-weight:700}
+.ofd-sec{position:relative}
+.ofd-x{position:absolute;top:2px;right:-4px;z-index:2;width:24px;height:24px;border-radius:50%;border:1px solid #e0b4ad;background:#fff;color:var(--danger);font:700 12px/1 'DM Sans',sans-serif;cursor:pointer;
+  display:grid;place-items:center;padding:0;opacity:0;transition:opacity .15s;box-shadow:0 2px 6px rgba(0,0,0,.12)}
+.ofd-sec:hover>.ofd-x,.ofd li:hover>.ofd-x,.ofd-x:focus-visible{opacity:1}
+.ofd-x:hover{background:var(--danger);color:#fff}
+.ofd-x.in{position:static;display:inline-grid;width:20px;height:20px;font-size:10px;vertical-align:middle;margin-left:4px}
+@media(hover:none){.ofd-x{opacity:.75}.ofd-x.in{opacity:.6}}
+#print-root{display:none}
+@media print{
+  @page{size:A4;margin:10mm}
+  body.of-printing{background:#fff}
+  body.of-printing > :not(#print-root){display:none!important}
+  body.of-printing #print-root{display:block}
+  body.of-printing .ofd{box-shadow:none;border-radius:0;max-width:none}
+}
+@media(max-width:900px){
+  .of-wrap{grid-template-columns:1fr}
+  .of-prev{position:static;max-height:none}
+}
+@media(max-width:560px){
+  .ofd-head{flex-wrap:wrap;padding:16px 18px}
+  .ofd-body{padding:16px 18px 20px}
+  .ofd-parties,.ofd-sign{grid-template-columns:1fr}
+  .ofd-kv{grid-template-columns:1fr 1fr}
+  .ofd-course{flex-direction:column;gap:2px}
+  .ofd-course .l{flex:none}
+  .of-course .l{flex-basis:96px}
+}
 </style>
 </head>
 <body class="locked">
@@ -302,10 +467,13 @@ body.locked .lock{display:flex}
 
 <div class="tabs">
   <button class="tab active" data-tab="home">Genel Bakış</button>
+  <button class="tab" data-tab="stats">İstatistikler</button>
   <button class="tab" data-tab="menu">Menü</button>
   <button class="tab" data-tab="calendar">Takvim</button>
   <button class="tab" data-tab="ann">Duyurular</button>
   <button class="tab" data-tab="campaigns">Kampanyalar</button>
+  <button class="tab" data-tab="offer">Menü Teklifi</button>
+  <button class="tab" data-tab="days">Özel Günler</button>
   <button class="tab" data-tab="media">Görseller</button>
   <button class="tab" data-tab="site">İşletme Bilgileri</button>
   <button class="tab" data-tab="qr">QR Kod</button>
@@ -348,11 +516,60 @@ body.locked .lock{display:flex}
       <span style="flex:1"></span>
       <button class="btn primary" id="ev-add">+ Etkinlik / duyuru ekle</button>
     </div>
-    <div class="cal-legend"><span><i class="lg ev"></i>Etkinlik / duyuru</span><span><i class="lg camp"></i>Kampanya</span><span><i class="lg off"></i>Yayında değil</span></div>
+    <div class="cal-legend"><span><i class="lg ev"></i>Etkinlik / duyuru</span><span><i class="lg camp"></i>Kampanya</span><span><i class="lg sd"></i>Özel gün</span><span><i class="lg off"></i>Yayında değil</span></div>
     <div class="cal-grid" id="cal-grid"></div>
   </div>
   <div class="panel" id="cal-day"></div>
   <div class="panel"><h2>Tüm etkinlik ve duyurular</h2><div id="ev-list"></div></div>
+</div>
+
+<!-- İSTATİSTİKLER -->
+<div class="page hide" id="tab-stats">
+  <div class="panel">
+    <div class="st-head"><h2>Ziyaretçi istatistikleri</h2><span class="st-live" id="st-live"></span><span style="flex:1"></span>
+      <div class="seg" id="st-range"><button type="button" data-d="1">Bugün</button><button type="button" data-d="7" class="on">7 gün</button><button type="button" data-d="30">30 gün</button><button type="button" data-d="90">90 gün</button></div>
+      <button class="btn sm" id="st-refresh">Yenile</button>
+      <label class="switch small" title="Kendi girişlerinizi deneme için saydırın"><input type="checkbox" id="st-self"> Bu tarayıcıyı da say</label></div>
+    <div id="st-body"></div>
+  </div>
+  <div class="st-tip hide" id="st-tip" role="tooltip"></div>
+</div>
+
+<!-- ÖZEL GÜNLER -->
+<div class="page hide" id="tab-days">
+  <div class="panel">
+    <h2>Özel günler</h2>
+    <p class="hint">Bayram, anma ve kutlama günleri en yakın tarihten başlayarak sıralı; Takvim sekmesinde de görünürler. Bu günlerde menü açılınca o güne özel bir pencere çıkar, köşede küçük bir rozet kalır. Her yıl kendiliğinden tekrar eder. Sevgililer Günü, Anneler Günü gibi günlerde pencerede <b>Rezervasyon için arayın</b> düğmesi de çıkar (İşletme Bilgileri'ndeki telefon). İstemediğiniz günün işaretini kaldırın; <b>Önizle</b> ile nasıl göründüğüne bakabilirsiniz. Değişiklikler <b>Kaydet ve Yayınla</b> ile yayına girer.</p>
+    <label class="switch" style="margin:10px 0"><input type="checkbox" id="sd-all"> Özel gün pencerelerini göster</label>
+    <div id="sd-list"></div>
+  </div>
+</div>
+
+<!-- MENÜ TEKLİFİ -->
+<div class="page hide" id="tab-offer">
+  <div class="panel res-bar">
+    <div class="res-row">
+      <h2 style="margin:0;flex:1">Menü Teklifi</h2>
+      <div class="seg" id="of-kind"><button type="button" data-k="offer">Teklif</button><button type="button" data-k="contract">Sözleşme</button></div>
+    </div>
+    <p class="hint">Belirli günlerde toplu yemek isteyen gruplara (şirket, okul, dernek, doğum günü, kutlama…) fix menü teklifi veya sözleşmesi hazırlayın. Sağdaki belge siz yazdıkça güncellenir; <b>PDF indir</b> ile A4 PDF dosyası olarak iner.</p>
+    <div class="row-actions">
+      <button class="btn primary" type="button" id="of-save">Kaydet</button>
+      <button class="btn primary" type="button" id="of-pdf">PDF indir</button>
+      <button class="btn" type="button" id="of-print">Yazdır</button>
+      <button class="btn" type="button" id="of-wa">WhatsApp'ta gönder</button>
+      <button class="btn" type="button" id="of-new">Yeni teklif</button>
+    </div>
+  </div>
+  <div class="of-wrap">
+    <div class="of-form" id="of-form"><div class="panel"><p class="res-empty">Yükleniyor…</p></div></div>
+    <div class="of-prev" id="of-prev"></div>
+  </div>
+  <div class="panel">
+    <h2>Kayıtlı teklifler</h2>
+    <div id="of-list"></div>
+  </div>
+  <p class="hint res-foot">Teklifler ve işletmenin resmî bilgileri (unvan, vergi no, IBAN) şifreli saklanır; yalnızca bu panelden okunabilir.</p>
 </div>
 
 <!-- DUYURULAR -->
@@ -535,6 +752,16 @@ body.locked .lock{display:flex}
     </div>
   </div>
   <div class="panel">
+    <h2>Google yorumları</h2>
+    <p class="hint">Buraya eklediğiniz yorumlar menüde <b>“Misafirlerimiz ne diyor?”</b> başlığıyla kayan kartlar olarak görünür (en fazla 10). Google Haritalar’da işletmenizi açın, beğendiğiniz yorumları kopyalayıp yapıştırın. Yukarıdaki <b>Sosyal medya → Google yorum / işletme</b> alanına Google yorum bağlantınızı yazarsanız menüde ayrıca <b>“Google'da Yorum Yaz”</b> alanı çıkar.</p>
+    <div class="grid" style="margin-top:10px">
+      <div class="field"><label>Google puanınız</label><input data-rvsum="rating" placeholder="ör. 4,8"></div>
+      <div class="field"><label>Toplam yorum sayısı</label><input data-rvsum="count" inputmode="numeric" placeholder="ör. 126"></div>
+    </div>
+    <div id="rv-list" style="margin-top:12px"></div>
+    <div class="row-actions"><button class="btn sm primary" id="rv-add">+ Yorum ekle</button></div>
+  </div>
+  <div class="panel">
     <h2>Yedekleme</h2>
     <p class="hint">Menünün tamamını bilgisayarınıza JSON dosyası olarak indirebilir veya daha önce indirdiğiniz bir yedeği geri yükleyebilirsiniz.</p>
     <div class="row-actions">
@@ -557,8 +784,10 @@ body.locked .lock{display:flex}
     <div class="row-actions">
       <button class="btn primary" id="qr-make">QR Oluştur</button>
       <button class="btn" id="qr-download">PNG indir</button>
+      <button class="btn" id="qr-review">Google yorum QR'ı</button>
     </div>
-    <p class="hint">Bu QR kod sabittir; menüyü panelden ne kadar değiştirirseniz değiştirin aynı QR çalışmaya devam eder. Yeniden basmanız gerekmez.</p>
+    <p class="hint">Bu QR kod sabittir; menüyü panelden ne kadar değiştirirseniz değiştirin aynı QR çalışmaya devam eder. Yeniden basmanız gerekmez.
+      Adresin sonundaki <b>?src=qr</b>, İstatistikler'de masadaki QR koddan gelenleri ayrı göstermek içindir. <b>Google yorum QR'ı</b>, masaya veya hesap fişine basılacak, doğrudan Google yorum sayfasını açan koddur.</p>
   </div>
   <div class="qr-wrap"><div id="qr-box"></div></div>
 </div>
@@ -587,13 +816,25 @@ body.locked .lock{display:flex}
     <p class="msg" id="tk-msg"></p>
   </form>
 
+  <form class="panel" id="stsrv-form" autocomplete="off">
+    <h2>İstatistik sunucusu</h2>
+    <p class="hint">İstatistikler sekmesi, menü ziyaretlerini Cloudflare'deki küçük bir sunucuda toplar. Kurulumu bir kez yapılır: repodaki <code>stats/KURULUM.md</code> dosyasındaki adımları izleyin, sonra sunucu adresini ve <code>ADMIN_KEY</code> değerini buraya girin. Anahtar yönetici şifrenizle şifrelenip saklanır; tüm cihazlarda geçerli olur. Bağlanınca menüye ziyaret sayacı eklenip yayınlanır.</p>
+    <div class="grid" style="margin-top:10px">
+      <div class="field"><label>Sunucu adresi</label><input id="stsrv-url" placeholder="https://camino-istatistik.….workers.dev" inputmode="url"></div>
+      <div class="field"><label>Yönetici anahtarı (ADMIN_KEY)</label><input type="password" id="stsrv-key" autocomplete="off" placeholder="Değiştirmeyecekseniz boş bırakın"></div>
+      <div class="field"><label>Mevcut şifre</label><input type="password" id="stsrv-pw" autocomplete="current-password" required></div>
+    </div>
+    <div class="row-actions"><button class="btn primary" type="submit">Kaydet ve test et</button><button class="btn" type="button" id="stsrv-remove">Bağlantıyı kaldır</button></div>
+    <p class="msg" id="stsrv-msg"></p>
+  </form>
+
   <div class="panel">
     <h2>Oturum</h2>
     <p class="hint">30 dakika işlem yapılmazsa oturum otomatik kapanır (kaydedilmemiş değişiklik yoksa).</p>
     <div class="row-actions">
       <button class="btn" id="reload-btn">Menüyü GitHub'dan yeniden yükle</button>
     </div>
-    <p class="hint" style="margin-top:14px"><b>Şifreyi unutursanız:</b> GitHub'da repodaki <code>auth.json</code> dosyasını silin; panel yeniden “İlk Kurulum” ekranını açar. Kurulumu yalnızca repoya yazma yetkisi olan geçerli bir token ile tamamlanabilir.</p>
+    <p class="hint" style="margin-top:14px"><b>Şifreyi unutursanız:</b> GitHub'da repodaki <code>auth.json</code> dosyasını silin; panel yeniden “İlk Kurulum” ekranını açar. Kurulumu yalnızca repoya yazma yetkisi olan geçerli bir token ile tamamlanabilir. <b>Dikkat:</b> bu durumda kayıtlı menü teklifleri (<code>business.json</code>) okunamaz hâle gelir ve istatistik sunucusunu yeniden bağlamanız gerekir.</p>
   </div>
 </div>
 
@@ -1540,8 +1781,9 @@ body.locked .lock{display:flex}
       const day = start + i * DAY_MS;
       const inMonth = new Date(day).getUTCMonth() === calMonth.m;
       if(i >= 35 && !inMonth) break;
-      const {evs, camps} = dayItems(day);
-      const chips = evs.map(ev => '<span class="cchip ' + (ev.published === false ? 'off' : 'ev') + '" title="' + esc(evLine(ev)) + '">' + esc(evLine(ev)) + '</span>')
+      const {evs, camps} = dayItems(day), sd = calSpecial(day);
+      const chips = (sd ? ['<span class="cchip sd ' + sd.kind + (sd.off ? ' dim' : '') + '" title="' + esc(sd.name + (sd.off ? ' (menüde kapalı)' : '')) + '">' + esc(sd.badge.join(' · ')) + '</span>'] : [])
+        .concat(evs.map(ev => '<span class="cchip ' + (ev.published === false ? 'off' : 'ev') + '" title="' + esc(evLine(ev)) + '">' + esc(evLine(ev)) + '</span>'))
         .concat(camps.map(x => '<span class="cchip camp" title="' + esc(x.c.title + ' · ' + x.info.time) + '">% ' + esc(Core.discountLabel(x.c)) + '</span>'));
       html += '<button type="button" class="cal-cell' + (inMonth ? '' : ' out') + (day === n.dayStart ? ' today' : '') + (day === selDay ? ' sel' : '') + '" data-day="' + day + '">' +
         '<span class="num">' + new Date(day).getUTCDate() + '</span><span class="chips-wrap">' + chips.slice(0, 3).join('') + '</span>' +
@@ -1551,13 +1793,20 @@ body.locked .lock{display:flex}
     renderDayPanel();
     renderEventList();
   }
+  // Takvimdeki özel gün (menüde kapatılmış olsa da soluk görünür)
+  function calSpecial(day){
+    const d = Core.specialDay({}, isoDay(day));
+    return d && Object.assign(d, {off: state.site.specialDays === false || (state.site.specialDaysOff || []).includes(d.key)});
+  }
   function renderDayPanel(){
     const day = selDay, n = Core.now();
-    const {evs, camps} = dayItems(day);
+    const {evs, camps} = dayItems(day), sd = calSpecial(day);
     const title = fmtDay(day, {day:'numeric', month:'long', weekday:'long'}) + (day === n.dayStart ? ' · Bugün' : '');
     $('#cal-day').innerHTML = '<div class="cal-head" style="margin:0"><h2 style="margin:0;text-align:left">' + esc(title) + '</h2><span style="flex:1"></span>' +
         '<button class="btn primary sm" data-dact="add">+ Bu güne etkinlik ekle</button></div>' +
-      (!evs.length && !camps.length ? '<p class="hint">Bu gün için planlanmış etkinlik veya kampanya yok.</p>' : '') +
+      (sd ? '<div class="day-item"><span class="lg sd"></span><div class="tx"><b>' + esc(sd.name) + '</b><small>Özel gün · ' + (sd.off ? 'menüde kapalı' : 'menü açılınca pencere ve köşede rozet çıkar') + '</small></div>' +
+        '<a class="btn sm" href="index.html?gun=' + sd.date + '" target="_blank" rel="noopener">Önizle</a><button class="btn sm" data-dact="tab" data-tab="days">Özel günler</button></div>' : '') +
+      (!evs.length && !camps.length && !sd ? '<p class="hint">Bu gün için planlanmış etkinlik veya kampanya yok.</p>' : '') +
       evs.map(ev => { const t = Core.eventType(ev); return '<div class="day-item"><span class="lg ' + (ev.published === false ? 'off' : 'ev') + '"></span><div class="tx"><b>' + esc(ev.title) + '</b>' +
         '<small>' + esc(t.label) + ' · ' + esc(ev.start ? ev.start + (ev.end ? '–' + ev.end : '') : 'Tüm gün') + (ev.repeat === 'weekly' ? ' · her hafta' : '') + (ev.popup ? ' · popup' : '') + (ev.published === false ? ' · yayında değil' : '') + '</small></div>' +
         '<button class="btn sm" data-dact="edit" data-id="' + esc(ev.id) + '">Düzenle</button></div>'; }).join('') +
@@ -1762,6 +2011,76 @@ body.locked .lock{display:flex}
     setDirty(true);
   }));
 
+  /* ---------- Özel günler (takvim assets/core.js → SPECIAL_DAYS) ---------- */
+  const SD_FLAG = '<svg viewBox="0 0 30 20" width="26" height="17" aria-hidden="true"><rect width="30" height="20" rx="2" fill="#e30a17"/><circle cx="11" cy="10" r="5" fill="#fff"/><circle cx="12.3" cy="10" r="4" fill="#e30a17"/><circle cx="17" cy="10" r="1.7" fill="#fff"/></svg>';
+  function renderSpecialDays(){
+    const s = state.site, off = s.specialDaysOff || [], all = s.specialDays !== false, today = Core.todayStr();
+    const fmt = d => new Date(Core.parseWall(d)).toLocaleDateString('tr-TR', {day: 'numeric', month: 'long', year: 'numeric', weekday: 'long', timeZone: 'UTC'});
+    const next = Object.fromEntries(Core.upcomingSpecialDays(today).reverse().map(x => [x.sd.key, x]));
+    $('#sd-all').checked = all;
+    const order = Core.SPECIAL_DAYS.slice().sort((a, b) => ((next[a.key] || {}).date || '9999').localeCompare((next[b.key] || {}).date || '9999'));
+    $('#sd-list').innerHTML = '<div class="sd-rows">' + order.map(sd => {
+      const n = next[sd.key];
+      const ic = sd.kind === 'flag' ? SD_FLAG : '<i class="sd-dot ' + sd.kind + '"></i>';
+      return '<label class="sd-row' + (all ? '' : ' dim') + '"><input type="checkbox" data-sd="' + sd.key + '"' + (off.includes(sd.key) ? '' : ' checked') + (all ? '' : ' disabled') + '>' +
+        '<span class="sd-ic">' + ic + '</span>' +
+        '<span class="sd-tx"><b>' + esc(sd.name) + '</b><small>' + (n ? (n.date === today ? '<b class="sd-today">Bugün</b> · ' : '') + esc(fmt(n.date)) + (n.days > 1 ? ' · ' + n.days + ' gün' : '')
+          : 'Tarihi henüz eklenmedi (Diyanet takvimi açıklanınca eklenmeli)') + '</small></span>' +
+        (n ? '<a class="btn sm" href="index.html?gun=' + n.date + '" target="_blank" rel="noopener">Önizle</a>' : '') + '</label>';
+    }).join('') + '</div>';
+  }
+  $('#sd-all').addEventListener('change', e => {
+    if(e.target.checked) delete state.site.specialDays; else state.site.specialDays = false;
+    renderSpecialDays(); setDirty(true);
+  });
+  $('#sd-list').addEventListener('change', e => {
+    const k = e.target.dataset.sd;
+    if(!k) return;
+    const off = new Set(state.site.specialDaysOff || []);
+    if(e.target.checked) off.delete(k); else off.add(k);
+    if(off.size) state.site.specialDaysOff = [...off]; else delete state.site.specialDaysOff;
+    setDirty(true);
+  });
+
+  /* ---------- Google yorumları (menüde kartlar) ---------- */
+  function reviews(){ return state.site.reviews || (state.site.reviews = {list: []}); }
+  function renderReviews(){
+    const r = state.site.reviews || {list: []};
+    document.querySelectorAll('[data-rvsum]').forEach(el => { if(document.activeElement !== el) el.value = r[el.dataset.rvsum] || ''; });
+    $('#rv-list').innerHTML = r.list.length ? r.list.map((x, i) =>
+      '<div class="rv-row" data-ri="' + i + '"><input data-rv="name" value="' + esc(x.name) + '" placeholder="Yorumu yazan (ör. Ayşe K.)">' +
+      '<select data-rv="stars">' + [5, 4, 3, 2, 1].map(n => '<option value="' + n + '"' + ((+x.stars || 5) === n ? ' selected' : '') + '>' + '★'.repeat(n) + '</option>').join('') + '</select>' +
+      '<input data-rv="date" value="' + esc(x.date) + '" placeholder="ör. 2 hafta önce / Ekim 2026">' +
+      '<textarea data-rv="text" placeholder="Yorum metni">' + esc(x.text) + '</textarea>' +
+      '<div class="row-actions"><button class="btn sm" data-rvact="up" title="Yukarı"><i class="chev up"></i></button><button class="btn sm" data-rvact="down" title="Aşağı"><i class="chev down"></i></button><button class="btn sm danger" data-rvact="del">Sil</button></div></div>').join('')
+      : '<p class="hint">Henüz yorum eklenmedi; menüde yalnızca “Google’da Yorum Yaz” alanı görünür (Google bağlantısı girildiyse).</p>';
+    $('#rv-add').disabled = r.list.length >= 10;
+  }
+  $('#tab-site').addEventListener('input', e => {
+    const el = e.target;
+    if(el.dataset.rvsum){
+      if(el.value.trim()) reviews()[el.dataset.rvsum] = el.value.trim(); else delete reviews()[el.dataset.rvsum];
+      setDirty(true);
+    } else if(el.dataset.rv){
+      reviews().list[+el.closest('[data-ri]').dataset.ri][el.dataset.rv] = el.dataset.rv === 'stars' ? +el.value : el.value;
+      setDirty(true);
+    }
+  });
+  $('#rv-add').addEventListener('click', () => {
+    reviews().list.push({name: '', stars: 5, date: '', text: ''});
+    renderReviews(); setDirty(true);
+    const rows = document.querySelectorAll('#rv-list [data-ri]');
+    rows[rows.length - 1].querySelector('input').focus();
+  });
+  $('#rv-list').addEventListener('click', e => {
+    const b = e.target.closest('[data-rvact]');
+    if(!b) return;
+    const list = reviews().list, i = +b.closest('[data-ri]').dataset.ri, act = b.dataset.rvact;
+    if(act === 'del'){ if(!confirm('Bu yorum silinsin mi?')) return; list.splice(i, 1); }
+    else { const j = act === 'up' ? i - 1 : i + 1; if(j < 0 || j >= list.length) return; [list[i], list[j]] = [list[j], list[i]]; }
+    renderReviews(); setDirty(true);
+  });
+
   /* ---------- Genel bakış ---------- */
   function alerts(){
     const out = [], n = Core.now();
@@ -1935,6 +2254,7 @@ body.locked .lock{display:flex}
     ).join('');
     $('#hero-images').value = (state.site.heroImages || []).join('\n');
     renderSocialFields();
+    renderReviews();
   }
   $('#hero-images').addEventListener('input', e => {
     const list = e.target.value.split('\n').map(s => s.trim()).filter(Boolean);
@@ -1982,10 +2302,17 @@ body.locked .lock{display:flex}
 
   /* ---------- QR ---------- */
   function defaultMenuUrl(){
-    // Panel /admin/ altında; <base href="../"> sayesinde bu adres menünün ana sayfasıdır
-    if(location.protocol.startsWith('http')) return new URL('./', document.baseURI).href;
+    // Panel /admin/ altında; <base href="../"> sayesinde bu adres menünün ana sayfasıdır.
+    // ?src=qr: İstatistikler'de masadaki QR koddan gelenler ayrı görünür
+    if(location.protocol.startsWith('http')) return new URL('./', document.baseURI).href + '?src=qr';
     return '';
   }
+  // Masaya / hesap fişine basılacak yorum QR'ı: İşletme Bilgileri > Sosyal medya'daki Google bağlantısını kullanır
+  $('#qr-review').addEventListener('click', () => {
+    const g = Core.socialLinks(state.site).find(l => l.key === 'google');
+    if(!g){ toast('Önce İşletme Bilgileri > Sosyal medya bölümüne Google yorum bağlantısını ekleyin.', true, 6000); return; }
+    $('#qr-url').value = g.href; makeQr();
+  });
   function makeQr(){
     const url = $('#qr-url').value.trim();
     const box = $('#qr-box');
@@ -2044,8 +2371,18 @@ body.locked .lock{display:flex}
     try{
       const auth = await fetchAuth();
       if(!auth){ showSetup(); return; }
-      const cfg = await decryptCfg(auth, $('#login-pw').value);
+      const pw = $('#login-pw').value;
+      const cfg = await decryptCfg(auth, pw);
       failedLogins = 0;
+      // Teklifler gibi şifreli işletme verileri için anahtar yoksa (eski kurulum) bir kez oluşturulup auth.json'a eklenir
+      if(!cfg.dataKey){
+        try{
+          setMsg('#login-msg', 'Panel güncelleniyor…');
+          const withKey = Object.assign({}, cfg, {dataKey: newDataKey()});
+          await putFile(Object.assign({}, withKey, guessRepo() || {}), AUTH_PATH, JSON.stringify(await encryptCfg(withKey, pw), null, 2) + '\n', 'Şifreleme anahtarı eklendi');
+          cfg.dataKey = withKey.dataKey;
+        }catch(e2){ toast('Şifreleme anahtarı oluşturulamadı: ' + (e2.status ? ghErrorText(e2) : e2.message), true, 8000); }
+      }
       setMsg('#login-msg', '');
       unlock(cfg);
     }catch(err){
@@ -2072,7 +2409,7 @@ body.locked .lock{display:flex}
     if(pw.length < MIN_PW) return setMsg('#setup-msg', 'Şifre en az ' + MIN_PW + ' karakter olmalı.', 'err');
     if(pw !== $('#setup-pw2').value) return setMsg('#setup-msg', 'Şifreler aynı değil.', 'err');
     const cfg = {owner: $('#setup-owner').value.trim(), repo: $('#setup-repo').value.trim(),
-                 branch:'main', path:'menu.json', token: $('#setup-token').value.trim()};
+                 branch:'main', path:'menu.json', token: $('#setup-token').value.trim(), dataKey: newDataKey()};
     const btn = $('#setup-btn');
     btn.disabled = true;
     try{
@@ -2148,10 +2485,725 @@ body.locked .lock{display:flex}
   ['click','keydown','touchstart','input'].forEach(ev => document.addEventListener(ev, touch, {passive:true}));
   setInterval(() => { if(session && !dirty && Date.now() - lastActive > IDLE_MS) logout(); }, 60000);
 
+  /* ---------- Şifreli işletme verileri (business.json) ---------- */
+  // Menü teklifleri ve işletmenin resmî bilgileri (unvan, vergi no, IBAN) müşteriye açık olmadığı için şifreli saklanır.
+  // Anahtar (dataKey) auth.json'un şifreli içeriğinde durur; yani bu veriler yalnızca yönetici şifresiyle okunabilir.
+  function todayStr(){ return new Date(Core.now().dayStart).toISOString().slice(0, 10); }
+  function shiftDay(d, n){ const t = Core.parseWall(d) + n * 86400000; return new Date(t).toISOString().slice(0, 10); }
+  function newDataKey(){ return bytesToB64(crypto.getRandomValues(new Uint8Array(32))); }
+  async function dataKeyObj(){
+    if(!session || !session.dataKey) throw new Error('Şifreleme anahtarı yok. Çıkış yapıp yeniden giriş yapın.');
+    return crypto.subtle.importKey('raw', b64ToBytes(session.dataKey), 'AES-GCM', false, ['encrypt','decrypt']);
+  }
+  async function encryptData(obj){
+    const iv = crypto.getRandomValues(new Uint8Array(12));
+    const data = new Uint8Array(await crypto.subtle.encrypt({name:'AES-GCM', iv}, await dataKeyObj(), new TextEncoder().encode(JSON.stringify(obj))));
+    return {v:1, enc:'AES-GCM', iv: bytesToB64(iv), data: bytesToB64(data)};
+  }
+  async function decryptData(box){
+    const plain = await crypto.subtle.decrypt({name:'AES-GCM', iv: b64ToBytes(box.iv)}, await dataKeyObj(), b64ToBytes(box.data));
+    return JSON.parse(new TextDecoder().decode(plain));
+  }
+  // 1 MB üstü dosyalarda içerik blob API'sinden okunur
+  async function ghReadText(path){
+    const d = await gh(session, 'GET', null, path);
+    let b64 = d.content;
+    if(!b64){
+      const r = await fetch('https://api.github.com/repos/' + encodeURIComponent(session.owner) + '/' + encodeURIComponent(session.repo) + '/git/blobs/' + d.sha,
+        {headers: {'Authorization': 'Bearer ' + session.token, 'Accept': 'application/vnd.github+json'}, cache: 'no-store'});
+      if(!r.ok) throw new Error('HTTP ' + r.status);
+      b64 = (await r.json()).content;
+    }
+    return {sha: d.sha, text: b64decode(b64)};
+  }
+  const BIZ_PATH = 'business.json';
+  let biz = null, bizLoading = null;
+  function emptyBiz(){ return {v: 1, offers: {}}; }
+  async function fetchBiz(){
+    try{
+      const f = await ghReadText(BIZ_PATH);
+      return {data: Object.assign(emptyBiz(), await decryptData(JSON.parse(f.text))), sha: f.sha};
+    }catch(e){ if(e.status === 404) return {data: emptyBiz(), sha: null}; throw e; }
+  }
+  async function loadBiz(){
+    if(bizLoading) return bizLoading;
+    bizLoading = (async () => {
+      try{ biz = (await fetchBiz()).data; }
+      catch(e){ toast('Kayıtlı teklifler yüklenemedi: ' + (e.status ? ghErrorText(e) : e.message), true, 7000); }
+      finally{ bizLoading = null; }
+    })();
+    return bizLoading;
+  }
+  async function mutateBiz(fn){
+    for(let attempt = 0; attempt < 3; attempt++){
+      const cur = await fetchBiz();
+      const out = fn(cur.data);
+      const box = await encryptData(cur.data);
+      try{
+        await gh(session, 'PUT', {message: 'İşletme verileri güncellendi', content: b64encode(JSON.stringify(box) + '\n'), branch: session.branch, sha: cur.sha || undefined}, BIZ_PATH);
+        biz = cur.data;
+        return out;
+      }catch(e){ if(e.status === 409 || e.status === 422) continue; throw e; }
+    }
+    throw new Error('Kayıt başka bir cihazla çakıştı, lütfen tekrar deneyin.');
+  }
+
+  /* ---------- Menü Teklifi ---------- */
+  // Belirli günlerde toplu yemek isteyen gruplar için fix menü teklifi / sözleşmesi. Teklifler, varsayılan şablon ve
+  // işletmenin resmî bilgileri business.json içinde {offers: {list, tpl, co, seq}} olarak şifreli durur.
+  const OF_DAYS = ['Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt', 'Paz'];
+  const OF_INCL = ['Su', 'Meşrubat', 'Çay', 'Ekmek', 'Türk kahvesi', 'Servis personeli', 'Masa düzeni', 'Müzik / ses sistemi'];
+  const OF_MODES = ['Restoranda servis', 'Adrese teslim', 'Yerinde servis (catering)'];
+  const OF_VAT = {in10: 'KDV (%10) dahil', in20: 'KDV (%20) dahil', ex10: '+ %10 KDV', ex20: '+ %20 KDV', none: 'KDV belirtilmez'};
+  const OF_TERMS = [
+    'Kesin kişi sayısı en geç hizmetten 48 saat önce bildirilir. Bildirilen sayının altında katılım olursa ücretlendirme bildirilen sayı üzerinden yapılır.',
+    'Menüdeki ürünler mevsime ve ürün bulunabilirliğine göre, önceden bilgi verilerek eşdeğer ürünlerle değiştirilebilir.',
+    'Menü dışı istekler (ek içecek, ek porsiyon vb.) ayrıca ücretlendirilir.',
+    'İptal ve gün değişiklikleri en geç 72 saat önce yazılı olarak bildirilir; daha geç yapılan iptallerde o günün bedelinin %50\'si tahsil edilir.',
+    'Gıda alerjisi, vejetaryen veya özel diyet talepleri önceden bildirilmelidir.',
+    'Belirtilen saatler dışındaki uzamalar için ek ücret talep edilebilir.'
+  ];
+  const OF_TPL_KEYS = ['kind', 'courses', 'incl', 'inclExtra', 'price', 'vat', 'payment', 'deposit', 'terms', 'valid', 'mode', 'time', 'days', 'hide'];
+  let ofCur = null, ofCo = null;
+
+  function ofDefaults(){
+    return {kind: 'offer', mode: OF_MODES[0], time: '19:00 – 22:00', days: [4], valid: 15, price: '', vat: 'in10',
+      courses: [{l: 'Başlangıç', t: ''}, {l: 'Ana yemek', t: ''}, {l: 'Yanında', t: 'Patates kızartması'}, {l: 'Salata', t: 'Mevsim salatası'}, {l: 'Tatlı', t: ''}, {l: 'İçecek', t: ''}],
+      incl: ['Su', 'Meşrubat'], inclExtra: '', deposit: '',
+      payment: 'Hizmet sonrasında düzenlenen fatura karşılığı, 7 gün içinde nakit veya havale/EFT ile ödenir.', terms: OF_TERMS.join('\n'), hide: []};
+  }
+  function ofStore(){ return (biz && biz.offers) || {}; }
+  function ofNew(){
+    const tpl = JSON.parse(JSON.stringify(Object.assign(ofDefaults(), ofStore().tpl || {})));
+    return Object.assign(tpl, {id: '', no: '', date: todayStr(), client: '', contact: '', phone: '', email: '', address: '', guests: '', start: '', end: '', dates: '', note: ''});
+  }
+  function ofKeep(){ try{ sessionStorage.setItem('camino-teklif', JSON.stringify(ofCur)); }catch(e){} }
+  const ofNum = s => +String(s || '').replace(/[^\d,.]/g, '').replace(/\.(?=\d{3}(\D|$))/g, '').replace(',', '.') || 0;
+  const ofDate = d => d ? new Date(Core.parseWall(d)).toLocaleDateString('tr-TR', {day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC'}) : '';
+  const ofMoney = n => n.toLocaleString('tr-TR', {minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2}) + ' TL';
+
+  // Dönem verilmişse seçili hafta günlerine denk gelen hizmet günü sayısı; tek gün/dönemsiz teklifte null
+  function ofServiceDays(o){
+    if(!o.start || !o.end || o.end <= o.start) return null;
+    let n = 0;
+    for(let d = o.start, i = 0; d <= o.end && i < 800; d = shiftDay(d, 1), i++) if(o.days.includes((new Date(Core.parseWall(d)).getUTCDay() + 6) % 7)) n++;
+    return n;
+  }
+  function ofCalc(o){
+    const p = ofNum(o.price), g = +o.guests || 0, days = ofServiceDays(o);
+    const rate = /20/.test(o.vat) ? 20 : /10/.test(o.vat) ? 10 : 0, ex = /^ex/.test(o.vat);
+    const perDay = p * g, total = perDay * (days == null ? 1 : days);
+    return {p, g, days, perDay, total, rate, ex, vatAmt: ex ? total * rate / 100 : 0, grand: ex ? total * (1 + rate / 100) : total};
+  }
+  function ofDaysText(o){
+    const d = o.days.slice().sort();
+    if(!d.length) return '';
+    if(d.length === 7) return 'Her gün';
+    if(d.join() === '0,1,2,3,4') return 'Hafta içi her gün';
+    if(d.join() === '5,6') return 'Hafta sonu';
+    return d.map(i => OF_DAYS[i]).join(', ');
+  }
+  function ofWhen(o){
+    if(o.start && o.end && o.end > o.start) return ofDate(o.start) + ' – ' + ofDate(o.end);
+    return ofDate(o.start);
+  }
+  const ofTitle = o => o.kind === 'contract' ? 'Toplu Yemek Hizmet Sözleşmesi' : 'Fix Menü Teklifi';
+  const ofLogo = () => previewUrl(state.site.logo || 'assets/logo.png');
+
+  // Belgenin bölümleri: her biri formdaki düğmeyle veya önizlemedeki ✕ ile kaldırılabilir (o.hide)
+  const OF_SECS = [['head', 'Teklif no ve tarih'], ['intro', 'Giriş cümlesi'], ['parties', 'Firma bilgileri'], ['service', 'Hizmet bilgileri'], ['menu', 'Menü'],
+    ['incl', 'Dahil olanlar'], ['price', 'Fiyat tablosu'], ['total', 'Toplam tutar'], ['payment', 'Ödeme ve IBAN'], ['terms', 'Koşullar'],
+    ['note', 'Not'], ['valid', 'Geçerlilik tarihi'], ['sign', 'İmza alanları'], ['foot', 'Alt bilgi']];
+  const ofOn = (o, k) => !(o.hide || []).includes(k);
+  const ofTerms = o => String(o.terms || '').split('\n').map(x => x.trim()).filter(Boolean);
+  function ofDocHtml(o, edit){
+    const s = state.site, co = ofCo || {}, c = ofCalc(o), contract = o.kind === 'contract';
+    const bizName = co.title || s.name || 'Camino';
+    const x = k => edit ? '<button type="button" class="ofd-x" data-ofhide="' + k + '" title="Belgeden kaldır" aria-label="Belgeden kaldır">✕</button>' : '';
+    const sec = (k, html) => html && ofOn(o, k) ? '<div class="ofd-sec" data-sec="' + k + '">' + x(k) + html + '</div>' : '';
+    const kv = (k, v) => v ? '<div><small>' + esc(k) + '</small>' + esc(v) + '</div>' : '';
+    const party = (role, name, lines) => '<div class="ofd-party"><small>' + role + '</small><b>' + esc(name || '—') + '</b>' + lines.filter(Boolean).map(l => esc(l)).join('<br>') + '</div>';
+    const courses = o.courses.filter(x => x.l.trim() || x.t.trim());
+    const incl = o.incl.concat(o.inclExtra ? o.inclExtra.split(',').map(x => x.trim()).filter(Boolean) : []);
+    const terms = ofTerms(o);
+    const days = ofDaysText(o), period = c.days != null;
+    let h = '<div class="ofd"><header class="ofd-head"><img src="' + esc(ofLogo()) + '" alt="' + esc(s.name || '') + '">' +
+      '<div class="ofd-ttl"><small>' + (contract ? 'SÖZLEŞME' : 'TEKLİF') + ' · FİX MENÜ</small><b>' + ofTitle(o) + '</b></div>' +
+      (ofOn(o, 'head') ? '<div class="ofd-meta">' + (o.no ? 'No: <b>' + esc(o.no) + '</b><br>' : '') + 'Tarih: ' + esc(ofDate(o.date)) + '</div>' : '') + '</header><div class="ofd-body">';
+    h += sec('intro', '<p class="ofd-intro">' + (contract
+      ? 'Aşağıda bilgileri yer alan taraflar arasında, belirtilen günlerde ve koşullarda toplu yemek hizmeti verilmesi amacıyla işbu sözleşme düzenlenmiştir.'
+      : 'Sayın ' + esc(o.contact || o.client || 'Yetkili') + ', ' + (o.client ? esc(o.client) + ' için ' : '') + 'hazırladığımız fix menü teklifimizi bilgilerinize sunarız.') + '</p>');
+    h += sec('parties', '<div class="ofd-parties">' +
+      party(contract ? 'Hizmet veren' : 'Teklifi veren', bizName, [co.title && s.name && co.title !== s.name ? s.name : '', s.address, [s.phone, s.email].filter(Boolean).join(' · '), co.tax ? 'Vergi: ' + co.tax : '']) +
+      party(contract ? 'Hizmet alan' : 'Teklif sunulan', o.client, [o.contact ? 'Yetkili: ' + o.contact : '', o.address, [o.phone, o.email].filter(Boolean).join(' · ')]) + '</div>');
+    const kvs = kv('Hizmet şekli', o.mode) + kv('Kişi sayısı', o.guests ? o.guests + ' kişi' : '') + kv('Saat', o.time) +
+      kv(period ? 'Dönem' : 'Tarih', ofWhen(o)) + kv('Hizmet günleri', period || !o.start ? days : '') + kv('Hizmet günü', period ? c.days + ' gün' : '');
+    h += sec('service', kvs || o.dates ? '<h4>Hizmet bilgileri</h4>' + (kvs ? '<div class="ofd-kv">' + kvs + '</div>' : '') + (o.dates ? '<p class="ofd-note"><b>Özel tarihler:</b> ' + esc(o.dates) + '</p>' : '') : '');
+    h += sec('menu', courses.length ? '<h4>Menü</h4><div class="ofd-menu">' + courses.map(x => '<div class="ofd-course"><span class="l">' + esc(x.l) + '</span><span class="t">' + esc(x.t || '—') + '</span></div>').join('') + '</div>' : '');
+    h += sec('incl', incl.length ? '<div class="ofd-incl">' + incl.map(x => '<span>✓ ' + esc(x) + '</span>').join('') + '</div>' : '');
+    if(c.p){
+      h += sec('price', '<h4>Fiyat</h4><table><tr><th>Kişi başı</th><th>Kişi</th><th>Günlük</th>' + (period ? '<th>Gün</th>' : '') + '<th>Tutar</th></tr><tr><td>' + ofMoney(c.p) + '</td><td>' + (c.g || '—') + '</td><td>' + (c.g ? ofMoney(c.perDay) : '—') + '</td>' +
+        (period ? '<td>' + c.days + '</td>' : '') + '<td>' + (c.g ? ofMoney(c.total) : '—') + '</td></tr>' +
+        (c.ex && c.g ? '<tr><td colspan="' + (period ? 4 : 3) + '">KDV (%' + c.rate + ')</td><td>' + ofMoney(c.vatAmt) + '</td></tr>' : '') + '</table>');
+      h += sec('total', '<div class="ofd-grand"><span>' + (c.g ? (period ? 'Dönem toplamı' : 'Toplam') : 'Kişi başı') + ' <small>(' + esc(OF_VAT[o.vat] || '') + ')</small></span><b>' + ofMoney(c.g ? c.grand : c.p) + '</b></div>');
+    }
+    h += sec('payment', (o.deposit ? '<p class="ofd-note"><b>Ön ödeme:</b> ' + esc(o.deposit) + '</p>' : '') + (o.payment ? '<p class="ofd-note"><b>Ödeme:</b> ' + esc(o.payment) + '</p>' : '') +
+      (co.iban ? '<p class="ofd-note"><b>IBAN:</b> ' + esc(co.iban) + (co.title ? ' (' + esc(co.title) + ')' : '') + '</p>' : ''));
+    h += sec('terms', terms.length ? '<h4>' + (contract ? 'Sözleşme şartları' : 'Koşullar') + '</h4><ol>' + terms.map((t, i) => '<li>' + esc(t) + (edit ? ' <button type="button" class="ofd-x in" data-ofterm="' + i + '" title="Bu maddeyi sil" aria-label="Bu maddeyi sil">✕</button>' : '') + '</li>').join('') + '</ol>' : '');
+    h += sec('note', o.note ? '<h4>Not</h4><p class="ofd-note" style="white-space:pre-line">' + esc(o.note) + '</p>' : '');
+    h += sec('valid', !contract && +o.valid ? '<div class="ofd-valid">Bu teklif ' + esc(ofDate(shiftDay(o.date, +o.valid || 0))) + ' tarihine kadar geçerlidir.</div>' : '');
+    h += sec('sign', '<div class="ofd-sign"><div><b>' + esc(bizName) + ' adına</b>' + esc(co.signer || 'Ad Soyad') + ' · İmza / Kaşe</div>' +
+      '<div><b>' + esc(o.client || (contract ? 'Hizmet alan' : 'Müşteri')) + ' adına</b>' + (contract ? 'Ad Soyad · İmza / Kaşe' : 'Onaylıyorum · Ad Soyad / İmza') + '</div></div>');
+    h += '</div>' + (ofOn(o, 'foot') ? '<footer class="ofd-foot">' + [s.name, s.address, s.phone, co.web || location.host].filter(Boolean).map(esc).join(' · ') + '</footer>' : '') + '</div>';
+    return h;
+  }
+
+  function ofText(o){
+    const s = state.site, c = ofCalc(o), contract = o.kind === 'contract';
+    const L = ['*' + (s.name || 'Camino') + ' · ' + ofTitle(o) + '*' + (o.no ? ' (' + o.no + ')' : '')];
+    if(o.client) L.push((contract ? '' : 'Sayın ') + (o.contact ? o.contact + ' – ' : '') + o.client);
+    L.push('');
+    const when = ofWhen(o), days = c.days != null || !o.start ? ofDaysText(o) : '';
+    if(ofOn(o, 'service')){
+      if(when) L.push('Tarih: ' + when + (c.days != null ? ' (' + c.days + ' gün)' : ''));
+      if(days) L.push('Günler: ' + days);
+      if(o.dates) L.push('Özel tarihler: ' + o.dates);
+      if(o.time) L.push('Saat: ' + o.time);
+      if(o.guests) L.push('Kişi: ' + o.guests + (o.mode ? ' · ' + o.mode : ''));
+    }
+    const courses = o.courses.filter(x => x.l.trim() || x.t.trim());
+    if(ofOn(o, 'menu') && courses.length){
+      L.push('', '*Menü*');
+      courses.forEach(x => L.push('• ' + (x.l ? x.l + ': ' : '') + (x.t || '—')));
+    }
+    const incl = o.incl.concat(o.inclExtra ? o.inclExtra.split(',').map(x => x.trim()).filter(Boolean) : []);
+    if(ofOn(o, 'incl') && incl.length) L.push('Dahil: ' + incl.join(', '));
+    if(c.p && (ofOn(o, 'price') || ofOn(o, 'total'))){
+      L.push('', 'Kişi başı *' + ofMoney(c.p) + '* (' + OF_VAT[o.vat] + ')');
+      if(c.g && ofOn(o, 'total')) L.push((c.days != null ? 'Dönem toplamı' : 'Toplam') + ': *' + ofMoney(c.grand) + '*');
+    }
+    if(ofOn(o, 'payment')){
+      if(o.deposit) L.push('Ön ödeme: ' + o.deposit);
+      if(o.payment) L.push('Ödeme: ' + o.payment);
+    }
+    if(!contract && +o.valid && ofOn(o, 'valid')) L.push('', 'Teklif ' + ofDate(shiftDay(o.date, +o.valid || 0)) + ' tarihine kadar geçerlidir.');
+    L.push('', [s.name, s.phone].filter(Boolean).join(' · '));
+    return L.join('\n');
+  }
+
+  function renderOffer(){
+    if(!state || $('#tab-offer').classList.contains('hide')) return;
+    if(!biz){
+      $('#of-form').innerHTML = '<div class="panel"><p class="res-empty">Yükleniyor…</p></div>';
+      loadBiz().then(() => biz ? renderOffer() : $('#of-form').innerHTML = '<div class="panel"><p class="msg err">Kayıtlı teklifler yüklenemedi. Sayfayı yenileyin.</p></div>');
+      return;
+    }
+    if(!ofCo) ofCo = Object.assign({title: '', tax: '', iban: '', signer: '', web: ''}, ofStore().co || {});
+    if(!ofCur){ try{ ofCur = JSON.parse(sessionStorage.getItem('camino-teklif')); }catch(e){} }
+    if(!ofCur || !Array.isArray(ofCur.courses)) ofCur = ofNew();
+    renderOfForm(); renderOfPrev(); renderOfList();
+  }
+  function renderOfForm(){
+    const o = ofCur;
+    document.querySelectorAll('#of-kind button').forEach(b => b.classList.toggle('on', b.dataset.k === o.kind));
+    const f = (k, label, attrs, full) => '<div class="field' + (full ? ' full' : '') + '"><label>' + label + '</label><input data-of="' + k + '" value="' + esc(o[k]) + '"' + (attrs || '') + '></div>';
+    const ta = (k, label, rows) => '<div class="field full"><label>' + label + '</label><textarea data-of="' + k + '" rows="' + (rows || 3) + '">' + esc(o[k]) + '</textarea></div>';
+    const sel = (k, label, opts) => '<div class="field"><label>' + label + '</label><select data-of="' + k + '">' + opts.map(([v, t]) => '<option value="' + esc(v) + '"' + (o[k] === v ? ' selected' : '') + '>' + esc(t) + '</option>').join('') + '</select></div>';
+    const items = [];
+    (state.categories || []).forEach(c => (c.items || []).forEach(i => { if(i.name) items.push(i.name); }));
+    const c = ofCalc(o);
+    const co = (k, label, ph) => '<div class="field"><label>' + label + '</label><input data-ofco="' + k + '" value="' + esc(ofCo[k]) + '" placeholder="' + esc(ph || '') + '"></div>';
+    const on = k => ofOn(o, k);
+    const panel = (show, html) => '<div class="panel"' + (show ? '' : ' hidden') + '>' + html + '</div>';
+    const terms = o.terms ? String(o.terms).split('\n') : [];   // boş satırlar da (yeni eklenen madde) formda görünsün
+    $('#of-form').innerHTML =
+      '<div class="panel of-secs"><h2>Belgede neler olsun?</h2><p class="hint">İstemediğiniz bölümün işaretini kaldırın; belgeden ve formdan çıkar. Önizlemede bir bölümün üstüne gelip <b>✕</b>\'e basarak da kaldırabilirsiniz.</p>' +
+        '<div class="of-chips" style="margin-top:10px">' + OF_SECS.map(([k, t]) => '<label><input type="checkbox" data-ofsec="' + k + '"' + (on(k) ? ' checked' : '') + '>' + t + '</label>').join('') + '</div>' +
+        ((o.hide || []).length ? '<div class="row-actions"><button class="btn sm" type="button" id="of-show-all">Hepsini geri getir</button></div>' : '') + '</div>' +
+      '<div class="panel"><h2>Müşteri</h2><div class="grid">' +
+        f('client', 'Firma / grup adı', ' placeholder="ör. ABC Tekstil A.Ş."', true) + f('contact', 'Yetkili kişi') + f('phone', 'Telefon', ' type="tel" placeholder="05xx xxx xx xx"') + f('email', 'E-posta', ' type="email"') +
+        f('address', 'Adres', '', true) + '</div></div>' +
+      '<div class="panel"><h2>Hizmet</h2><p class="hint">Boş bıraktığınız alan belgede görünmez.</p><div class="grid" style="margin-top:8px">' +
+        f('date', 'Belge tarihi', ' type="date"') + f('guests', 'Kişi sayısı', ' type="number" min="1" inputmode="numeric"') + f('time', 'Saat', ' placeholder="ör. 19:00 – 22:00"') +
+        sel('mode', 'Hizmet şekli', [['', '— yazılmasın']].concat(OF_MODES.map(m => [m, m]))) +
+        f('start', 'Başlangıç (tek gün için yalnız bunu doldurun)', ' type="date"') + f('end', 'Bitiş', ' type="date"') +
+        '<div class="field full"><label>Hizmet günleri</label><div class="of-chips">' + OF_DAYS.map((d, i) => '<label><input type="checkbox" data-ofday="' + i + '"' + (o.days.includes(i) ? ' checked' : '') + '>' + d + '</label>').join('') + '</div></div>' +
+        f('dates', 'Özel tarihler / açıklama', ' placeholder="ör. Her ayın ilk cuması, 15 Kasım yılsonu yemeği"', true) +
+        (o.kind === 'offer' ? f('valid', 'Teklif geçerliliği (gün)', ' type="number" min="0"') : '') + '</div></div>' +
+      '<div class="panel"' + (on('menu') || on('incl') ? '' : ' hidden') + '><h2>Menü</h2><p class="hint">Sol tarafa başlık (Ana yemek…), sağa içerik yazın. Menünüzdeki ürünler öneri olarak çıkar; birden fazla seçenek için “veya” yazabilirsiniz.</p>' +
+        '<datalist id="of-items">' + items.map(n => '<option value="' + esc(n) + '">').join('') + '</datalist>' +
+        o.courses.map((x, i) => '<div class="of-course"><input class="l" data-ofc="' + i + '" data-k="l" value="' + esc(x.l) + '" placeholder="Başlık" aria-label="Başlık"><input class="t" data-ofc="' + i + '" data-k="t" list="of-items" value="' + esc(x.t) + '" placeholder="İçerik" aria-label="İçerik">' +
+          '<button class="btn sm" type="button" data-ofmv="' + i + '" title="Yukarı taşı"' + (i ? '' : ' disabled') + '>↑</button><button class="btn sm danger" type="button" data-ofdel="' + i + '" title="Sil">✕</button></div>').join('') +
+        '<div class="row-actions"><button class="btn sm" type="button" id="of-add">+ Satır ekle</button></div>' +
+        '<h3 class="sub">Fiyata dahil olanlar</h3><div class="of-chips">' + OF_INCL.concat(o.incl.filter(x => !OF_INCL.includes(x))).map(x => '<label><input type="checkbox" data-ofincl="' + esc(x) + '"' + (o.incl.includes(x) ? ' checked' : '') + '>' + esc(x) + '</label>').join('') + '</div>' +
+        '<div class="grid" style="margin-top:8px">' + f('inclExtra', 'Diğer dahil olanlar (virgülle)', ' placeholder="ör. Pasta servisi, 2 kadeh şarap"', true) + '</div></div>' +
+      panel(on('price') || on('total') || on('payment'), '<h2>Fiyat ve ödeme</h2><div class="grid">' +
+        f('price', 'Kişi başı fiyat (TL) — boşsa fiyat yazılmaz', ' inputmode="decimal" placeholder="ör. 850"') + sel('vat', 'KDV', Object.entries(OF_VAT)) +
+        f('deposit', 'Ön ödeme / kapora', ' placeholder="ör. Toplam tutarın %30\'u rezervasyonda"', true) + ta('payment', 'Ödeme koşulları', 2) + '</div>' +
+        '<div class="of-total" id="of-total">' + ofTotalText(c) + '</div>') +
+      panel(on('terms') || on('note'), '<h2>' + (o.kind === 'contract' ? 'Sözleşme şartları' : 'Koşullar') + '</h2><p class="hint">İstemediğiniz maddeyi ✕ ile silin, yazısını değiştirmek için üzerine yazın.</p>' +
+        terms.map((t, i) => '<div class="of-course"><span class="of-n">' + (i + 1) + '.</span><input class="t" data-ofterm-in="' + i + '" value="' + esc(t) + '" aria-label="Madde ' + (i + 1) + '"><button class="btn sm danger" type="button" data-oftermdel="' + i + '" title="Maddeyi sil">✕</button></div>').join('') +
+        '<div class="row-actions"><button class="btn sm" type="button" id="of-term-add">+ Madde ekle</button><button class="btn sm" type="button" id="of-terms-reset">Varsayılan maddeler</button></div>' +
+        '<div class="grid" style="margin-top:10px">' + ta('note', 'Not (isteğe bağlı)', 2) + '</div>') +
+      '<div class="panel"><div class="row-actions" style="margin-top:0"><button class="btn sm" type="button" id="of-tpl">Bu ayarları varsayılan yap</button></div>' +
+        '<p class="hint">Menü, dahil olanlar, fiyat, şartlar ve kaldırdığınız bölümler her yeni teklifte aynı şekilde hazır gelir.</p></div>' +
+      '<details class="panel"' + (ofCo.title || ofCo.iban ? '' : ' open') + '><summary>Belgede görünecek işletme bilgileri</summary><p class="hint">Bir kez doldurmanız yeterli; Kaydet ile saklanır. Adres ve telefon İşletme Bilgileri sekmesinden gelir.</p><div class="grid" style="margin-top:8px">' +
+        co('title', 'Ticari unvan', 'ör. … Turizm Ltd. Şti.') + co('tax', 'Vergi dairesi / no', 'ör. Pamukkale V.D. 1234567890') + co('iban', 'IBAN', 'TR..') + co('signer', 'İmza yetkilisi', 'Ad Soyad') + co('web', 'Web adresi', location.host) +
+        '</div></details>';
+  }
+  function ofTotalText(c){
+    if(!c.p) return 'Kişi başı fiyat girince toplam burada hesaplanır.';
+    if(!c.g) return 'Kişi başı ' + ofMoney(c.p) + ' · kişi sayısını girin.';
+    return c.g + ' kişi × ' + ofMoney(c.p) + ' = ' + ofMoney(c.perDay) + ' / gün' + (c.days != null ? ' · ' + c.days + ' gün → ' + ofMoney(c.total) : '') + (c.ex ? ' · KDV ile ' + ofMoney(c.grand) : '');
+  }
+  function renderOfPrev(){
+    $('#of-prev').innerHTML = ofDocHtml(ofCur, true);
+    const t = $('#of-total');
+    if(t) t.textContent = ofTotalText(ofCalc(ofCur));
+    ofKeep();
+  }
+  function renderOfList(){
+    const list = ofStore().list || [];
+    $('#of-list').innerHTML = list.length ? list.map(x => {
+      const c = ofCalc(x);
+      return '<div class="of-row"><div class="who"><b>' + esc(x.client || '—') + '</b> <span class="pill ' + (x.kind === 'contract' ? 'on' : 'soon') + '">' + (x.kind === 'contract' ? 'Sözleşme' : 'Teklif') + '</span>' +
+        '<small>' + esc(x.no) + ' · ' + esc(ofDate(x.date)) + (x.guests ? ' · ' + esc(x.guests) + ' kişi' : '') + (c.p && c.g ? ' · ' + ofMoney(c.grand) : '') + '</small></div>' +
+        '<button class="btn sm" type="button" data-ofopen="' + esc(x.id) + '">Aç</button><button class="btn sm" type="button" data-ofcopy="' + esc(x.id) + '">Kopyasını oluştur</button><button class="btn sm danger" type="button" data-ofrm="' + esc(x.id) + '">Sil</button></div>';
+    }).join('') : '<p class="res-empty">Henüz kayıtlı teklif yok. Formu doldurup <b>Kaydet</b>\'e basın.</p>';
+  }
+
+  $('#of-form').addEventListener('input', e => {
+    const t = e.target;
+    if(t.dataset.of){ ofCur[t.dataset.of] = t.value; if(t.dataset.of === 'start' && ofCur.end && ofCur.end < t.value){ ofCur.end = ''; $('#of-form [data-of="end"]').value = ''; } }
+    else if(t.dataset.ofc) ofCur.courses[+t.dataset.ofc][t.dataset.k] = t.value;
+    else if(t.dataset.ofco) ofCo[t.dataset.ofco] = t.value;
+    else if(t.dataset.ofday){ const i = +t.dataset.ofday; ofCur.days = t.checked ? ofCur.days.concat(i) : ofCur.days.filter(x => x !== i); }
+    else if(t.dataset.ofincl){ const v = t.dataset.ofincl; ofCur.incl = t.checked ? ofCur.incl.concat(v) : ofCur.incl.filter(x => x !== v); }
+    else if(t.dataset.oftermIn){ const raw = String(ofCur.terms || '').split('\n'); raw[+t.dataset.oftermIn] = t.value.replace(/\n/g, ' '); ofCur.terms = raw.join('\n'); }
+    else if(t.dataset.ofsec){ ofShow(t.dataset.ofsec, t.checked); return; }
+    else return;
+    renderOfPrev();
+  });
+  // Bölümü belgeye geri koy / belgeden kaldır; ilgili form bölümü de açılıp kapanır
+  function ofShow(k, show){
+    const hide = (ofCur.hide || []).filter(x => x !== k);
+    ofCur.hide = show ? hide : hide.concat(k);
+    renderOfForm(); renderOfPrev();
+  }
+  $('#of-prev').addEventListener('click', e => {
+    const b = e.target.closest('button');
+    if(!b || !ofCur) return;
+    if(b.dataset.ofhide){
+      ofShow(b.dataset.ofhide, false);
+      toast('“' + (OF_SECS.find(s => s[0] === b.dataset.ofhide) || ['', 'Bölüm'])[1] + '” belgeden kaldırıldı. Geri getirmek için “Belgede neler olsun?” kutusundan işaretleyin.', false, 5000);
+    }else if(b.dataset.ofterm){
+      ofCur.terms = ofTerms(ofCur).filter((_, j) => j !== +b.dataset.ofterm).join('\n');
+      renderOfForm(); renderOfPrev();
+    }
+  });
+  $('#of-form').addEventListener('click', e => {
+    const b = e.target.closest('button');
+    if(!b) return;
+    if(b.id === 'of-add') ofCur.courses.push({l: '', t: ''});
+    else if(b.dataset.ofdel) ofCur.courses.splice(+b.dataset.ofdel, 1);
+    else if(b.dataset.ofmv){ const i = +b.dataset.ofmv; ofCur.courses.splice(i - 1, 0, ofCur.courses.splice(i, 1)[0]); }
+    else if(b.id === 'of-terms-reset') ofCur.terms = OF_TERMS.join('\n');
+    else if(b.dataset.oftermdel){ const raw = String(ofCur.terms || '').split('\n'); raw.splice(+b.dataset.oftermdel, 1); ofCur.terms = raw.join('\n'); }
+    else if(b.id === 'of-term-add') ofCur.terms = ofCur.terms ? ofCur.terms + '\n' : '\n';
+    else if(b.id === 'of-show-all') ofCur.hide = [];
+    else if(b.id === 'of-tpl') return ofSaveTpl(b);
+    else return;
+    renderOfForm(); renderOfPrev();
+    if(b.id === 'of-add'){ const ins = document.querySelectorAll('#of-form .of-course .l'); ins[ins.length - 1].focus(); }
+    if(b.id === 'of-term-add'){ const ins = document.querySelectorAll('#of-form [data-ofterm-in]'); ins[ins.length - 1].focus(); }
+  });
+  $('#of-kind').addEventListener('click', e => {
+    const b = e.target.closest('button[data-k]');
+    if(!b || !ofCur) return;
+    ofCur.kind = b.dataset.k; renderOfForm(); renderOfPrev();
+  });
+  async function ofSaveTpl(btn){
+    btn.disabled = true;
+    try{
+      const tpl = {};
+      OF_TPL_KEYS.forEach(k => { if(ofCur[k] !== undefined) tpl[k] = JSON.parse(JSON.stringify(ofCur[k])); });
+      await mutateBiz(d => { const s = d.offers || (d.offers = {}); s.tpl = tpl; s.co = Object.assign({}, ofCo); });
+      toast('Varsayılan şablon kaydedildi; yeni teklifler bununla başlar.');
+    }catch(err){ toast(err.status ? ghErrorText(err) : err.message, true, 7000); }
+    btn.disabled = false;
+  }
+  $('#of-save').addEventListener('click', async e => {
+    if(!ofCur) return;
+    if(!ofCur.client.trim()){ toast('Firma / grup adını yazın.', true); const i = $('#of-form [data-of="client"]'); if(i) i.focus(); return; }
+    const btn = e.currentTarget;
+    btn.disabled = true;
+    try{
+      await mutateBiz(d => {
+        const s = d.offers || (d.offers = {});
+        s.list = s.list || [];
+        s.co = Object.assign({}, ofCo);
+        if(!ofCur.no){ s.seq = (s.seq || 0) + 1; ofCur.no = 'FM-' + (ofCur.date || todayStr()).slice(0, 4) + '-' + String(s.seq).padStart(3, '0'); }
+        if(!ofCur.id) ofCur.id = Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+        ofCur.saved = new Date().toISOString();
+        const copy = JSON.parse(JSON.stringify(ofCur)), i = s.list.findIndex(x => x.id === ofCur.id);
+        if(i >= 0) s.list[i] = copy; else s.list.unshift(copy);
+        s.list = s.list.slice(0, 300);
+      });
+      renderOfPrev(); renderOfList();
+      toast(ofCur.no + ' kaydedildi.');
+    }catch(err){ toast(err.status ? ghErrorText(err) : err.message, true, 7000); }
+    btn.disabled = false;
+  });
+  $('#of-new').addEventListener('click', () => {
+    if(!ofCur) return;
+    if(ofCur.client && !ofCur.id && !confirm('Kaydedilmemiş teklif silinecek. Yeni teklife geçilsin mi?')) return;
+    ofCur = ofNew(); renderOfForm(); renderOfPrev(); window.scrollTo(0, 0);
+  });
+  $('#of-list').addEventListener('click', async e => {
+    const b = e.target.closest('button');
+    if(!b) return;
+    const list = ofStore().list || [];
+    const x = list.find(r => r.id === (b.dataset.ofopen || b.dataset.ofcopy || b.dataset.ofrm));
+    if(!x) return;
+    if(b.dataset.ofrm){
+      if(!confirm((x.no || '') + ' ' + (x.client || '') + ' silinsin mi?')) return;
+      try{
+        await mutateBiz(d => { d.offers.list = (d.offers.list || []).filter(r => r.id !== x.id); });
+        if(ofCur && ofCur.id === x.id){ ofCur.id = ''; ofCur.no = ''; renderOfPrev(); }
+        renderOfList(); toast('Teklif silindi.');
+      }catch(err){ toast(err.status ? ghErrorText(err) : err.message, true, 7000); }
+      return;
+    }
+    ofCur = JSON.parse(JSON.stringify(x));
+    if(b.dataset.ofcopy) Object.assign(ofCur, {id: '', no: '', date: todayStr(), saved: ''});
+    renderOfForm(); renderOfPrev(); window.scrollTo(0, 0);
+    if(b.dataset.ofcopy) toast('Kopya oluşturuldu; değiştirip kaydedin.');
+  });
+  $('#of-print').addEventListener('click', () => {
+    if(!ofCur) return;
+    let root = $('#print-root');
+    if(!root){ root = document.createElement('div'); root.id = 'print-root'; document.body.appendChild(root); }
+    root.innerHTML = ofDocHtml(ofCur);
+    const title = document.title;
+    document.title = [ofCur.no || 'Teklif', ofCur.client].filter(Boolean).join(' ');   // PDF dosya adı
+    document.body.classList.add('of-printing');
+    const done = () => { document.body.classList.remove('of-printing'); root.innerHTML = ''; document.title = title; window.removeEventListener('afterprint', done); };
+    window.addEventListener('afterprint', done);
+    const img = root.querySelector('img');
+    const go = () => setTimeout(() => window.print(), 60);
+    if(img && !img.complete){ img.onload = img.onerror = go; } else go();
+  });
+  // PDF: belge görünmeyen bir alanda A4 genişliğinde çizilip doğrudan dosya olarak indirilir (kütüphane ilk tıklamada yüklenir)
+  function loadScript(src){
+    return new Promise((ok, fail) => { const s = document.createElement('script'); s.src = src; s.onload = ok; s.onerror = () => fail(new Error('PDF aracı yüklenemedi, internet bağlantınızı kontrol edin.')); document.head.appendChild(s); });
+  }
+  $('#of-pdf').addEventListener('click', async e => {
+    if(!ofCur) return;
+    const btn = e.currentTarget, label = btn.textContent;
+    btn.disabled = true; btn.textContent = 'PDF hazırlanıyor…';
+    const box = document.createElement('div');
+    box.style.cssText = 'position:fixed;left:-10000px;top:0;width:794px;background:#fff';
+    box.innerHTML = ofDocHtml(ofCur);
+    document.body.appendChild(box);
+    try{
+      if(!window.html2pdf) await loadScript('https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js');
+      if(document.fonts && document.fonts.ready) await document.fonts.ready;
+      await Promise.all([...box.querySelectorAll('img')].map(i => i.complete ? 0 : new Promise(r => { i.onload = i.onerror = r; })));
+      const doc = box.firstChild;
+      doc.style.boxShadow = 'none'; doc.style.borderRadius = '0';
+      const name = ([ofCur.no || 'Teklif', ofCur.client].filter(Boolean).join(' ').replace(/[\\/:*?"<>|]+/g, '').replace(/[.\s]+$/, '') || 'Teklif') + '.pdf';
+      await window.html2pdf().set({margin: [8, 0, 8, 0], filename: name, image: {type: 'jpeg', quality: 0.95}, html2canvas: {scale: 2, useCORS: true, backgroundColor: '#ffffff'},
+        jsPDF: {unit: 'mm', format: 'a4', orientation: 'portrait'}, pagebreak: {mode: ['css'], avoid: ['.ofd-menu', '.ofd table', '.ofd-grand', '.ofd-sign', '.ofd-course', '.ofd li', '.ofd-valid', '.ofd-party']}}).from(doc).save();
+      toast(name + ' indirildi.');
+    }catch(err){ toast(err.message || 'PDF oluşturulamadı.', true, 7000); }
+    box.remove();
+    btn.disabled = false; btn.textContent = label;
+  });
+  $('#of-wa').addEventListener('click', () => {
+    if(!ofCur) return;
+    let p = String(ofCur.phone || '').replace(/\D/g, '');
+    if(p.startsWith('0')) p = '9' + p; else if(p.length === 10 && p.startsWith('5')) p = '90' + p;
+    window.open('https://wa.me/' + (p.length >= 11 ? p : '') + '?text=' + encodeURIComponent(ofText(ofCur)), '_blank', 'noopener');
+  });
+
+  /* ---------- İstatistik sunucusu bağlantısı ---------- */
+  // Sunucu (stats/worker.js, Cloudflare) adresi ve ADMIN_KEY auth.json'un şifreli içeriğinde {stats: {url, key}} olarak durur.
+  // Adres menu.json'a da (site.statsUrl) yazılır; menü sayfası ziyaretleri oraya yollar (adres gizli değildir, anahtar gizlidir).
+  const statsOn = () => !!(session && session.stats && session.stats.url && session.stats.key);
+  async function statsApi(path, cfg){
+    const b = cfg || session.stats;
+    const r = await fetch(b.url.replace(/\/+$/, '') + path, {cache: 'no-store', headers: {'Authorization': 'Bearer ' + b.key}});
+    const d = await r.json().catch(() => ({}));
+    if(!r.ok) throw new Error(d.error || ('HTTP ' + r.status));
+    return d;
+  }
+  async function saveStatsCfg(st, pw){
+    if(!await verifyPassword(pw)) throw new Error('Mevcut şifre yanlış.');
+    const cfg = Object.assign({}, session);
+    if(st) cfg.stats = st; else delete cfg.stats;
+    await putFile(cfg, AUTH_PATH, JSON.stringify(await encryptCfg(cfg, pw), null, 2) + '\n', st ? 'İstatistik sunucusu bağlandı' : 'İstatistik sunucusu bağlantısı kaldırıldı');
+    session = cfg;
+  }
+  // Menüye sayaç adresini yazar; bekleyen başka değişiklik yoksa hemen yayınlar
+  async function publishStatsUrl(url){
+    if(!state) return;
+    if(url) state.site.statsUrl = url; else delete state.site.statsUrl;
+    if(dirty){ setDirty(true); toast('Menüdeki sayaç ayarı değişti. Yayına almak için “Kaydet ve Yayınla”ya basın.', false, 7000); }
+    else { setDirty(true); await save(); }
+  }
+  $('#stsrv-form').addEventListener('submit', async e => {
+    e.preventDefault();
+    let url = $('#stsrv-url').value.trim().replace(/\/+$/, '');
+    const key = $('#stsrv-key').value.trim() || (session.stats && session.stats.key) || '';
+    if(url && !/^https?:\/\//i.test(url)) url = 'https://' + url;
+    if(!url || !key) return setMsg('#stsrv-msg', 'Sunucu adresini ve yönetici anahtarını girin.', 'err');
+    try{
+      setMsg('#stsrv-msg', 'Sunucuya bağlanılıyor…');
+      const h = await statsApi('/api/health', {url, key});
+      setMsg('#stsrv-msg', 'Kaydediliyor…');
+      await saveStatsCfg({url, key}, $('#stsrv-pw').value);
+      $('#stsrv-key').value = ''; $('#stsrv-pw').value = '';
+      await publishStatsUrl(url);
+      setMsg('#stsrv-msg', 'Bağlandı. Sunucuda şu ana kadar ' + (+h.visits || 0).toLocaleString('tr-TR') + ' ziyaret kayıtlı. Menüye sayaç eklendi; yeni ziyaretler İstatistikler sekmesinde görünür.', 'ok');
+      stData = null;
+    }catch(err){
+      setMsg('#stsrv-msg', err.status ? ghErrorText(err) : (err instanceof TypeError ? 'Sunucuya ulaşılamadı. Adresi ve Cloudflare\'deki ALLOWED_ORIGIN ayarını kontrol edin.' : err.message), 'err');
+    }
+  });
+  $('#stsrv-remove').addEventListener('click', async () => {
+    if(!session.stats) return setMsg('#stsrv-msg', 'Zaten bağlı bir istatistik sunucusu yok.');
+    if(!$('#stsrv-pw').value) return setMsg('#stsrv-msg', 'Kaldırmak için mevcut şifrenizi girin.', 'err');
+    try{
+      await saveStatsCfg(null, $('#stsrv-pw').value);
+      $('#stsrv-form').reset();
+      await publishStatsUrl('');
+      setMsg('#stsrv-msg', 'Bağlantı kaldırıldı; menü artık ziyaret saymıyor.', 'ok');
+    }catch(err){ setMsg('#stsrv-msg', err.status ? ghErrorText(err) : err.message, 'err'); }
+  });
+
+  /* ---------- İstatistikler (menü ziyaretleri) ---------- */
+  // Menü sayfası ziyaretleri istatistik sunucusuna yollar (index.html → /t); burada /api/stats ile özetlenir.
+  // Bu tarayıcı yönetim panelini açtığı için menüye kendi girişleriniz sayılmaz; "Bu tarayıcıyı da say" işaretlenirse (deneme için) sayılır.
+  const stSelf = v => {
+    try{
+      if(v === undefined) return localStorage.getItem('camino-count-me') === '1';
+      if(v){ localStorage.setItem('camino-count-me', '1'); localStorage.removeItem('camino-notrack'); }
+      else{ localStorage.removeItem('camino-count-me'); localStorage.setItem('camino-notrack', '1'); }
+    }catch(e){}
+  };
+  if(!stSelf()) stSelf(false);
+  $('#st-self').checked = stSelf();
+  $('#st-self').addEventListener('change', e => {
+    stSelf(e.target.checked);
+    toast(e.target.checked ? 'Bu tarayıcıdan menüye girişleriniz artık sayılacak. Denemeniz bitince işareti kaldırın.' : 'Bu tarayıcıdan menüye girişleriniz sayılmayacak.', false, 6000);
+  });
+  let stDays = 7, stData = null, stHeatDev = 'm', stBusy = false;
+  const stNum = n => (+n || 0).toLocaleString('tr-TR');
+  const stPct = (a, b) => b ? Math.round(a / b * 100) + '%' : '—';
+  const stDur = s => { s = Math.round(+s || 0); return s >= 60 ? Math.floor(s / 60) + ' dk ' + (s % 60) + ' sn' : s + ' sn'; };
+  // Tıklama adlarını okunur hâle getirir: urun:id → ürün adı, kategori:id → kategori adı …
+  const ST_ACTIONS = {telefon: 'Telefonla arama', 'google-yorum': 'Google yorum', 'yol-tarifi': 'Yol tarifi', 'e-posta': 'E-posta',
+    duyurular: 'Duyurular', 'duyuru-dugmesi': 'Duyuru düğmesi', arama: 'Arama açma', etkinlik: 'Etkinlik', 'ozel-gun': 'Özel gün rozeti',
+    'sosyal-menu': 'Sosyal medya menüsü', 'yorum-kartlari': 'Yorum kartları', diger: 'Diğer düğmeler'};
+  function stLabel(a){
+    const i = a.indexOf(':'), kind = i < 0 ? a : a.slice(0, i), id = i < 0 ? '' : a.slice(i + 1);
+    if(kind === 'urun'){ for(const c of state.categories) for(const it of c.items) if(it.id === id) return it.name; return 'Ürün (' + id + ')'; }
+    if(kind === 'kategori'){ const c = state.categories.find(x => x.id === id); return 'Kategori: ' + (c ? c.title : id); }
+    if(kind === 'sosyal') return 'Sosyal: ' + (id || 'bağlantı');
+    if(kind === 'ara') return '“' + id + '”';
+    return ST_ACTIONS[a] || a;
+  }
+  async function loadStats(){
+    const body = $('#st-body');
+    if(!statsOn()){
+      body.innerHTML = '<p class="hint">İstatistikler, Cloudflare\'de kurulan küçük bir sunucuda toplanır. Kurulumu bir kez yapılır: repodaki <code>stats/KURULUM.md</code> dosyasındaki adımları izleyin, sonra <b>Güvenlik → İstatistik sunucusu</b> bölümünden bağlayın.</p>' +
+        '<div class="row-actions"><button class="btn sm primary" data-dact="tab" data-tab="security">Güvenlik sekmesine git</button></div>';
+      return;
+    }
+    if(stBusy) return;
+    stBusy = true;
+    if(!stData) body.innerHTML = '<p class="hint">Yükleniyor…</p>';
+    try{ stData = await statsApi('/api/stats?days=' + stDays); renderStats(); }
+    catch(e){ body.innerHTML = '<p class="msg err">İstatistikler alınamadı: ' + esc(e instanceof TypeError ? 'sunucuya ulaşılamadı.' : e.message) + '</p>'; }
+    finally{ stBusy = false; }
+  }
+  // Yatay çubuk listesi (tek seri, değerler yazılı)
+  function stBars(title, rows, total, opts){
+    opts = opts || {};
+    const max = Math.max(1, ...rows.map(r => r.n));
+    return '<div class="st-card"><h3>' + title + '</h3>' + (rows.length ? '<div class="st-bars">' + rows.map(r =>
+      '<div class="st-bar" data-tip="' + esc(r.label + ': ' + stNum(r.n) + (opts.unit || '') + (r.tip ? ' · ' + r.tip : '')) + '"><span class="l">' + esc(r.label) + '</span>' +
+      '<span class="b"><i style="width:' + Math.max(2, r.n / max * 100) + '%"></i></span><span class="v">' + stNum(r.n) + (total ? ' <small>' + stPct(r.n, total) + '</small>' : '') + '</span></div>').join('') + '</div>'
+      : '<p class="hint">Henüz veri yok.</p>') + (opts.foot ? '<p class="hint st-foot">' + opts.foot + '</p>' : '') + '</div>';
+  }
+  function renderStats(){
+    const d = stData, t = d.totals, v = +t.visits || 0;
+    const acts = d.actions || [], find = k => acts.find(a => a.k === k) || {n: 0, s: 0};
+    const tel = find('telefon');
+    const tile = (label, val, sub) => '<div class="kpi"><small>' + label + '</small><b>' + val + '</b>' + (sub ? '<em>' + sub + '</em>' : '') + '</div>';
+    $('#st-live').textContent = d.live ? '● Son 5 dakikada ' + d.live + ' yeni ziyaret' : '';
+    let h = '<div class="kpis">' +
+      tile('Ziyaret', stNum(v), 'menünün açılma sayısı') +
+      tile('Tekil ziyaretçi', stNum(t.uniques), 'her gün ayrı sayılır') +
+      tile('Ortalama süre', t.dur ? stDur(t.dur) : '—', 'sayfada geçen süre') +
+      tile('Ne kadar aşağı indiler', t.depth ? Math.round(t.depth) + '%' : '—', 'sayfanın ortalama') +
+      tile('Bir yere tıklayan', stPct(+t.engaged || 0, v), stNum(t.engaged) + ' ziyaret') +
+      tile('Telefonla arayan', stPct(tel.s, v), stNum(tel.s) + ' ziyaret') + '</div>';
+    h += '<div class="st-card"><h3>' + (stDays === 1 ? 'Bugün saat saat ziyaret' : 'Günlük ziyaret') + '</h3>' + stTimeChart(d) + '</div>';
+    h += '<div class="st-card"><h3>Hangi gün ve saatte geliyorlar?</h3>' + stWeekHeat(d.byHour) + '</div>';
+    const rows = l => l.map(r => ({label: r.k || 'Bilinmiyor', n: r.n}));
+    h += '<div class="st-grid">' +
+      stBars('Nereden geldiler?', rows(d.sources), v, {foot: 'Masadaki QR koddan gelenler “QR kod” olarak görünür (QR Kod sekmesindeki kod). Instagram ve Facebook uygulama içinden açılınca tanınır; WhatsApp\'tan paylaşılan bağlantılar genelde “Doğrudan” görünür.'}) +
+      stBars('Cihaz', rows(d.devices), v) + stBars('İşletim sistemi', rows(d.os), v) + stBars('Şehir', rows(d.cities), v, {foot: 'Yaklaşık konum, internet bağlantısından tahmin edilir.'}) + '</div>';
+    const prod = acts.filter(a => a.k.startsWith('urun:')).slice(0, 12);
+    const other = acts.filter(a => !/^(urun|ara|kategori):/.test(a.k)).slice(0, 14);
+    const cats = acts.filter(a => a.k.startsWith('kategori:')).slice(0, 10);
+    const srch = acts.filter(a => a.k.startsWith('ara:')).slice(0, 12);
+    const act = l => l.map(a => ({label: stLabel(a.k), n: a.n, tip: a.s + ' farklı ziyarette'}));
+    h += '<div class="st-grid">' +
+      stBars('Neye tıkladılar?', act(other), 0, {unit: ' tıklama'}) +
+      stBars('En çok bakılan ürünler', act(prod), 0, {unit: ' kez açıldı'}) +
+      stBars('Kategori seçimleri', act(cats), 0, {unit: ' tıklama'}) +
+      stBars('Menüde ne aradılar?', act(srch), 0, {unit: ' arama'}) + '</div>';
+    h += '<div class="st-card"><div class="st-heat-head"><h3>Tıklama ısı haritası</h3><span style="flex:1"></span>' +
+      '<div class="seg" id="st-heat-dev"><button type="button" data-dev="m"' + (stHeatDev === 'm' ? ' class="on"' : '') + '>Telefon</button><button type="button" data-dev="d"' + (stHeatDev === 'd' ? ' class="on"' : '') + '>Bilgisayar</button></div></div>' +
+      '<p class="hint">Menüde nerelere dokunulduğu: koyu kırmızı en çok, sarı daha az. Açılır pencerelerdeki tıklamalar burada gösterilmez.</p><div class="st-heat" id="st-heat"></div></div>';
+    h += '<p class="hint">Kişisel veri tutulmaz: çerez yok, IP adresi saklanmaz; tekil ziyaretçi yalnızca aynı gün içinde ayırt edilir. Kayıtlar 120 gün saklanır. Yönetim panelini açtığınız tarayıcıdan menüye girişleriniz sayılmaz (denemek için üstteki <b>Bu tarayıcıyı da say</b> işaretlenebilir). Yeni ziyaretler birkaç saniye içinde gelir; görmek için <b>Yenile</b>ye basın.</p>';
+    $('#st-body').innerHTML = h;
+    renderHeat();
+  }
+  // Ziyaret çubukları: günlük (ya da bugün saatlik); tek seri, üzerine gelince ayrıntı
+  function stTimeChart(d){
+    let pts;
+    if(stDays === 1){
+      const byHr = {};
+      d.byHour.forEach(r => { byHr[r.hr] = (byHr[r.hr] || 0) + r.n; });
+      pts = Array.from({length: 24}, (_, hr) => ({label: String(hr).padStart(2, '0'), tip: String(hr).padStart(2, '0') + ':00 – ' + String(hr).padStart(2, '0') + ':59', v: byHr[hr] || 0}));
+    }else{
+      const map = Object.fromEntries(d.byDay.map(r => [r.day, r]));
+      pts = Array.from({length: stDays}, (_, i) => {
+        const day = shiftDay(d.from, i), r = map[day] || {v: 0, u: 0}, dt = new Date(Core.parseWall(day));
+        return {label: dt.getUTCDate() + '', tip: dt.toLocaleDateString('tr-TR', {day: 'numeric', month: 'long', weekday: 'long', timeZone: 'UTC'}) + ' · ' + r.u + ' tekil ziyaretçi', v: r.v};
+      });
+    }
+    const max = Math.max(1, ...pts.map(p => p.v)), W = 760, H = 170, pad = 28, bw = (W - pad) / pts.length, cw = Math.min(bw - 4, 34);
+    const step = Math.ceil(pts.length / 16), nice = Math.max(1, Math.ceil(max / 4));
+    let s = '<svg class="st-svg" viewBox="0 0 ' + W + ' ' + (H + 30) + '" role="img" aria-label="Ziyaret grafiği">';
+    for(let g = 0; g <= max; g += nice){ const y = H - g / max * (H - 10); s += '<line x1="' + pad + '" x2="' + W + '" y1="' + y + '" y2="' + y + '" class="gr"/><text x="' + (pad - 6) + '" y="' + (y + 4) + '" class="ax" text-anchor="end">' + g + '</text>'; }
+    pts.forEach((p, i) => {
+      const x = pad + i * bw, bh = p.v / max * (H - 10);
+      s += '<g data-tip="' + esc(p.tip + ': ' + p.v + ' ziyaret') + '"><rect x="' + x + '" y="0" width="' + bw + '" height="' + H + '" fill="transparent"/>' +
+        (p.v ? '<rect class="st-b" x="' + (x + (bw - cw) / 2) + '" y="' + (H - bh) + '" width="' + Math.max(1, cw) + '" height="' + bh + '" rx="' + Math.min(4, cw / 3) + '"/>' : '') + '</g>' +
+        (i % step === 0 ? '<text x="' + (x + bw / 2) + '" y="' + (H + 22) + '" class="ax" text-anchor="middle">' + p.label + '</text>' : '');
+    });
+    return s + '</svg>';
+  }
+  // Gün × saat ısı tablosu (tek renk, açıktan koyuya)
+  function stWeekHeat(rows){
+    if(!rows.length) return '<p class="hint">Henüz veri yok.</p>';
+    const hrs = rows.map(r => r.hr), lo = Math.min(...hrs), hi = Math.max(...hrs), grid = {};
+    rows.forEach(r => { grid[r.dow + ':' + r.hr] = r.n; });
+    const max = Math.max(1, ...rows.map(r => r.n)), order = [1, 2, 3, 4, 5, 6, 0];
+    let h = '<div class="st-wk" style="grid-template-columns:44px repeat(' + (hi - lo + 1) + ',minmax(18px,1fr))"><span></span>';
+    for(let hr = lo; hr <= hi; hr++) h += '<span class="hh">' + String(hr).padStart(2, '0') + '</span>';
+    order.forEach(dw => {
+      h += '<span class="dd">' + Core.DAYS[(dw + 6) % 7].s + '</span>';
+      for(let hr = lo; hr <= hi; hr++){
+        const n = grid[dw + ':' + hr] || 0;
+        h += '<span class="cell" style="--a:' + (n ? .12 + n / max * .88 : 0) + '" data-tip="' + ['Pazar', 'Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi'][dw] + ' ' + String(hr).padStart(2, '0') + ':00 · ' + n + ' ziyaret"></span>';
+      }
+    });
+    return h + '</div>';
+  }
+  // Tıklama ısı haritası: menü, ziyaretçinin ekran genişliğinde arka planda açılır, tıklamalar üzerine boyanır
+  function renderHeat(){
+    const box = $('#st-heat');
+    if(!box || !stData) return;
+    const mobile = stHeatDev === 'm', W = mobile ? 390 : 1280;
+    const pts = stData.heat.filter(p => p.w && (mobile ? p.w < 700 : p.w >= 700));
+    if(!pts.length){ box.innerHTML = '<p class="hint" style="padding:14px">Bu dönemde ' + (mobile ? 'telefondan' : 'bilgisayardan') + ' tıklama yok.</p>'; return; }
+    const scale = Math.min(1, (box.clientWidth - 2) / W);
+    box.innerHTML = '<div class="st-heat-in" style="width:' + W * scale + 'px"><div class="st-heat-sc" style="width:' + W + 'px;transform:scale(' + scale + ')">' +
+      '<iframe src="index.html?heat=1" style="width:' + W + 'px;height:2000px" tabindex="-1" aria-hidden="true"></iframe><canvas></canvas></div></div>' +
+      '<p class="hint" style="padding:6px 10px">' + stNum(pts.length) + ' tıklama · menü yükleniyor…</p>';
+    const fr = box.querySelector('iframe'), cv = box.querySelector('canvas'), wrap = box.querySelector('.st-heat-in');
+    // Menü ve fotoğrafları tam yüklenip sayfa yüksekliği oturunca çizilir (en fazla ~10 sn beklenir)
+    const settled = (doc, done) => {
+      let last = -1, same = 0, tries = 0;
+      (function check(){
+        const h = doc.documentElement.scrollHeight, imgs = [...doc.images].every(i => i.complete);
+        same = h === last ? same + 1 : 0; last = h;
+        fr.style.height = Math.min(16000, h) + 'px';
+        if((same >= 3 && imgs && doc.querySelector('[data-open]')) || ++tries > 33) done(); else setTimeout(check, 300);
+      })();
+    };
+    fr.addEventListener('load', () => settled(fr.contentDocument, () => {
+      const doc = fr.contentDocument, H = Math.min(16000, doc.documentElement.scrollHeight);
+      fr.style.height = H + 'px';
+      wrap.style.height = H * scale + 'px';
+      cv.width = W; cv.height = H;
+      const g = cv.getContext('2d'), secs = {};
+      // Tıklama kaydedildiği bölüme göre yerleşir (bölüm bilgisi olmayan kayıtlar sayfa tepesine göre)
+      const yOf = p => {
+        if(p.s){
+          const el = secs[p.s] !== undefined ? secs[p.s] : (secs[p.s] = doc.getElementById(p.s));
+          if(el && el.offsetHeight){ const r = el.getBoundingClientRect(); return r.top + doc.defaultView.scrollY + (+p.f || 0) * r.height; }
+        }
+        return p.y;
+      };
+      pts.forEach(p => {
+        const x = p.x * W, y = yOf(p), r = mobile ? 26 : 34, gr = g.createRadialGradient(x, y, 0, x, y, r);
+        gr.addColorStop(0, 'rgba(0,0,0,.22)'); gr.addColorStop(1, 'rgba(0,0,0,0)');
+        g.fillStyle = gr; g.fillRect(x - r, y - r, r * 2, r * 2);
+      });
+      // Yoğunluk (saydamlık) açık sarıdan koyu kırmızıya boyanır
+      const pal = document.createElement('canvas').getContext('2d'), lg = pal.createLinearGradient(0, 0, 256, 0);
+      lg.addColorStop(0, '#ffe08a'); lg.addColorStop(.45, '#f59f00'); lg.addColorStop(.8, '#d9480f'); lg.addColorStop(1, '#9b1c1c');
+      pal.canvas.width = 256; pal.canvas.height = 1; pal.fillStyle = lg; pal.fillRect(0, 0, 256, 1);
+      const P = pal.getImageData(0, 0, 256, 1).data, img = g.getImageData(0, 0, W, H), px = img.data;
+      for(let i = 0; i < px.length; i += 4){
+        const a = px[i + 3];
+        if(!a) continue;
+        px[i] = P[a * 4]; px[i + 1] = P[a * 4 + 1]; px[i + 2] = P[a * 4 + 2]; px[i + 3] = Math.min(230, 60 + a * 1.4);
+      }
+      g.putImageData(img, 0, 0);
+      box.querySelector('p').textContent = stNum(pts.length) + ' tıklama · ' + (mobile ? 'telefon (390 px genişlik)' : 'bilgisayar (1280 px genişlik)') + ' görünümü';
+    }));
+  }
+  // Grafiklerin üzerine gelince küçük açıklama kutusu
+  document.addEventListener('mouseover', e => {
+    const el = e.target.closest && e.target.closest('#tab-stats [data-tip]'), tip = $('#st-tip');
+    if(!el){ tip.classList.add('hide'); return; }
+    tip.textContent = el.dataset.tip;
+    tip.classList.remove('hide');
+    const r = el.getBoundingClientRect();
+    tip.style.left = Math.max(8, Math.min(innerWidth - tip.offsetWidth - 8, r.left + r.width / 2 - tip.offsetWidth / 2)) + 'px';
+    tip.style.top = Math.max(8, r.top - tip.offsetHeight - 8) + 'px';
+  });
+  $('#st-range').addEventListener('click', e => {
+    const b = e.target.closest('button[data-d]');
+    if(!b) return;
+    stDays = +b.dataset.d;
+    document.querySelectorAll('#st-range button').forEach(x => x.classList.toggle('on', x === b));
+    loadStats();
+  });
+  $('#st-refresh').addEventListener('click', loadStats);
+  $('#st-body').addEventListener('click', e => {
+    const b = e.target.closest('#st-heat-dev button');
+    if(!b) return;
+    stHeatDev = b.dataset.dev;
+    document.querySelectorAll('#st-heat-dev button').forEach(x => x.classList.toggle('on', x === b));
+    renderHeat();
+  });
+
   /* ---------- Sekmeler ---------- */
   function showTab(name){
     document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === name));
-    ['home','menu','calendar','ann','campaigns','media','site','qr','security'].forEach(n => $('#tab-' + n).classList.toggle('hide', n !== name));
+    ['home','stats','menu','calendar','ann','campaigns','offer','days','media','site','qr','security'].forEach(n => $('#tab-' + n).classList.toggle('hide', n !== name));
+    if(state && name === 'offer') renderOffer();
+    if(state && name === 'days') renderSpecialDays();
+    if(name === 'stats') loadStats();
+    if(name === 'security' && session) $('#stsrv-url').value = (session.stats && session.stats.url) || '';
     if(state && name === 'media') renderMedia();
     if(state && name === 'ann') renderAnn();
     if(name === 'qr' && !$('#qr-url').value){ $('#qr-url').value = defaultMenuUrl(); if($('#qr-url').value) makeQr(); }

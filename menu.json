@@ -2196,6 +2196,105 @@
       }
     }
   ],
-  "events": [],
-  "announcements": []
+  "events": [
+    {
+      "id": "ekonsercuma",
+      "type": "music",
+      "title": "Canlı Konser",
+      "text": "Her cuma akşamı canlı müzik. Masanızı önceden ayırtın.",
+      "date": "2026-11-20",
+      "start": "21:00",
+      "end": "",
+      "repeat": "weekly",
+      "until": "",
+      "image": "",
+      "popup": false,
+      "published": true,
+      "phone": "0530 341 99 28",
+      "whatsapp": true
+    },
+    {
+      "id": "ekonsercumartesi",
+      "type": "music",
+      "title": "Canlı Konser",
+      "text": "Her cumartesi akşamı canlı müzik. Masanızı önceden ayırtın.",
+      "date": "2026-11-21",
+      "start": "21:00",
+      "end": "",
+      "repeat": "weekly",
+      "until": "",
+      "image": "",
+      "popup": false,
+      "published": true,
+      "phone": "0530 341 99 28",
+      "whatsapp": true
+    }
+  ],
+  "announcements": [
+    {
+      "id": "dkamp1",
+      "title": "Penne & Şarap",
+      "text": "İki kişilik: 2 porsiyon Penne Arabiata (kremalı veya domates soslu) + Vinis Şarap 75 cl (kırmızı veya beyaz).",
+      "image": "assets/duyuru/kampanya-1.jpg",
+      "link": "",
+      "button": "",
+      "from": "",
+      "to": "",
+      "published": true,
+      "popup": false,
+      "price": "1.750 TL"
+    },
+    {
+      "id": "dkamp2",
+      "title": "Pizza & Şarap",
+      "text": "Klasik ikili: Margarita Pizza + Vinis Şarap 75 cl (kırmızı veya beyaz).",
+      "image": "assets/duyuru/kampanya-2.jpg",
+      "link": "",
+      "button": "",
+      "from": "",
+      "to": "",
+      "published": true,
+      "popup": false,
+      "price": "1.600 TL"
+    },
+    {
+      "id": "dkamp3",
+      "title": "Burger",
+      "text": "Camino Burger 390 TL · Tavuk Burger 300 TL. 110 gr patates kızartması ile.",
+      "image": "assets/duyuru/kampanya-3.jpg",
+      "link": "",
+      "button": "",
+      "from": "",
+      "to": "",
+      "published": true,
+      "popup": false,
+      "price": "Camino Burger 390 TL · Tavuk Burger 300 TL"
+    },
+    {
+      "id": "dkamp4",
+      "title": "Efes",
+      "text": "Buz gibi soğuk Efes Pilsen veya Malt.",
+      "image": "assets/duyuru/kampanya-4.jpg",
+      "link": "",
+      "button": "",
+      "from": "",
+      "to": "",
+      "published": true,
+      "popup": false,
+      "price": "175 TL"
+    },
+    {
+      "id": "dkamp5",
+      "title": "1+1 Kokteyl",
+      "text": "Biri sana, biri ona: Lime Ekstra & Morange.",
+      "image": "assets/duyuru/kampanya-5.jpg",
+      "link": "",
+      "button": "",
+      "from": "",
+      "to": "",
+      "published": true,
+      "popup": false,
+      "price": "800 TL"
+    }
+  ]
 }

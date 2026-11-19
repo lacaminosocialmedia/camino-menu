@@ -295,6 +295,7 @@ body.no-scroll{overflow:hidden}
 .nthumb{position:relative;aspect-ratio:4/5;overflow:hidden;background:#000;border:1px solid var(--line)}
 .nthumb .blur{position:absolute;inset:-10%;background:center/cover no-repeat;filter:blur(18px) brightness(.4)}
 .nthumb img{position:relative;width:100%;height:100%;object-fit:contain;transition:transform 1.2s var(--ease)}
+.nthumb video,.pst-art>video{position:relative;display:block;width:100%;height:100%;object-fit:contain;background:transparent}
 .notice-card button:hover .nthumb img{transform:scale(1.05)}
 .notice-card h4{font:500 19px/1.2 var(--serif);margin:12px 0 0}
 .notice-card .tags{margin-top:10px}
@@ -791,6 +792,13 @@ body.no-scroll .social{opacity:0;pointer-events:none}
     return C.posterSlides(data, n).map(s => decorate(s, n));
   }
   function posterArt(s, w){
+    // Videolu afiş: sessiz döngü, sadece ekranda görünürken oynar (kapak: afiş görseli)
+    if(s.video){
+      const u = C.sized(s.image || '', w);
+      return (u ? '<div class="blur" style="background-image:url(\'' + esc(u.replace(/'/g, '%27')) + '\')"></div>' : '') +
+        '<video class="pvid" data-autoplay muted loop playsinline preload="none" disablepictureinpicture' + (u ? ' poster="' + esc(u) + '"' : '') +
+        ' src="' + esc(s.video) + '" aria-label="' + esc(s.title) + '"></video>';
+    }
     if(s.image){
       const u = C.sized(s.image, w);
       return '<div class="blur" style="background-image:url(\'' + esc(u.replace(/'/g, '%27')) + '\')"></div>' + img(u, s.title, true).replace('onload="this.classList.add(\'ok\')"', '');
@@ -812,6 +820,19 @@ body.no-scroll .social{opacity:0;pointer-events:none}
     $('#posters-count').textContent = noticeSlides.length;
     $('#notice-row').innerHTML = noticeSlides.map((s, i) => '<article class="notice-card rv" style="--i:' + (i % 5) + '"><button data-poster-i="' + i + '">' +
       '<div class="nthumb">' + posterArt(s, 500) + '</div><div class="tags">' + esc(s.badge) + '</div><h4>' + esc(s.title) + '</h4></button></article>').join('');
+    watchVideos($('#notice-row'));
+  }
+  // Afiş videoları: görünür olanlar oynar, ekran dışındakiler durur (pil ve veri tasarrufu)
+  const vidObs = 'IntersectionObserver' in window ? new IntersectionObserver(es => es.forEach(e => {
+    const v = e.target;
+    if(e.isIntersecting && e.intersectionRatio > .35){ if(v.preload !== 'auto') v.preload = 'auto'; const p = v.play(); if(p) p.catch(() => {}); }
+    else v.pause();
+  }), {threshold: [0, .35, .7]}) : null;
+  function watchVideos(root){
+    (root || document).querySelectorAll('video[data-autoplay]:not([data-watched])').forEach(v => {
+      v.dataset.watched = '1'; v.muted = true;
+      if(vidObs) vidObs.observe(v); else { v.preload = 'auto'; const p = v.play(); if(p) p.catch(() => {}); }
+    });
   }
 
   // Afiş altındaki detaylar (ücret, tarih, rezervasyon, konum) ve hızlı düğmeler (ara, WhatsApp, yol tarifi)
@@ -867,6 +888,9 @@ body.no-scroll .social{opacity:0;pointer-events:none}
     if(!slides.length) return;
     i = Math.max(0, Math.min(slides.length - 1, i));
     slides.forEach((s, k) => s.classList.toggle('cur', k === i));
+    // Sadece açık afişin videosu oynar
+    slides.forEach((s, k) => { const v = s.querySelector('video'); if(!v) return;
+      if(k === i){ v.muted = true; v.preload = 'auto'; const p = v.play(); if(p) p.catch(() => {}); } else v.pause(); });
     document.querySelectorAll('.pst-dots button').forEach((d, k) => d.classList.toggle('cur', k === i));
     const idx = $('#pst-idx'); if(idx) idx.textContent = (i + 1) + ' / ' + slides.length;
     // Otomatik geçiş (6 sn); kullanıcı dokununca durur
@@ -1035,6 +1059,7 @@ body.no-scroll .social{opacity:0;pointer-events:none}
   }
   function closeLayer(fromPop){
     if(!layer) return;
+    $('#' + layer).querySelectorAll('video').forEach(v => v.pause());
     $('#' + layer).classList.remove('on');
     $('#veil').classList.remove('on');
     document.body.classList.remove('no-scroll');

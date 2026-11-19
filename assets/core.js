@@ -364,7 +364,7 @@
   }
 
   /* ---------- Duyurular (afişler) ---------- */
-  // Duyuru: {id, title, text, image, link, button, from, to, published, popup}
+  // Duyuru: {id, title, text, image, video, link, button, from, to, published, popup}  (video: sessiz, döngüde oynar; image kapak olur)
   function announcementState(a, n){
     n = n || now();
     if(a.published === false) return 'off';
@@ -391,7 +391,7 @@
     const out = [];
     (data.announcements || []).forEach(a => {
       if(a.popup === false || announcementState(a, n) !== 'live') return;
-      out.push({kind:'ann', key:'a:' + a.id, title: a.title, badge: 'DUYURU', text: a.text, image: a.image, link: a.link,
+      out.push({kind:'ann', key:'a:' + a.id, title: a.title, badge: 'DUYURU', text: a.text, image: a.image, video: a.video || '', link: a.link,
         button: a.button, endsAt: parseWall(a.to), info: posterInfo(a, data.site), src: a});
     });
     (data.campaigns || []).forEach(c => {

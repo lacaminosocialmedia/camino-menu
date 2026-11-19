@@ -2242,7 +2242,8 @@
       "to": "",
       "published": true,
       "popup": false,
-      "price": "1.750 TL"
+      "price": "1.750 TL",
+      "video": "assets/duyuru/kampanya-1.mp4"
     },
     {
       "id": "dkamp2",
@@ -2255,7 +2256,8 @@
       "to": "",
       "published": true,
       "popup": false,
-      "price": "1.600 TL"
+      "price": "1.600 TL",
+      "video": "assets/duyuru/kampanya-2.mp4"
     },
     {
       "id": "dkamp3",
@@ -2268,7 +2270,7 @@
       "to": "",
       "published": true,
       "popup": false,
-      "price": "Camino Burger 390 TL · Tavuk Burger 300 TL"
+      "video": "assets/duyuru/kampanya-3.mp4"
     },
     {
       "id": "dkamp4",
@@ -2281,7 +2283,8 @@
       "to": "",
       "published": true,
       "popup": false,
-      "price": "175 TL"
+      "price": "175 TL",
+      "video": "assets/duyuru/kampanya-4.mp4"
     },
     {
       "id": "dkamp5",
@@ -2294,7 +2297,8 @@
       "to": "",
       "published": true,
       "popup": false,
-      "price": "800 TL"
+      "price": "800 TL",
+      "video": "assets/duyuru/kampanya-5.mp4"
     }
   ]
 }

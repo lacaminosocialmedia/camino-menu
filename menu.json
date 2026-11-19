@@ -2208,7 +2208,7 @@
       "repeat": "none",
       "until": "",
       "image": "assets/duyuru/konser-bahadir-uysal.jpg",
-      "popup": false,
+      "popup": true,
       "published": true,
       "phone": "+90 553 429 58 40",
       "whatsapp": true
@@ -2224,7 +2224,7 @@
       "repeat": "none",
       "until": "",
       "image": "assets/duyuru/konser-yakup-kubilay.jpg",
-      "popup": false,
+      "popup": true,
       "published": true,
       "phone": "+90 553 429 58 40",
       "whatsapp": true

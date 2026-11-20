@@ -1003,11 +1003,15 @@ h3.sub{font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:.1em;text-
       cats.innerHTML = '<div class="panel">Menü yüklenemedi: ' + esc(ghErrorText(e)) + '</div>';
     }
   }
+  // Sayfa yenilenince menü yüklendikten sonra en son açık sekmeye dönülür
+  let pendingTab = null;
+  try{ pendingTab = sessionStorage.getItem('camino-admin-sekme'); }catch(e){}
   function afterLoad(msg){
     Core.prepare(state);   // ürünlere kalıcı kimlik verir, kampanya listesini hazırlar
     setDirty(false);
     renderAll();
     if(msg) toast(msg);
+    if(pendingTab && $('#tab-' + pendingTab)){ const t = pendingTab; pendingTab = null; showTab(t); }
   }
 
   /* ---------- Fotoğraf yükleme ---------- */
@@ -2346,19 +2350,35 @@ h3.sub{font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:.1em;text-
   let failedLogins = 0;
   const wait = ms => new Promise(r => setTimeout(r, ms));
 
+  // Oturum bu sekmede saklanır: sayfa yenilenince tekrar şifre sorulmaz. Sekme kapanınca ya da
+  // 30 dakika işlem yapılmayınca biter (sessionStorage başka sekmelerle paylaşılmaz, tarayıcı kapanınca silinir).
+  const SS_KEY = 'camino-admin-oturum';
+  function rememberSession(){
+    try{ if(session) sessionStorage.setItem(SS_KEY, JSON.stringify({cfg: session, at: lastActive})); }catch(e){}
+  }
+  function restoredSession(){
+    try{
+      const s = JSON.parse(sessionStorage.getItem(SS_KEY) || 'null');
+      if(s && s.cfg && s.cfg.token && Date.now() - s.at < IDLE_MS) return s.cfg;
+      sessionStorage.removeItem(SS_KEY);
+    }catch(e){}
+    return null;
+  }
   function unlock(cfg){
     // Repo adı sonradan değiştirildiyse (ör. camino-menu → kullanici.github.io) şifreli kayıttaki eski ad yerine
     // panelin açıldığı adresteki repo kullanılır
     const g = guessRepo();
     if(g) cfg = Object.assign({}, cfg, {owner: g.owner, repo: g.repo});
     session = cfg;
+    touch();
+    rememberSession();
     document.body.classList.remove('locked');
     $('#login-pw').value = '';
     loadMenu();
-    touch();
   }
   function logout(){
     session = null;
+    try{ sessionStorage.removeItem(SS_KEY); }catch(e){}
     setDirty(false);
     location.reload();
   }
@@ -2461,7 +2481,7 @@ h3.sub{font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:.1em;text-
       await gh(cfg, 'GET');
       const auth = await encryptCfg(cfg, pw);
       await putFile(cfg, AUTH_PATH, JSON.stringify(auth, null, 2) + '\n', 'GitHub token yenilendi');
-      session = cfg;
+      session = cfg; rememberSession();
       $('#token-form').reset();
       setMsg('#tk-msg', 'Token güncellendi.', 'ok');
     }catch(err){
@@ -2483,7 +2503,9 @@ h3.sub{font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:.1em;text-
   let lastActive = Date.now();
   function touch(){ lastActive = Date.now(); }
   ['click','keydown','touchstart','input'].forEach(ev => document.addEventListener(ev, touch, {passive:true}));
-  setInterval(() => { if(session && !dirty && Date.now() - lastActive > IDLE_MS) logout(); }, 60000);
+  setInterval(() => { if(session && !dirty && Date.now() - lastActive > IDLE_MS) logout(); else rememberSession(); }, 60000);
+  // Sayfa kapanırken/yenilenirken son işlem zamanı da kaydedilir
+  window.addEventListener('pagehide', rememberSession);
 
   /* ---------- Şifreli işletme verileri (business.json) ---------- */
   // Menü teklifleri ve işletmenin resmî bilgileri (unvan, vergi no, IBAN) müşteriye açık olmadığı için şifreli saklanır.
@@ -2942,7 +2964,7 @@ h3.sub{font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:.1em;text-
     const cfg = Object.assign({}, session);
     if(st) cfg.stats = st; else delete cfg.stats;
     await putFile(cfg, AUTH_PATH, JSON.stringify(await encryptCfg(cfg, pw), null, 2) + '\n', st ? 'İstatistik sunucusu bağlandı' : 'İstatistik sunucusu bağlantısı kaldırıldı');
-    session = cfg;
+    session = cfg; rememberSession();
   }
   // Menüye sayaç adresini yazar; bekleyen başka değişiklik yoksa hemen yayınlar
   async function publishStatsUrl(url){
@@ -3198,6 +3220,7 @@ h3.sub{font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:.1em;text-
 
   /* ---------- Sekmeler ---------- */
   function showTab(name){
+    try{ sessionStorage.setItem('camino-admin-sekme', name); }catch(e){}
     document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === name));
     ['home','stats','menu','calendar','ann','campaigns','offer','days','media','site','qr','security'].forEach(n => $('#tab-' + n).classList.toggle('hide', n !== name));
     if(state && name === 'offer') renderOffer();
@@ -3219,6 +3242,8 @@ h3.sub{font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:.1em;text-
       $('#lock-loading').innerHTML = '<p class="msg err">Panel yalnızca güvenli (https) adresten açılabilir. Lütfen GitHub Pages adresini kullanın.</p>';
       return;
     }
+    const saved = restoredSession();
+    if(saved){ $('#lock-loading').classList.add('hide'); return unlock(saved); }
     try{
       const auth = await fetchAuth();
       if(!auth) return showSetup();
